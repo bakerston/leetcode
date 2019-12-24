@@ -1,3 +1,4 @@
+"""solution class"""
 class Solution(object):
     def isBalanced(self, root):
 
