@@ -92,7 +92,84 @@ print(countGoodTriplets([3,0,1,1,9,7], 7, 2, 3))
     """
 
 #1295. Find Numbers with Even Number of Digits
-def findNumbers(nums):
+"""def findNumbers(nums):
     ans=list(map(lambda x: len(str(x))%2,nums))
     return len(nums)-sum(ans)
-print(findNumbers( [555,901,482,1771]))
+print(findNumbers( [555,901,482,1771]))"""
+
+#1588. Sum of All Odd Length Subarrays
+"""def sumOddLengthSubarrays(arr):
+    def oddx(x):
+        return (x//2+x%2)*2-1
+    ans=0
+    res=oddx(len(arr))
+    i=(res+1)//2
+    for x in range(i):
+        gap=2*x+1
+        tmp=0
+        for i in range(len(arr)-gap+1):
+            tmp+=sum(arr[i:i+gap])
+        ans+=tmp
+    return ans
+print(sumOddLengthSubarrays([10,11,12]))"""
+"""
+ def sumOddLengthSubarrays(self, arr: List[int]) -> int:
+        n, sum_odd = len(arr), 0
+        p_sum = [0] * ( n + 1)
+        for i, a in enumerate(arr):
+            p_sum[i + 1] = p_sum[i] + a
+        for i, p in enumerate(p_sum):
+            for j in range(i + 1, n + 1, 2):
+                sum_odd += p_sum[j] - p_sum[i] 
+        return sum_odd"""
+
+#1486. XOR Operation in an Array
+"""
+def xorOperation(n, start):
+    from functools import reduce
+    res=[x*2+start for x in range(n)]
+
+    return reduce(lambda x,y:x^y,res)
+print(xorOperation(10,5))"""
+
+#1313. Decompress Run-Length Encoded List
+"""
+def decompressRLElist(nums):
+    ans=[]
+    for i in range(0,len(nums),2):
+        ans+=[nums[i+1] for x in range(nums[i])]
+    return ans
+print(decompressRLElist( [1,2,3,4]))
+"""
+
+#1252. Cells with Odd Values in a Matrix
+"""
+def oddCells(n, m, indices):
+    ans=[[0 for x in range(m)] for y in range(n)]
+    for op in indices:
+        ans[op[0]]=list(map(lambda x:x+1,ans[op[0]]))
+        for x in range(n):
+            ans[x][op[1]]+=1
+    tmp=0
+    for i in range(n):
+        tmp+=sum(map(lambda x:x%2==1,ans[i]))
+    return tmp
+print(oddCells(2,2,[[1,1],[0,0]]))
+"""
+
+#1436. Destination City
+def destCity(paths):
+    s=[]
+    d=[]
+    for x in paths:
+        s.append(x[0])
+        d.append(x[1])
+    sset=set(s)
+    dset=set(d)
+    for i in dset:
+        if i not in sset:
+            return i
+    
+print(destCity([["B","C"],["D","B"],["C","A"]]))
+
+        
