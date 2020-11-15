@@ -329,6 +329,7 @@ print(minCostToMoveChips([1,2,3,4,5,6]))"""
 print(16716700000%(10**9+7))"""
 
 #1465. Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts
+"""
 def maxArea(h, w, horizontalCuts, verticalCuts):
     hori=sorted([0]+horizontalCuts+[h])
     vert=sorted([0]+verticalCuts+[w])
@@ -336,4 +337,141 @@ def maxArea(h, w, horizontalCuts, verticalCuts):
     h=max(map(lambda x:x[1]-x[0], zip(hori[:-1],hori[1:])))       
     v=max(map(lambda x:x[1]-x[0], zip(vert[:-1],vert[1:]))) 
     return (h*v)%(10**9+7)
-print(maxArea(5,4,[3,1],[1]))
+print(maxArea(5,4,[3,1],[1]))"""
+#1539. Kth Missing Positive Number
+"""
+def findKthPositive(arr, k):
+    index=[x for x in range(1,arr[-1]+1) if x not in arr]
+    if k>len(index):
+        return arr[-1]+k-len(index)
+    else:
+        return index[k-1]
+print(findKthPositive([1,2,3,4,5],5))
+"""
+
+#1464. Maximum Product of Two Elements in an Array
+"""
+def maxProduct(nums):
+    res=[x-1 for x in nums]
+    return sorted(res)[-1]*sorted(res)[-2]
+print(maxProduct([3,4,5,2]))
+"""
+
+#1200. Minimum Absolute Difference
+"""
+def minimumAbsDifference(arr):
+    brr=sorted(arr)
+    diff=min(map(lambda x:x[0]-x[1],zip(brr[1:],brr[:-1])))
+    return [[x[1],x[0]] for x in zip(brr[1:],brr[:-1]) if x[0]-x[1]==diff]
+print(minimumAbsDifference([4,2,1,3]))"""
+
+#509. Fibonacci Number
+"""
+def fib(N):
+    dp=[0,1]
+    def fb(n):
+        if n<len(dp):
+            return dp[n]
+        else:
+            temp_fb=fb(n-1)+fb(n-2)
+            dp.append(temp_fb)
+            return temp_fb
+    return  fb(N)
+print(fib(4))
+"""
+#1267. Count Servers that Communicate
+"""
+def countServers(grid):
+    dis_dic={}
+    con_dic={}
+    ans=0
+    for row in range(len(grid)):
+        if sum(grid[row])==0:
+            continue
+        elif sum(grid[row])==1:
+            for col in range(len(grid[row])):
+                if grid[row][col]==1:
+                    if col not in con_dic.keys():
+                        if col not in dis_dic:
+                            dis_dic[col]=1
+                        else:
+                            del dis_dic[col]
+                            con_dic[col]=1
+                            ans+=2
+                    else:
+                        ans+=1
+                else:
+                    continue
+        else:
+            ans+=sum(grid[row])
+            for col in range(len(grid[row])):
+                if grid[row][col]==1:
+                    if col not in con_dic.keys():
+                        if col not in dis_dic:
+                            dis_dic[col]=1
+                        else:
+                            del dis_dic[col]
+                            con_dic[col]=1
+                    else:
+                        continue
+                else:
+                    continue
+    return ans
+print(countServers([[1,0,0,1,0],[0,0,0,0,0],[0,0,0,1,0]]))
+#print(countServers([[1,0,0,0,1,0,0],[1,0,0,0,0,0,0],[0,0,1,1,0,0,1],[0,0,0,0,0,1,0],[1,0,0,0,1,0,0],[0,0,0,0,1,0,0],]))
+
+def countServers(grid):
+    rowsum=[sum(x) for x in grid]
+    colsum=[sum(row[x] for row in grid) for x in range(len(grid[0]))]
+    r=[i for i in range(len(rowsum)) if rowsum[i]==1]
+    c=[j for j in range(len(colsum)) if colsum[j]==1]
+    ans=0
+    for i in r:
+        for j in c:
+            if grid[i][j]==1:
+                ans+=1
+    res=sum([sum(x) for x in grid])
+
+    return res-ans
+
+
+print(countServers([[1,1,0,0],[0,0,1,0],[0,0,1,0],[0,0,0,1]]))
+"""
+
+#1550. Three Consecutive Odds
+"""
+def threeConsecutiveOdds(arr):
+    res=[x%2 for x in arr]
+    tmp=0
+    print(res)
+    for x in res:
+        if x==1:
+            tmp+=1
+            if tmp==3:
+                return True
+        else:  
+            tmp=0
+    return False
+print(threeConsecutiveOdds([1,2,34,3,4,5,4,7,23,12]))
+"""
+
+#1502. Can Make Arithmetic Progression From Sequence
+"""
+def canMakeArithmeticProgression(arr):
+    return len(set(map(lambda x: x[0]-x[1],zip(sorted(arr)[1:],sorted(arr)[:-1]))))==1
+print(canMakeArithmeticProgression([1,2,3,6,7,5,4]))
+"""
+
+#1560. Most Visited Sector in a Circular Track
+def mostVisited(n,rounds): 
+    start=rounds[0]
+    end=rounds[-1]
+    base=[x for x in range(1,n+1)]
+    return base[start-1:end] if start<=end else base[:end]+base[start-1:]
+print(mostVisited(7,[1,3,5,7]))
+print(mostVisited(4,[3,1]))
+
+        
+
+
+    
