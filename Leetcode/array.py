@@ -463,15 +463,235 @@ print(canMakeArithmeticProgression([1,2,3,6,7,5,4]))
 """
 
 #1560. Most Visited Sector in a Circular Track
-def mostVisited(n,rounds): 
+"""def mostVisited(n,rounds): 
     start=rounds[0]
     end=rounds[-1]
     base=[x for x in range(1,n+1)]
     return base[start-1:end] if start<=end else base[:end]+base[start-1:]
 print(mostVisited(7,[1,3,5,7]))
-print(mostVisited(4,[3,1]))
+print(mostVisited(4,[3,1]))"""
 
-        
+#1051. Height Checker
+"""
+def heightChecker(heights):
+    return sum(h1 != h2 for h1, h2 in zip(heights, sorted(heights)))"""
+
+#922. Sort Array By Parity II
+"""
+def sortArrayByParityII(A):
+    odd=[x for x in A if x%2==1]
+    even=[x for x in A if x%2==0]
+    ans=[]
+    for x in range(len(odd)):
+        ans.append(even[x])
+        ans.append(odd[x])
+    return ans
+print(sortArrayByParityII([4,2,5,7]))    
+"""
+#1207. Unique Number of Occurrences
+"""
+def uniqueOccurrences(arr):   
+    import collections
+    adic=collections.Counter(arr)
+    return len(list(adic.values())) == len(set(adic.values()))
+print(uniqueOccurrences([1,1,1,2,2,3]))"""
+
+#1403. Minimum Subsequence in Non-Increasing Order
+"""
+def minSubsequence(nums):
+    asum=sum(nums)
+    tar=int(sum(nums)/2)
+    res=(sorted(nums))[::-1]
+    i=0
+    tmp=res[i]
+    while tmp<=tar:
+        i+=1
+        tmp+=res[i]
+    return res[:i+1]
+print(minSubsequence([6]))"""
+
+#1047. Remove All Adjacent Duplicates In String
+"""
+def removeDuplicates(S):
+    stack=[]
+    for i in S:
+        if len(stack)>0:
+            if i==stack[-1]:
+                stack.pop()
+            else:
+                stack.append(i)
+        else:
+            stack.append(i)
+    return "".join(stack)      
+print(removeDuplicates("aabbaddae")) 
+"""
+
+#1385. Find the Distance Value Between Two Arrays
+"""
+def findTheDistanceValue( arr1, arr2, d):
+    count = 0
+    for x in arr1:
+        for y in arr2:
+            if abs(x-y) <= d:
+                count += 1
+                break
+    return len(arr1) - count
+"""
 
 
-    
+#1030. Matrix Cells in Distance Order
+"""
+def allCellsDistOrder(R, C, r0, c0):
+    ans=[]
+    for row in range(R):
+        for col in range(C):
+            ans.append([abs(row-r0)+abs(col-c0),row,col])
+    res=sorted(ans,key=lambda x:x[0])
+    return [x[1:] for x in res]
+print(allCellsDistOrder(2,3,1,2))
+"""
+
+#1524. Number of Sub-arrays With Odd Sum
+"""
+def numOfSubarrays(arr):
+    res=[x%2 for x in arr]
+    tmp=[0]
+    mark=0
+    for x in range(len(res)):
+        mark+=res[x]
+        if mark%2==1:
+            tmp.append(1)
+            mark=1
+        else:
+            tmp.append(0)
+            mark=0
+    odd=sum(tmp)
+    even=len(tmp)-odd
+    ans=0
+    for x in range(len(tmp)):
+        if tmp[x]==0:
+            ans+=odd
+            even-=1
+        else:
+            ans+=even
+            odd-=1
+    return ans
+print(numOfSubarrays([1,2,3,4,5,6,7]))"""
+"""res=[x%2==1 for x in arr]
+    ans= 0
+    alen=len(res)
+    for x in range(alen):
+        tmp=res[x]
+        if tmp:
+            ans+=1
+        for y in range(x+1,alen):
+            new=res[y]
+            if tmp:
+                if new:
+                    tmp=False
+                else:
+                    ans+=1
+            else:
+                if new:
+                    tmp=True
+                    ans+=1
+    return ans
+
+print(numOfSubarrays([1,2,3,4,5,6,7]))"""
+"""
+    alen=len(arr)
+    ans=0
+    for x in range(alen):
+        tmp=arr[x]
+        if tmp%2==1:
+            ans+=1
+        for y in range(x+1,alen):
+            tmp+=arr[y]
+            if tmp%2==1:
+                ans+=1    
+    return ans%(10**9+7)"""
+
+
+#1031. Maximum Sum of Two Non-Overlapping Subarrays
+"""
+def maxSumTwoNoOverlap(A, L, M):
+    alen=len(A)
+    #leftL inclusive, rightM exclusive
+    ans=0
+    for i in range(L-1,alen-M):
+        left=0
+        right=0
+        print(i-L+1)
+        for j in range(i-L+2):
+            left=max(left,sum(A[j:j+L]))
+        for k in range(i+1,alen-M+1):
+            right=max(right,sum(A[k:k+M]))
+        ans=max(ans,left+right)
+    #leftM inclusive, rightL exclusive
+    for i in range(M-1,alen-L):
+        left=0
+        right=0
+        for j in range(i-M+2):
+            left=max(left,sum(A[j:j+M]))
+        for k in range(i+1,alen-L+1):
+            right=max(right,sum(A[k:k+L]))
+        ans=max(ans,left+right)
+    return ans
+print(maxSumTwoNoOverlap(A = [0,6,5,2,2,5,1,9,4], L = 1, M = 2))
+"""
+#1304. Find N Unique Integers Sum up to Zero
+"""def sumZero(n):
+    base_odd=[1,0,-1]
+    base_even=[1,-1]
+    if n==1:
+        return [0]
+    elif n==2:
+        return base_even
+    elif n==3:
+        return base_odd
+    else:
+        if n%2:
+            k=int((n-3)/2)
+            for i in range(1,k+1):
+                base_odd.append(i+1)
+                base_odd.append(-i-1)
+            return base_odd
+        else:
+            k=int((n-2)/2)
+            for i in range(1,k+1):
+                base_even.append(i+1)
+                base_even.append(-i-1)
+            return base_even
+print(sumZero(10))"""
+
+#1144. Decrease Elements To Make Array Zigzag
+def movesToMakeZigzag(nums):
+    if len(nums)==1:
+        return 0
+    odd,even=0,0
+    for i in range(0,len(nums),2):
+        if i==0:
+            k=nums[i]-nums[i+1]
+            if k>=0:
+                odd+=k+1
+        elif i+1==len(nums):
+            k=nums[i]-nums[i-1]
+            if k>=0:
+                odd+=k+1
+        else:
+            k=max(nums[i]-nums[i-1],nums[i]-nums[i+1])
+            if k>=0:
+                odd+=k+1
+    for i in range(1,len(nums),2):
+        if i+1==len(nums):
+            k=nums[i]-nums[i-1]
+            if k>=0:
+                even+=k+1
+        else:
+            k=max(nums[i]-nums[i-1],nums[i]-nums[i+1])
+            if k>=0:
+                even+=k+1
+    return min(odd,even)
+print(movesToMakeZigzag([2,7,10,9,8,9]))  
+
+
