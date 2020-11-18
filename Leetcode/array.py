@@ -665,6 +665,7 @@ print(maxSumTwoNoOverlap(A = [0,6,5,2,2,5,1,9,4], L = 1, M = 2))
 print(sumZero(10))"""
 
 #1144. Decrease Elements To Make Array Zigzag
+"""
 def movesToMakeZigzag(nums):
     if len(nums)==1:
         return 0
@@ -693,5 +694,287 @@ def movesToMakeZigzag(nums):
                 even+=k+1
     return min(odd,even)
 print(movesToMakeZigzag([2,7,10,9,8,9]))  
+"""
+#1014. Best Sightseeing Pair
+"""
+def maxScoreSightseeingPair(A):
+    i,j=0,1
+    alen=len(A)
+    ans=0
+    while j<alen:
+        ans=max(ans,A[i]+A[j]-(j-i))
+        if A[i]-A[j]<=j-i:
+            i=j
+        j+=1
+    return ans
+print(maxScoreSightseeingPair([8,1,5,2,6]))
+"""
 
 
+#1208. Get Equal Substrings Within Budget
+
+"""
+def equalSubstring(s, t, maxCost):
+    res=[abs(ord(x[0])-ord(x[1])) for x in zip(list(s),list(t))]
+    print(res)
+    i=0
+    j=0
+    ans=0
+    cur=0
+    while j<len(res):
+        if cur<=maxCost:
+            ans=max(ans,j-i)
+            cur+=res[j]
+            j+=1
+        else:
+            while cur>maxCost:
+                cur-=res[i]
+                i+=1
+    if cur<=maxCost:
+        ans=max(ans,j-i)
+    return ans
+print(equalSubstring(s = "abcd", t = "bcdf", maxCost = 3))
+print(equalSubstring(s = "abcd", t = "cdef", maxCost = 3))
+print(equalSubstring("abcd", t = "acde", maxCost = 0))
+print(equalSubstring("zdfy","sgby",14))
+"""
+
+#1375. Bulb Switcher III
+"""
+def numTimesAllBlue(light):
+    alen=len(light)
+    ans=0
+    blue=0
+    for i in range(alen):
+        blue=max(blue,light[i])
+        if blue==i+1:
+            ans+=1
+    return ans
+print(numTimesAllBlue([2,1,4,3,6,5]))
+"""
+
+#1423. Maximum Points You Can Obtain from Cards
+"""
+def maxScore(cardPoints, k):
+    base=sum(cardPoints[-k:])
+    res=0
+    ans=0
+    for i in range(k):
+        res+=cardPoints[i]-cardPoints[-k+i]
+        ans=max(ans,res)
+    return ans+base
+print(maxScore(cardPoints = [1,79,80,1,1,1,200,1], k = 3))
+"""
+
+#1122. Relative Sort Array
+"""
+def relativeSortArray(arr1, arr2):
+    import collections
+    dic1=collections.Counter(arr1)
+    dic2=collections.Counter(arr2)
+    ans=[]
+    for x in arr2:
+        ans+=dic1[x]*[x]
+    miss=[x for x in dic1.keys() if x not in dic2.keys()]
+    for x in miss:
+        ans+=dic1[x]*[x]
+    return ans
+print(relativeSortArray( arr1 = [2,3,1,3,2,4,6,7,9,2,19], arr2 = [2,1,4,3,9,6]))
+"""
+
+#1337. The K Weakest Rows in a Matrix
+"""
+def kWeakestRows(mat, k):
+    res=[sum(x) for x in mat]
+    adic=[]
+    for x in range(len(res)):
+        adic.append([res[x],x]) 
+    b=sorted(adic,key=lambda x: [x[0],x[1]])
+    return [x[1] for x in b][:k]
+print(kWeakestRows(mat = 
+[[1,0,0,0],
+ [1,1,1,1],
+ [1,0,0,0],
+ [1,0,0,0]], 
+k = 2))
+"""
+#1170. Compare Strings by Frequency of the Smallest Character
+"""
+def numSmallerByFrequency(queries, words):
+    import collections
+    def smallfreq(str):
+        tmp=collections.Counter(list(str))
+        return tmp[sorted(list(tmp.keys()))[0]]
+    tmp=[smallfreq(x) for x in queries]
+    wor=[smallfreq(x) for x in words]
+    ans=[sum([1 for x in wor if x>y]) for y in tmp]
+    return ans
+print(numSmallerByFrequency(queries = ["cbd"], words = ["zaaaz"]))
+"""
+
+#1481. Least Number of Unique Integers after K Removals
+"""
+def findLeastNumOfUniqueInts(arr,k):
+    if k==len(arr):
+        return 0
+    import collections
+    res=collections.Counter(arr)
+    tmp=sorted(list(res.values()))
+    alen=len(tmp)
+    i=0
+    while k>=0:
+        k-=tmp[i]
+        i+=1
+    return alen-i+1
+print(findLeastNumOfUniqueInts(arr = [4,3,1,1,3,3,2], k = 3))
+print(findLeastNumOfUniqueInts(arr = [5,5,4,4,4,6,6,6,6,7,7,7,7,7], k = 10))
+print(findLeastNumOfUniqueInts([1,1,2,2,2],3))"""
+
+#1619. Mean of Array After Removing Some Elements
+"""
+def trimMean(arr):
+    tmp=sorted(arr)
+    sec=int(len(tmp)/20)
+    print(sec)
+    return (sum(arr)-sum(tmp[:sec])-sum(tmp[-sec:]))/(len(tmp)-2*sec)
+print(trimMean(arr = [4,8,4,10,0,7,1,3,7,8,8,3,4,1,6,2,1,1,8,0,9,8,0,3,9,10,3,10,1,10,7,3,2,1,4,9,10,7,6,4,0,8,5,1,2,1,6,2,5,0,7,10,9,10,3,7,10,5,8,5,7,6,7,6,10,9,5,10,5,5,7,2,10,7,7,8,2,0,1,1]))
+"""
+#1437. Check If All 1's Are at Least Length K Places Away
+"""
+def kLengthApart(nums,k):
+    if k==0:
+        return True
+    else:
+        res=[x for x in range(len(nums)) if nums[x]==1]
+        if len(res)<=1:
+            return True
+        else:
+            dif=list(map(lambda x: x[1]-x[0], zip(res[:-1],res[1:])))
+            return min(dif)>=k+1
+print(kLengthApart(nums = [1,1,1,1,1], k = 0))"""
+
+#1414. Find the Minimum Number of Fibonacci Numbers Whose Sum Is K
+"""
+def findMinFibonacciNumbers(k):
+    def maxfib(n):
+        if n<=2:
+            return n
+        else:
+            a,b,ans,k=1,1,1,2
+            while ans<=n:
+                a,b=b,a+b
+                ans=b
+                k+=1
+            return a
+    ans=0
+    while k>0:
+        k-=maxfib(k)
+        ans+=1
+    return ans
+
+print(findMinFibonacciNumbers(143))
+"""
+
+#1013. Partition Array Into Three Parts With Equal Sum
+#trash question, fk the trash who made this shit problem.
+"""
+def canThreePartsEqualSum(A):
+    t=sum(A)
+    if t%3!=0:
+        return False 
+    else:
+        l=False
+        r=False
+        ans=0
+        for x in A:
+            ans+=x
+            if ans==int(t/3):
+                l=True
+            elif ans==int(2*t/3):
+                r=True
+        return l and r
+print(canThreePartsEqualSum( [0,2,1,-6,6,-7,9,1,2,0,1]))
+"""
+
+#1544. Make The String Great
+"""
+def makeGood(s):
+    base=list(s)
+    stack=[]
+    for i in base:
+        if not stack:
+            stack.append(i)
+        else:
+            if abs(ord(i)-ord(stack[-1]))==32:
+                stack.pop(-1)
+            else:
+                stack.append(i)
+    return "".join(stack)
+print(makeGood("as"))
+"""
+
+#1287. Element Appearing More Than 25% In Sorted Array
+"""
+def findSpecialInteger(arr):
+    import collections
+    res=collections.Counter(arr)
+    a=max(res.items(),key=lambda x: x[1])
+    return a[0]
+print(findSpecialInteger( arr = [1,2,2,6,6,6,6,7,10]))
+"""
+
+#1482. Minimum Number of Days to Make m Bouquets
+"""
+def minDays(bloomDay, m, k):
+    l=min(bloomDay)
+    r=max(bloomDay)+1
+    def isgood(mid):
+        count=0
+        cur=0
+        for day in bloomDay:
+            if day>mid:
+                cur=0
+            else:
+                cur+=1
+                if cur==k:
+                    cur=0
+                    count+=1
+        return count>=m
+    while l<r:
+        mid=l+(r-l)//2
+        if isgood(mid):
+            r=mid
+        else:
+            l=mid+1
+    return l if l <=max(bloomDay) else -1
+
+
+    from itertools import groupby
+    days=sorted(list(set(bloomDay)))
+    t=[]
+    def makebou(lis,m,k):
+        a=[len(x) for x in lis]
+        return sum([x//k for x in a])>=m
+    succ=len(bloomDay)>=m*k
+    if not succ:
+        return -1
+    else:
+        while succ:
+            t.append(days.pop())
+            cur=[list(g) for k, g in groupby(bloomDay, lambda x: x in t) if not k]
+            succ=makebou(cur,m,k)
+        return t[-1]
+"""
+
+#1380. Lucky Numbers in a Matrix
+def luckyNumbers (matrix):
+    ans=[]
+    for x in range(len(matrix)): 
+        row=[[k,g] for k,g in enumerate(matrix[x])]
+        tmp=sorted(row,key=lambda x:x[1])[0]
+        base=[matrix[x][tmp[0]] for x in range(len(matrix))]
+        if tmp[1]==max(base):
+            ans.append(tmp[1])       
+    return ans
+print(luckyNumbers(matrix = [[7,8],[1,2]]))
+         
