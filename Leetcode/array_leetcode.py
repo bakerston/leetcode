@@ -1163,6 +1163,7 @@ def maxRepOpt1(text):
 print(maxRepOpt1(  text = "abcdaaa"))
 """
 #1004. Max Consecutive Ones III
+"""
 def longestOnes(A, K):
     import itertools
     base=[[k,len(list(g))] for k,g in itertools.groupby(A)]
@@ -1201,3 +1202,121 @@ def longestOnes(A, K):
     return ans
 
 print(longestOnes( A = [1,1,1,0,0,0,1,1,1,1,0], K = 2))
+"""
+
+#1497. Check If Array Pairs Are Divisible by k
+"""
+def canArrange(arr, k):
+    import collections
+    c=[x%k for x in arr if x%k!=0]
+    if len(c)%2!=0:
+        return False
+    dic=collections.defaultdict(int)
+    for x in c:
+        if dic[k-x]!=0:
+            dic[k-x]-=1
+        else:
+            dic[x]+=1
+    return max(dic.values())==0 if len(dic.values())>0 else True
+print(canArrange(arr = [], k = 2))
+"""
+#1352. Product of the Last K Numbers
+"""
+class ProductOfNumbers:
+
+    def __init__(self):
+        self.l=[1]
+    def add(self, num: int) -> None:
+        if num==0:
+            self.l=[1]
+        else:
+            self.l.append(num*self.l[-1])          
+    def getProduct(self, k: int) -> int:
+        if k>=len(self.l):
+            return 0
+        else:
+            return self.l[-1]//self.l[-k-1]
+"""
+#1424. Diagonal Traverse II
+"""
+def findDiagonalOrder(nums):
+    import collections
+    d=collections.defaultdict(list)
+    for i in range(len(nums)):
+        for j in range(len(nums[0])):
+            d[i+j].append(nums[i][j])
+    return [v for k in d.keys() for v in reversed(d[k])]
+"""
+
+#1545. Find Kth Bit in Nth Binary String
+"""
+def unhappyFriends(n, preferences, pairs):
+    d={}
+    alen=len(preferences)
+    blen=len(preferences[0])
+    for i in range(alen):
+        d[i]={}
+        for j in range(blen):
+            d[i][preferences[i][j]]=j
+    ans=[]
+    plen=len(pairs)
+    for x in range(plen-1):
+        for y in range(x+1,plen):
+            if (d[pairs[x][0]][pairs[y][0]]<d[pairs[x][0]][pairs[x][1]] and d[pairs[y][0]][pairs[x][0]]<d[pairs[y][0]][pairs[y][1]]) or (d[pairs[x][0]][pairs[y][1]]<d[pairs[x][0]][pairs[x][1]] and d[pairs[y][1]][pairs[x][0]]<d[pairs[y][1]][pairs[y][0]]):
+                ans.append(pairs[x][0])
+    for x in range(plen-1):
+        for y in range(x+1,plen):
+            if (d[pairs[x][1]][pairs[y][0]]<d[pairs[x][1]][pairs[x][0]] and d[pairs[y][0]][pairs[x][1]]<d[pairs[y][0]][pairs[y][1]]) or (d[pairs[x][1]][pairs[y][1]]<d[pairs[x][1]][pairs[x][0]] and d[pairs[y][1]][pairs[x][1]]<d[pairs[y][1]][pairs[y][0]]):
+                ans.append(pairs[x][1])
+    for y in range(plen-1):
+        if (d[pairs[plen-1][0]][pairs[y][0]]<d[pairs[plen-1][0]][pairs[plen-1][1]] and d[pairs[y][0]][pairs[plen-1][0]]<d[pairs[y][0]][pairs[y][1]]) or (d[pairs[plen-1][0]][pairs[y][1]]<d[pairs[plen-1][0]][pairs[plen-1][1]] and d[pairs[y][1]][pairs[plen-1][0]]<d[pairs[y][1]][pairs[y][0]]):
+            ans.append(pairs[y][0])
+            break
+    for y in range(plen-1):
+        if (d[pairs[plen-1][1]][pairs[y][0]]<d[pairs[plen-1][1]][pairs[-1][0]] and d[pairs[y][0]][pairs[plen-1][1]]<d[pairs[y][0]][pairs[y][1]]) or (d[pairs[plen-1][1]][pairs[y][1]]<d[pairs[plen-1][1]][pairs[-1][0]] and d[pairs[y][1]][pairs[plen-1][1]]<d[pairs[y][1]][pairs[y][0]]):
+            ans.append(pairs[y][1])
+            break
+    print(ans)
+    return len(set(ans))
+print(unhappyFriends(6,
+[[1,4,3,2,5],[0,5,4,3,2],[3,0,1,5,4],[2,1,4,0,5],[2,1,0,3,5],[3,4,2,0,1]],
+[[3,1],[2,0],[5,4]]))
+"""
+#1124. Longest Well-Performing Interval
+"""
+def longestWPI(hours):
+    if len(hours)==1:
+        return 1 if hours[0]<=8 else 0
+    else:
+        alen=len(hours)
+        base=[-1 if x<=8 else 1 for x in hours]
+        tmp=0
+        ans=[0]
+        for x in base:
+            tmp+=x
+            ans.append(tmp)
+        res=0
+        for x in range(alen):
+            for y in range(x+1,alen+1):
+                if ans[y]-ans[x]>0:
+                    res=max(res,y-x)
+        return res
+
+print(longestWPI(hours = [6,6,6,6,6,6]))
+"""
+
+
+#1598. Crawler Log Folder
+def minOperations(logs):
+    cur=0
+    for x in logs:
+        if x=='./':
+            continue
+        elif x=='../':
+            cur=max(cur-1,0)
+        else:
+            cur+=1
+            
+    return cur
+print(minOperations(logs = ["d1/","d2/","./","d3/","../","d31/"]))
+            
