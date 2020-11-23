@@ -249,6 +249,7 @@ print(countLargestGroup(15))
 """
 
 #1332. Remove Palindromic Subsequences
+"""
 def removePalindromeSub(s):
     res=[]
     ans=0
@@ -268,4 +269,79 @@ def removePalindromeSub(s):
                 n+=1
     return ans+len(res) 
 print(removePalindromeSub("ababa"))
-    
+"""
+
+#1525. Number of Good Ways to Split a String
+"""
+def numSplits(s):
+    import collections
+    r=collections.Counter(s)
+    l=collections.defaultdict(int)
+    p=0
+    q=len(r.keys())
+    ans=0
+    for x in s:
+        print(x)
+        r[x]-=1
+        l[x]+=1
+        if r[x]==0:
+            q-=1
+        if l[x]==1:
+            p+=1      
+        if p==q:
+            ans+=1
+    return ans
+print(numSplits(s = "acbadbaada"))
+"""
+
+#1493. Longest Subarray of 1's After Deleting One Element
+"""
+def longestSubarray(nums):
+    import itertools
+    base=[list(y) for x,y in itertools.groupby(nums)]
+    if len(base)==1:
+        return 0 if nums[0]==0 else len(nums)-1
+    elif len(base)==2:
+        return len(base[0]) if base[0][0]==1 else len(base[1])
+    elif len(base)==3:
+        if base[0][0]==0:
+            return len(base[1])
+        else:
+            return len(base[0])+len(base[2]) if len(base[1])<=1 else max(len(base[0]),len(base[2]))
+    else:
+        if nums[0]==0:
+            ans=len(base[1])
+            for i in range(3,len(base),2):
+                if len(base[i-1])>=2:
+                    ans=max(ans,len(base[i]))
+                else:
+                    ans=max(ans,len(base[i])+len(base[i-2]))
+        else:
+            ans=len(base[0])
+            for i in range(2,len(base),2):
+                if len(base[i-1])>=2:
+                    ans=max(ans,len(base[i]))
+                else:
+                    ans=max(ans,len(base[i])+len(base[i-2]))
+    return ans
+print(longestSubarray( nums = [1,1,0,1]))
+"""
+
+#831. Masking Personal Information
+"""
+def maskPII(S):
+    import re
+    if "@" in S:
+        c=re.split("@|\.",S)
+        ans=c[0][0].lower()+"*"*5+c[0][-1].lower()+"@"+c[1].lower()+"."+c[2].lower()
+        return ans
+    else:
+        c=[x for x in S if ord(x)<=57 and ord(x)>=48]
+        ans=""
+        if len(c)>10:
+            return "+"+"*"*(len(c)-10)+"-"+"*"*4+"-"+"*"*4+"-"+"".join(c[-4:])
+        else:
+            return "*"*4+"-"+"*"*4+"-"+"".join(c[-4:])
+print(maskPII("1(234)567-890"))
+"""
+
