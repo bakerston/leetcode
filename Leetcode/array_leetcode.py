@@ -1307,6 +1307,7 @@ print(longestWPI(hours = [6,6,6,6,6,6]))
 
 
 #1598. Crawler Log Folder
+"""
 def minOperations(logs):
     cur=0
     for x in logs:
@@ -1319,4 +1320,58 @@ def minOperations(logs):
             
     return cur
 print(minOperations(logs = ["d1/","d2/","./","d3/","../","d31/"]))
-            
+"""
+#969. Pancake Sorting
+"""
+def pancakeSort(arr):
+    ans=[]
+    for i in range(len(arr),1,-1):
+        x=arr.index(i)
+        ans.extend([x+1,i])
+        arr=arr[i-1:x:-1]+arr[:x+1]+arr[i:]
+    return ans
+print(pancakeSort([3,2,4,1]))
+"""
+
+
+#1109. Corporate Flight Bookings
+"""
+def corpFlightBookings(bookings, n):
+    ans=[0]*(n+1)
+    for i,j,k in bookings:
+        ans[i-1]+=k
+        ans[j]-=k
+    res=0
+    print(ans)
+    for i in range(1,len(ans)):
+        ans[i]+=ans[i-1]
+    return ans[:-1]
+print(corpFlightBookings( bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5))
+"""
+
+#3Sums Closest
+def threeSumClosest(nums, target):
+    diff=float('inf')
+    nums.sort()
+    for i in range(len(nums)-2):
+        l=i+1
+        r=len(nums)-1
+        while l<r:
+            print(l,r)
+            s=nums[i]+nums[l]+nums[r]
+            if abs(s-target)<diff:
+                diff=abs(s-target)
+                ans=s
+            if s<target:
+                l+=1
+            elif s>target:
+                r-=1
+            else:
+                return ans
+    return ans
+print(threeSumClosest( nums = [-1,2,1,-4], target = 1))
+
+
+
+
+
