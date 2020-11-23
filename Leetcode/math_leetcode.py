@@ -235,6 +235,7 @@ print(minOperations( [5297,4630,701,9863,2861,3825,380,5534,5721,1410,4143,1619,
 """
 
 #1578. Minimum Deletion Cost to Avoid Repeating Letters
+"""
 def minCost(s, cost):
     import itertools
     import operator
@@ -243,4 +244,234 @@ def minCost(s, cost):
     d=[x for x in c if len(x)>1]
     return functools.reduce(lambda x,y:x+y,map(lambda x: sum(x)-max(x),d)) if len(d) else 0
 print(minCost("abc", [1,2,3]))
+"""
 
+#1391. Check if There is a Valid Path in a Grid
+"""
+def hasValidPath(grid):
+    if grid[0][0]==4 or grid[-1][-1]==5:
+        return False
+    base=[[0 for x in range(len(grid[0]))] for y in grid[0]]
+    def findpath(x,y):
+        if x==0 and y==0:         
+        if x==0:
+"""
+#1647. Minimum Deletions to Make Character Frequencies Unique
+"""
+def minDeletions(s):
+    import collections
+    base=collections.Counter(s)
+    c=sorted(list(base.values()),reverse=True)
+    cur_max=c[0]+1
+    ans=0
+    print(c)
+    for x in c:
+        if cur_max<=x:
+            if cur_max==0:
+                ans+=x
+            else:
+                ans+=x-cur_max+1
+                cur_max-=1
+        else:
+            cur_max=x
+    return ans 
+print(minDeletions(s = "ageyjib"))
+"""
+
+#1648. Sell Diminishing-Valued Colored Balls
+"""
+def maxProfit(inventory, orders):
+    base=sorted(inventory,reverse=True)+[0]
+    ans=0
+    width=1
+    for x in range(len(base)):
+        if (base[x]-base[x+1])*width>=orders:
+            rows=orders//width
+            ans+=rows*(base[x]+base[x]-rows+1)*width//2+(orders-rows*width)*(base[x]-rows)
+            return ans%(10**9+7)
+        else:
+            orders-=width*(base[x]-base[x+1])
+            ans+=width*(base[x]-base[x+1])*(base[x]+base[x+1]+1)//2
+        width+=1
+print(maxProfit(inventory = [3,5], orders = 6))
+"""
+
+#1488. Avoid Flood in The City
+"""
+def avoidFlood(rains):
+    import collections
+    import bisect
+    p=collections.defaultdict(list)
+    dry=[]
+    ans=[]
+    for x in range(len(rains)):
+        if rains[x]>0:
+            ans.append(-1)
+            p[rains[x]].append(x)
+            if len(p[rains[x]])==2:
+                if not dry:
+                    return []
+                elif dry[-1]<p[rains[x]][0]:
+                    return []
+                else:
+                    i=bisect.bisect_right(dry,p[rains[x]][0])
+                    ans[dry.pop(i)]=rains[x]
+                    p[rains[x]].pop(0)
+
+        else:
+            dry.append(x)
+            ans.append(1)
+    return ans
+print(avoidFlood([1,0,2,3,0,1,2,0,3]))
+
+
+import collections
+    p=collections.defaultdict(int)
+    dry=[]
+    ans=[]
+    for x in range(len(rains)):
+        if rains[x]>0:
+            ans.append(-1)
+            p[rains[x]]+=1
+            if p[rains[x]]>=2:
+                if not dry:
+                    return []
+                else:
+                    ans[dry.pop(0)]=rains[x]
+        else:
+            dry.append(x)
+            ans.append(1)
+    return ans
+"""
+#1492. The kth Factor of n
+"""
+def kthFactor(n, k):
+    import math
+    if n==1:
+        return 1 if k==1 else -1
+    elif n==2:
+        return k if k<3 else -1
+    else:
+        c=[1]+[i for i in range(2,int(math.sqrt(n))+1) if n%i==0]
+        if int(math.sqrt(n))**2==n:
+            if k>=2*len(c):
+                return -1
+            elif k<=len(c):
+                return c[k-1]
+            else:
+                return n//c[len(c)-k-1]
+        else:
+            if k>2*len(c):
+                return -1
+            elif k<=len(c):
+                return c[k-1]
+            else:
+                 return n//c[len(c)-k]
+print(kthFactor(4,4))
+"""
+#1498. Number of Subsequences That Satisfy the Given Sum Condition
+"""
+def numSubseq(nums, target):
+    def cnt(n):
+        return 2**n-1
+    if len(nums)==1:
+        return 1 if sum(nums)*2<=target else 0
+    else:
+        b=sorted(nums)
+        res=0
+        s=b[0]
+        for x in b:
+            if x+s<=target:
+                res+=1
+        return res
+print(numSubseq(nums = [3,5,6,7], target = 9)) 
+"""
+
+#781. Rabbits in Forest
+"""
+def numRabbits(answers):
+    import math
+    import itertools
+    answers.sort()
+    c=[list(g) for k,g in itertools.groupby(answers)]
+    return sum([math.ceil(len(x)/(x[0]+1))*(x[0]+1) for x in c])
+print(numRabbits(answers = [1,1,2]))
+"""
+
+#1637. Widest Vertical Area Between Two Points Containing No Points
+"""
+def maxWidthOfVerticalArea(points):
+    b=points.sort(key=lambda x: x[0])
+    return max(map(lambda x:x[0][0]-x[1][0], zip(points[1:],points[:-1])))
+print(maxWidthOfVerticalArea(points = [[3,1],[9,0],[1,0],[1,4],[5,3],[8,8]]))
+"""
+
+#791. Custom Sort String
+"""
+def customSortString(S, T):
+    import collections
+    s=collections.Counter(S)
+    t=collections.Counter(T)
+    ans=""
+    for x in list(s.keys()):
+        if x in t.keys():
+            ans+=x*t[x]
+    for y in list(t.keys()):
+        if y not in s.keys():
+            ans+=y*t[y]
+    return ans
+
+print(customSortString(S = "cba",T = "abcd"))
+"""
+
+#1471. The k Strongest Values in an Array
+"""
+def getStrongest(arr, k):
+    arr.sort()
+    m=arr[(len(arr)-1)//2]
+
+    def conv(alist):
+        ans=[]
+        for x in alist:
+            if x<0:
+                ans.append(abs(x)-0.5)
+            else:
+                ans.append(x)
+        return ans
+    
+    ans=list(zip(arr,conv([x-m for x in arr])))
+    b=sorted(ans,key=lambda x:x[1],reverse=True)
+    return [x[0] for x in b[:k]]
+print(getStrongest(arr = [6,-3,7,2,11], k = 3))
+"""
+
+#1451. Rearrange Words in a Sentence
+"""
+def arrangeWords(text):
+    import collections
+    d=collections.defaultdict(list)
+    ans=""
+    for x in text.split(" "):
+        d[len(x)].append(x)
+    for y in sorted(d.keys()):
+        ans+=" ".join(d[y])
+        ans+=" "
+    return ans[0].upper()+ans[1:].lower()
+
+print(arrangeWords(text =  "To be or not to be"))
+"""
+
+#976. Largest Perimeter Triangle
+"""
+def largestPerimeter(A):
+    A.sort(reverse=True)
+    print(A)
+    for i in range(len(A)-2):
+        if A[i]<A[i+1]+A[i+2]:
+            return A[i]+A[i+1]+A[i+2]
+    return 0
+print(largestPerimeter([3,6,2,3]))
+"""
+
+
+        
