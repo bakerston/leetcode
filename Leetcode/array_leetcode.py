@@ -1350,6 +1350,7 @@ print(corpFlightBookings( bookings = [[1,2,10],[2,3,20],[2,5,25]], n = 5))
 """
 
 #3Sums Closest
+"""
 def threeSumClosest(nums, target):
     diff=float('inf')
     nums.sort()
@@ -1370,6 +1371,157 @@ def threeSumClosest(nums, target):
                 return ans
     return ans
 print(threeSumClosest( nums = [-1,2,1,-4], target = 1))
+"""
+#1402. Reducing Dishes
+"""
+def maxSatisfaction(satisfaction):
+    satisfaction.sort()
+    cur_sum=0
+    ans=0
+    for x in satisfaction[::-1]:
+        cur_sum+=x
+        if cur_sum>=0:
+            ans+=cur_sum
+        else:
+            break
+    return ans
+print(maxSatisfaction(satisfaction = [-2,5,-1,0,3,-3]))
+"""
+
+#1282.Group the People Given the Group Size They Belong To
+"""
+def groupThePeople(groupSizes):
+    import collections
+    d=collections.defaultdict(list)
+    n=len(groupSizes)
+    for i in range(n):
+        d[groupSizes[i]].append(i)
+    ans=[]
+    print(d)
+    for x in d.keys():
+        tmp=[]
+        for i in range(len(d[x])):
+            tmp.append(d[x][i])
+            if (i+1)%x==0:
+                ans.append(tmp)
+                tmp=[]
+    return ans
+print(groupThePeople(groupSizes = [3,3,3,3,3,1,3]))
+"""
+
+#763. Partition Labels
+"""
+def partitionLabels(S):
+    import collections
+    d=collections.defaultdict(list)
+    n=len(S)
+    for i in range(n):
+        if len(d[S[i]])==2:
+            d[S[i]][-1]=i
+        else:
+            d[S[i]].append(i)
+    base=sorted(d.values(),key=lambda x: x[0])
+    if len(base)==1:
+        return n
+    else:
+        ans=[0]
+        cur_l,cur_r=base[0][0],base[0][-1]
+        print(base)
+        for x in base[1:]:
+            if x[0]<cur_r:
+                cur_r=max(x[-1],cur_r)
+            else:
+                ans.append(x[0]-sum(ans))
+                cur_l,cur_r=x[0],x[-1]
+        ans.append(n-sum(ans))
+        return ans[1:]
+print(partitionLabels(S = "dccccbaabe"))
+print(partitionLabels(S = "ababcbacadefegdehijhklij"))
+"""
+
+#1338. Reduce Array Size to The Half
+"""
+def minSetSize(arr):
+    import collections
+    import math
+    base=collections.Counter(arr)
+    n=len(arr)
+    half=math.ceil(n/2)
+    x=sorted(list(base.values()))[::-1]
+    cur=0
+    ans=0
+    for i in x:
+        cur+=i
+        ans+=1
+        if cur>=half:
+            return ans
+
+print(minSetSize(arr = [1,2,3,4,5,6,7,8,9,10]))
+"""
+
+#1433. Check If a String Can Break Another String
+"""
+def checkIfCanBreak(s1,s2):
+    import collections
+    b1=collections.Counter(s1)
+    b2=collections.Counter(s2)
+    base1=sorted(b1.items())
+    base2=sorted(b2.items())
+    str1,str2="",""
+    for x in base1:
+        str1+=x[0]*x[1]
+    for x in base2:
+        str2+=x[0]*x[1]
+    ans1=[ord(str1[x])>=ord(str2[x]) for x in range(len(str1))]
+    ans2=[ord(str2[x])>=ord(str1[x]) for x in range(len(str1))]
+    return len(set(ans1))==1 or len(set(ans2))==1
+print(checkIfCanBreak("szy","cid"))
+"""
+
+#973. K Closest Points to Origin
+"""
+def kClosest(points, K):
+    ans=[x+[x[0]**2+x[1]**2] for x in points]
+    ans.sort(key=lambda x: x[2])
+    return [x[:-1] for x in ans[:K]]
+print(kClosest(points = [[3,3],[5,-1],[-2,4]], K = 2))
+"""
+
+#1249. Minimum Remove to Make Valid Parentheses
+def minRemoveToMakeValid(s):
+    ans=""
+    cur=0
+    for x in s:
+        if x=="(":
+            cur+=1
+            ans+=x
+        elif x==")":
+            if cur>0:
+                ans+=x
+                cur-=1
+            else:
+                continue
+        else:
+            ans+=x
+    cur=0
+    tmp=""
+    for x in ans[::-1]:
+        if x==")":
+            cur+=1
+            tmp+=x
+        elif x=="(":
+            if cur>0:
+                tmp+=x
+                cur-=1
+            else:
+                continue
+        else:
+            tmp+=x
+    return tmp[::-1]
+print(minRemoveToMakeValid("))(("))
+
+
+        
 
 
 
