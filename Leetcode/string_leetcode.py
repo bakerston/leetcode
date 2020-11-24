@@ -345,3 +345,147 @@ def maskPII(S):
 print(maskPII("1(234)567-890"))
 """
 
+#921. Minimum Add to Make Parentheses Valid
+"""
+def minAddToMakeValid(S):
+    l,r=0,0
+    for x in S:
+        if x ==")":
+            if l==0:
+                r+=1
+            else:
+                l-=1
+        else:
+            l+=1
+    return l+r
+print(minAddToMakeValid(")))())(())"))
+"""
+
+#916. Word Subsets
+"""
+def wordSubsets(A, B):
+    import collections
+    count = collections.Counter()
+    for b in B:
+        count=count | collections.Counter(b)
+    return [a for a in A if collections.Counter(a)&count ==count ]
+
+print(wordSubsets(A = ["amazon","apple","facebook","google","leetcode"], B = ["ec","oc","ceo"]))
+"""
+
+#1078. Occurrences After Bigram
+"""
+def findOcurrences(text,first, second):
+    if len(text.split())<=2:
+        return []
+    else:
+        ans=[]
+        base=text.split()
+        for x in range(len(base)-2):
+            if base[x]==first and base[x+1]==second:
+                ans.append(base[x+2])
+        return ans
+print(findOcurrences(text = "alice is a good girl she is a good student", first = "a", second = "good"))
+"""
+
+#1641. Count Sorted Vowel Strings
+#unsolved
+
+
+#1347. Minimum Number of Steps to Make Two Strings Anagram
+"""
+def minSteps(s, t):
+    import collections
+    s_cnt=collections.Counter(s)
+    t_cnt=collections.Counter(t)
+    ans=0
+    for x in t_cnt.keys():
+        if s_cnt[x]:
+            ans+=min(s_cnt[x],t_cnt[x])
+    return len(s)-ans
+print(minSteps(s = "anagram", t = "mangaar"))
+"""
+
+#890. Find and Replace Pattern
+"""
+def findAndReplacePattern(words, pattern):
+    import collections
+    def getpost(pat):
+        d=collections.defaultdict(list)
+        for x in range(len(pat)):
+            d[pat[x]].append(x)
+        return d
+    return [x for x in words if list(getpost(x).values())==list(getpost(pattern).values())]
+
+
+print(findAndReplacePattern(words = ["abc","deq","mee","aqq","dkd","ccc"], pattern = "abb"))
+"""
+
+#1314. Matrix Block Sum
+"""
+def matrixBlockSum(mat, K):
+
+    m,n=len(mat),len(mat[0])
+    base=[[0]*(n+1) for x in range(m+1)]
+    for i in range(m):
+        for j in range(n):
+            base[i+1][j+1]=base[i+1][j]+base[i][j+1]-base[i][j]+mat[i][j]
+    ans=[[0]*n for x in range(m)]
+    for i in range(m):
+        for j in range(n):
+            left=max(0,j-K)
+            right=min(n,j+1+K)
+            top=max(0,i-K)
+            bot=min(m,i+1+K)
+            ans[i][j]=base[bot][right]-base[top][right]-base[bot][left]+base[top][left]
+    return ans
+
+    m, n = len(mat), len(mat[0])
+    rangeSum = [[0] * (n + 1) for _ in range(m + 1)]
+    for i in range(m):
+        for j in range(n):
+            rangeSum[i + 1][j + 1] = rangeSum[i + 1][j] + rangeSum[i][j + 1] - rangeSum[i][j] + mat[i][j]
+    ans = [[0] * n for _ in range(m)]        
+    for i in range(m):
+        for j in range(n):
+            r1 = max(0, i - K)
+            c1 = max(0, j - K)
+            r2 = min(m, i + K + 1)
+            c2 = min(n, j + K + 1)
+            ans[i][j] = rangeSum[r2][c2] - rangeSum[r1][c2] - rangeSum[r2][c1] + rangeSum[r1][c1]
+    return ans
+
+    
+print(matrixBlockSum(mat = [[1,2,3],[4,5,6],[7,8,9]], K = 1))
+"""
+#1111. Maximum Nesting Depth of Two Valid Parentheses Strings
+"""
+def maxDepthAfterSplit(seq):
+    n=0
+    cur=0
+    for x in seq:
+        if x=="(":
+            cur+=1
+            n=max(cur,n)
+        else:
+            cur-=1
+    sp=n//2
+    ans=[]
+    cur=0
+    for x in seq:
+        if x=="(":
+            if cur>=sp:
+                ans.append(1)
+            else:
+                ans.append(0)
+            cur+=1
+        else:
+            if cur>sp:
+                ans.append(1)
+            else:
+                ans.append(0)
+            cur-=1
+    return ans
+print(maxDepthAfterSplit(seq = "(()())"))
+"""
+
