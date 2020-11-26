@@ -473,5 +473,200 @@ def largestPerimeter(A):
 print(largestPerimeter([3,6,2,3]))
 """
 
+#1573. Number of Ways to Split a String
+"""
+def numWays(s):
+    import collections
+    if sum(map(int,list(s)))==0:
+        return (len(s)-1)*(len(s)-2)//2
+    elif sum(map(int,list(s)))%3!=0:
+        return 0
+    else:
+        n=sum(map(int,list(s)))//3
+        res=0
+        for x in range(len(s)):
+            if s[x]=="1":
+                res+=1
+                if res==n:
+                    a=x
+                if res==n+1:
+                    b=x
+                if res==2*n:
+                    c=x
+                if res==2*n+1:
+                    d=x
+    return (b-a)*(d-c)
+
+print(numWays("0000"))
+"""
+
+#853. Car Fleet
+"""
+def carFleet(target, position, speed):
+    time=[float((target-p)/s) for p,s in sorted(zip(position,speed))]
+    tmp=0
+    ans=0
+    for t in time[::-1]:
+        if t>tmp:
+            ans+=1
+            tmp=t
+    return ans
+print(carFleet(target = 12, position = [10,10], speed = [2,5]))
+"""
+
+
+#972.Equal Rational Number
+"""
+def isRationalEqual(self, S, T):
+    def f(s):
+        i = s.find('(')
+        if i >= 0:
+            s = s[:i] + s[i + 1:-1] * 20
+        return float(s[:20])
+    return f(S) == f(T)
+"""
+
+#818. Race Car
+#Unsolved
+"""
+def racecar(target):
+    import math
+    import bisect
+    base=[2**n-1 for n in range(15)]
+    def getsteps(n):
+        if n in base:
+            return base.index(n)
+        else:
+            k=bisect.bisect_left(base,n)
+            return k+1+min(getsteps(n-base[k-1]),getsteps(base[k]-n))
+    return getsteps(target)
+print(racecar(6))
+"""
+
+#41. First Missing Positive
+"""
+def firstMissingPositive(nums):
+    nums.append(0)
+    n=len(nums)
+    print(n)
+    for i in range(n):
+        if nums[i]>=n or nums[i]<0:
+            nums[i]=0
+    for i in range(n):
+        nums[nums[i]%n]+=n
+    print(nums)
+    for i in range(1,n):
+        if nums[i]//n==0:
+            return i
+    return n
+print(firstMissingPositive([]))
+"""
+#799. Champagne Tower
+"""
+def champagneTower(poured,query_row,query_glass):
+    l=[poured]
+    for i in range(query_row):
+        l_new=[0]*(len(l)+1)
+        for i in range(len(l)):
+            pour=(l[i]-1)/2
+            if pour>0:
+                l_new[i]+=pour
+                l_new[i+1]+=pour
+        l=l_new
+    return min(1,l[query_glass])
+print(champagneTower(poured = 100000009, query_row = 33, query_glass = 17))
+"""
+"""
+def maxLength(arr):
+    s = [""]
+    res = 0
+    for i in arr:
+        if len(set(i)) == len(i):
+            for j in s[:]:
+                if len(i) + len(j) == len(set(i + j)):
+                    s.append(i + j)
+                    if len(i + j) > res:
+                        res = len(i + j)
+    return res
+print(maxLength(['abcde','abc','def']))"""
+
+#1447. Simplified Fractions
+"""
+def simplifiedFractions(n):
+    import math
+    def gcd(p,q):
+        while q!=0:
+            p,q=q,p%q
+        return p
+    def is_co(x,y):
+        return gcd(x,y)==1
+    if n==1:
+        return []
+    else:
+        ans=[]
+        for x in range(2,n+1):
+            for y in range(1,x):
+                if is_co(x,y):
+                    ans.append(str(y)+"/"+str(x))
+        return ans
+print(simplifiedFractions(6))
+"""
+
+#794. Valid Tic-Tac-Toe State
+#unsolved
+
+
+#658. Find K Closest Elements
+"""
+def findClosestElements(arr, k, x):
+    l,r=0,len(arr)-k
+    while l<r:
+        mid=(l+r)//2
+        if x-arr[mid]>arr[mid+k]-x:
+            l=mid+1
+        else:
+            r=mid
+    return arr[l:l+k]
+print(findClosestElements(arr = [1,2,3,4,5], k = 4, x = -1))
+"""
+#424. Longest Repeating Character Replacement
+def characterReplacement(s, k):
+    import collections
+    if s=="":
+        return 0
+    i=0
+    j=k+1
+    start=s[i:j]
+    base=collections.Counter(start)
+    ans=k+1
+    while j<len(s):
+        if j-i-max(base.values())>k:
+            base[s[i]]-=1
+            i+=1
+        else:
+            ans=max(ans,j-i)
+            base[s[j]]+=1
+            j+=1           
+    if j-i-max(base.values())>k:
+        return ans
+    else:
+        return max(ans,j-i)
+print(characterReplacement(s="DFADD",k=4))
 
         
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+        
+
