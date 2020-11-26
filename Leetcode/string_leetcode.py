@@ -489,3 +489,71 @@ def maxDepthAfterSplit(seq):
 print(maxDepthAfterSplit(seq = "(()())"))
 """
 
+#1147. Longest Chunked Palindrome Decomposition
+"""
+def longestDecomposition(text):
+    res=0
+    l=""
+    r=""
+    for x,y in zip(text,text[::-1]):
+        l=l+x
+        r=y+r
+        if l==r:
+            res+=1
+            l=""
+            r=""  
+    return res
+print(longestDecomposition(text = "ghiabcdefhelloadamhelloabcdefghi"))
+"""
+
+#1513. Number of Substrings With Only 1s
+"""def numSub(s):
+    import itertools
+    base=[len(list(g)) for k,g in itertools.groupby(s) if k=="1"]
+    return sum([n*(n+1)//2 for n in base])
+print(numSub("0110111"))
+"""
+
+#1589. Maximum Sum Obtained of Any Permutation
+"""
+def maxSumRangeQuery(nums, requests):
+    n=len(nums)
+    cnt=[0]*(n+1)
+    for i,j in requests:
+      cnt[i]+=1
+      cnt[j+1]-=1
+    for x in range(1,n+1):
+        cnt[x]+=cnt[x-1]
+    print(cnt)
+    return sum([x*y for x,y in zip(sorted(cnt[:-1]),sorted(nums))])%(10**9+7)
+
+
+print(maxSumRangeQuery(nums = [1,2,3,4,5], requests =[[1,3],[0,1]]))
+"""
+
+#1616. Split Two Strings to Make Palindrome
+def checkPalindromeFormation(a,b):
+    def cnmsb(a,b):
+        if a==a[::-1] or b==b[::-1]:
+            return True
+        n=len(a)
+        done=True
+        for x in range(n//2):
+            if a[x]!=b[-x-1]:
+                done=False
+                break
+        if done:
+            return True
+        else:
+            if x==0:
+                return False
+            else:
+                return a[x:-x]==a[x:-x][::-1] or b[x:-x]==b[x:-x][::-1]
+    return cnmsb(a,b) or cnmsb(b,a)
+    
+
+
+
+print(checkPalindromeFormation(a = "adfb", b = "bbma"))
+        
+
