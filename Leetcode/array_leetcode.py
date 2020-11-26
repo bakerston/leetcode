@@ -1488,6 +1488,7 @@ print(kClosest(points = [[3,3],[5,-1],[-2,4]], K = 2))
 """
 
 #1249. Minimum Remove to Make Valid Parentheses
+"""
 def minRemoveToMakeValid(s):
     ans=""
     cur=0
@@ -1519,11 +1520,223 @@ def minRemoveToMakeValid(s):
             tmp+=x
     return tmp[::-1]
 print(minRemoveToMakeValid("))(("))
+"""
+
+#941. Valid Mountain Array
+"""
+def validMountainArray(arr):
+    if len(arr)<3:
+        return False
+    else:
+        d=max(arr)
+        n=arr.index(d)
+        if n==0 or n==len(arr)-1:
+            return False
+        else:
+            for i in range(n):
+                if arr[i]>=arr[i+1]:
+                    return False
+            for i in range(n,len(arr)-1):
+                if arr[i]<=arr[i+1]:
+                    return False
+            return True
+print(validMountainArray(arr = [0,3,2,1]))
+"""
+
+#950. Reveal Cards In Increasing Order
+"""
+def deckRevealedIncreasing(deck):
+    deck.sort(reverse=True)
+    s=[]
+    for x in deck:
+        s=s[-1:]+s[:-1]
+        s=[x]+s
+    return s
+print(deckRevealedIncreasing([17,13,11,2,3,5,7]))
+"""
+
+#963. Minimum Area Rectangle II
+"""
+def minAreaFreeRect(points):
+    s=float('inf')
+    st={(x,y) for x,y in points}
+    n=len(points)
+    for i in range(n):
+        x1,y1=points[i]
+        for j in range(i+1,n):
+            x2,y2=points[j]
+            for k in range(j+1,n):
+                x3,y3=points[k]
+                if not (x3-x1)*(x2-x1)+(y3-y1)*(y2-y1) and (x2+x3-x1,y3+y2-y1) in st:
+                    s=min(s,((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5 * ((x3 - x1) ** 2 + (y3 - y1) ** 2) ** 0.5)
+    return s if s<float('inf') else 0
+print(minAreaFreeRect([[0,1],[2,1],[1,1],[1,0],[2,0]]))
+"""
+
+#997. Find the Town Judge
+"""def findJudge(N, trust):
+    
+    import collections
+    d=collections.defaultdict(list)
+    for x in trust:
+        d[x[0]].append(x[1])
+    p=[]
+    a=[]
+    for x in d.keys():
+        p.extend([x])
+        a.extend(d[x])
+    allpp=collections.Counter(a)
+    if len(set(p))==N-1:
+        if len(set(p+a))==N:
+            key=list(set(p+a)-set(p))[0]
+            return key if allpp[key]==N-1 else -1
+        return -1
+    return -1
+
+print(findJudge( N = 3, trust = [[1,3],[2,3],[3,1]]))
+"""
+
+
+
+#1441. Build an Array With Stack Operations
+"""
+def buildArray(target, n):
+    ans=[]
+    cur=0
+    for x in target:
+        if x-cur>1:
+            ans.extend(["Push","Pop"]*(x-cur-1))
+        ans.extend(["Push"])
+        cur=x
+    return ans
+print(buildArray(target = [2,3,4], n = 4))
+"""
+
+#1422. Maximum Score After Splitting a String
+"""
+def maxScore(s):
+    on=sum(map(int,list(s)))
+    ze=len(s)-on
+    ans=0
+    l=0
+    r=on
+    for x in range(len(s)-1):
+        if s[x]=="1":
+            r-=1
+        else:
+            l+=1
+        ans=max(ans,l+r)
+    return ans
+print(maxScore(s = "1111"))
+"""
+#1446. Consecutive Characters
+"""
+def maxPower(s):
+    import itertools
+    return max([len(list(g)) for k,g in itertools.groupby(s)])
+print(maxPower("leetcode"))
+"""
+
+#1128. Number of Equivalent Domino Pairs
+"""
+def numEquivDominoPairs(dominoes):
+    import collections
+    d=collections.defaultdict(int)
+    for x in dominoes:
+        if x[0]!=x[1]:
+            d[str(min(x))+str(max(x))]+=1
+        else:
+            d[str(x[0])*2]+=1
+    return sum(map(lambda x:x*(x-1)//2,list(d.values())))
+print(numEquivDominoPairs(dominoes = [[1,2],[2,1],[3,4],[5,6]]))
+"""
+
+#1503. Last Moment Before All Ants Fall Out of a Plank
+"""
+def getLastMoment(n, left, right):
+    if not left:
+        return n-min(right)
+    if not right:
+        return max(left)
+    return max(max(left),n-min(right))
+print(getLastMoment(n = 9, left = [5], right = [4]))
+"""
+
+#825. Friends Of Appropriate Ages
+#unsolved
+
+#1360. Number of Days Between Two Dates
+"""
+def daysBetweenDates(date1,date2):
+    d1={"01":31,"02":28,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31}
+    d2={"01":31,"02":29,"03":31,"04":30,"05":31,"06":30,"07":31,"08":31,"09":30,"10":31,"11":30,"12":31}
+    a=date1.split("-")
+    b=date2.split("-")
+    a_i=int("".join(a))
+    b_i=int("".join(b))
+    new=max(a_i,b_i)
+    old=min(a_i,b_i)
+    if new==old:
+        return 0
+    else:
+
+
+    return 
+print(daysBetweenDates(date1 = "2019-06-29", date2 = "2019-06-30"))
+"""
+
+#767. Reorganize String
+"""
+def reorganizeString(S):
+    import collections
+    import math
+    n=len(S)
+    base=collections.Counter(S).most_common()
+    if not collections.Counter(S).most_common()[0][1]<=math.ceil(len(S)/2):
+        return ""
+    else:
+        tmp=""
+        for x in base:
+            tmp+=x[0]*x[1]
+        if n%2:
+            ans=""
+            for x in range(n//2):
+                ans+=tmp[x]+tmp[x+n//2+1]
+            ans+=tmp[n//2]
+            return ans
+        else:
+            ans=""
+            for x in range(n//2):
+                ans+=tmp[x]+tmp[x+n//2]
+            return ans
+print(reorganizeString("vvvlo"))
+"""
+
+#769. Max Chunks To Make Sorted
+"""
+def maxChunksToSorted(arr):
+    l=float('inf')
+    h=float('-inf')
+    cur_bound=0
+    cur_len=0
+    ans=0
+    for x in range(len(arr)):
+
+        l=min(l,arr[x])
+        h=max(h,arr[x])
+        cur_len+=1
+        print("l=",l,"h=",h,"cur_len=",cur_len)
+        if l==cur_bound and cur_len==h-l+1:
+            ans+=1
+            l=float('inf')
+            h=float('-inf')
+            cur_bound+=cur_len
+            cur_len=0
+            print("---if","l=",l,"h=",h,"cur_len=",cur_len)
+    return ans
+print(maxChunksToSorted(arr = [1,0,2,3,4]))
+"""
 
 
         
-
-
-
-
 
