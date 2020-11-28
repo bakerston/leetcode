@@ -1737,6 +1737,114 @@ def maxChunksToSorted(arr):
 print(maxChunksToSorted(arr = [1,0,2,3,4]))
 """
 
+#1460. Make Two Arrays Equal by Reversing Sub-arrays
+"""
+def canBeEqual(target, arr):
+    import collections
+    return collections.Counter(target)==collections.Counter(arr)
+print(canBeEqual(target = [1,2,3,3,4], arr = [2,3,4,1,3]))
+"""
 
-        
+#528. Random Pick with Weight
+"""
+import random
+import bisect
+class Solution:
+    def __init__(self, w):
+        self.w=w
+        self.weight=[x/sum(w) for x in w]
+        self.ans=[]
+        tmp=0
+        for x in self.weight:
+            tmp+=x
+            self.ans.append(tmp)
 
+    def pickIndex(self) -> int:
+        a=random.randint(0,1)
+        mark=bisect.bisect_left(self.ans,a)
+        return self.weight[mark]
+
+a=Solution([1,3,5])
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+print(a.pickIndex())
+"""
+
+#842. Split Array into Fibonacci Sequence
+"""
+def splitIntoFibonacci(S):
+    def isfib(str1,str2,base,ans):
+        sumstr=str(int(str1)+int(str2))
+        n=len(sumstr)
+        if n>len(base):
+            return []
+        elif n==len(base):
+            if int(sumstr)==int(base):
+                ans.append(str1)
+                ans.append(str2)
+                ans.append(base)
+                return ans
+            else:
+                return []
+        else:
+            if int(sumstr)!=int(base[:n]):
+                return []
+            else:
+                ans.append(str1)
+                return isfib(str2,sumstr,base[n:],ans)
+    s=0
+    for x in range(len(S)):
+        if S[x]=='0':
+            s+=1
+        else:
+            break
+    if s==len(S):
+        return list(S)
+    elif s>0:
+        str1=0
+        base=S[s:]
+        ans=[0]*(s-1)
+        for x in range((len(S)-s)//2):       
+            str2=base[:x+1]
+            print(str2,ans)
+            if isfib(str1,str2,base[x+1:],ans)==True:
+                return ans
+    else:
+        base=S
+        ans=[]
+        for x in range(len(S)//3):
+            str1=base[:x+1]
+            for y in range(len(S)//3):
+                str2=base[x+1:x+1+y+1]
+                if isfib(str1,str2,base[x+y+2:],ans)==True:
+                    return ans
+    return []
+print(splitIntoFibonacci("112"))
+"""
+
+#954. Array of Doubled Pairs
+def canReorderDoubled(A):
+    A.sort(key=lambda x:abs(x))
+    pos=[]
+    neg=[]
+    for x in A:
+        if x>=0:
+            if not pos or x!=2*pos[0]:
+                pos.append(x)
+            else:
+                pos.pop(0)
+        else:
+            if not neg or x!=2*neg[0]:
+                neg.append(x)
+            else:
+                neg.pop(0)
+    return not pos and not neg
+print(canReorderDoubled(A = [1,2,4,16,8,4]))
