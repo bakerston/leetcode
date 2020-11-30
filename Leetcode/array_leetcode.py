@@ -1831,6 +1831,7 @@ print(splitIntoFibonacci("112"))
 """
 
 #954. Array of Doubled Pairs
+"""
 def canReorderDoubled(A):
     A.sort(key=lambda x:abs(x))
     pos=[]
@@ -1848,3 +1849,8 @@ def canReorderDoubled(A):
                 neg.pop(0)
     return not pos and not neg
 print(canReorderDoubled(A = [1,2,4,16,8,4]))
+"""
+
+#948. Bag of Tokens
+def bagOfTokensScore(tokens, P):
+    
