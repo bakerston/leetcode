@@ -532,6 +532,7 @@ print(maxSumRangeQuery(nums = [1,2,3,4,5], requests =[[1,3],[0,1]]))
 """
 
 #1616. Split Two Strings to Make Palindrome
+"""
 def checkPalindromeFormation(a,b):
     def cnmsb(a,b):
         if a==a[::-1] or b==b[::-1]:
@@ -551,9 +552,31 @@ def checkPalindromeFormation(a,b):
                 return a[x:-x]==a[x:-x][::-1] or b[x:-x]==b[x:-x][::-1]
     return cnmsb(a,b) or cnmsb(b,a)
     
-
-
-
 print(checkPalindromeFormation(a = "adfb", b = "bbma"))
-        
+"""       
+#1233. Remove Sub-Folders from the Filesystem
+"""
+def removeSubfolders(folder):
+    folder.sort()
+    res=list()
+    res.append(folder[0])
+    for x in folder[1:]:
+        if x.find(res[-1]+"/")==-1:
+            res.append(x)
+    return res
+print(removeSubfolders(folder = ["/a/b/c","/a/b/c/ds","/a/b/ca","/a/b/d"]))
 
+"""
+
+#1234. Replace the Substring for Balanced String
+def balancedString(s):
+    import collections
+    base=collections.Counter(s)
+    more=set([x for x in base.keys() if base[x]>len(s)//4])
+    k=sum([base[x] for x in more])-len(more)*len(s)//4
+    i,j=0,0
+    ans=0
+ 
+
+    return k
+print(balancedString("QQEWREWRQQQQ"))
