@@ -1852,5 +1852,100 @@ print(canReorderDoubled(A = [1,2,4,16,8,4]))
 """
 
 #948. Bag of Tokens
+"""
 def bagOfTokensScore(tokens, P):
-    
+"""
+
+#1356. Sort Integers by The Number of 1 Bits
+"""
+def sortByBits(arr):
+    base=[[sum(map(int,bin(x)[2:])),x] for x in arr]
+    return [x[1] for x in sorted(base,key=lambda x: [x[0],x[1]])]
+print(sortByBits(arr = [1024,512,256,128,64,32,16,8,4,2,1]))
+"""
+
+#1073. Adding Two Negabinary Numbers
+"""
+def addNegabinary(arr1, arr2):  
+    dec1=int("".join(map(str,arr1)),2)
+    b1=""
+    for x in range(len(arr1)-2,-1,-2):
+        b1=str(arr1[x])+b1
+    b1=b1+"0"
+    qua1=int(b1,4)
+    dec2=int("".join(map(str,arr2)),2)
+    b2=""
+    for x in range(len(arr2)-2,-1,-2):
+        b2=str(arr2[x])+b2
+    b2=b2+"0"
+    qua2=int(b2,4)
+    base1=dec1-qua1
+    base2=dec2-qua2
+    ans=base1+base2
+    def conv2(n):
+        if n == 0:
+            return [0]
+        out = []
+        while n != 0:
+            n, rem = divmod(n, -2)
+            if rem < 0:
+                n += 1
+                rem -= -2
+            out.append(rem)
+        return out[::-1]
+
+    return  conv2(ans)
+
+print(addNegabinary(arr1 = [1,1,1,1,1], arr2 = [1,0,1]))
+"""
+
+#1276. Number of Burgers with No Waste of Ingredients
+"""
+def numOfBurgers(tomatoSlices, cheeseSlices):
+    if cheeseSlices==0:
+        return [0,0] if tomatoSlices==0 else []
+    elif tomatoSlices/cheeseSlices<2 or tomatoSlices/cheeseSlices>4 or tomatoSlices%2==1:
+        return []
+    else:
+        ans=(tomatoSlices-2*cheeseSlices)//2
+        return [ans,cheeseSlices-ans]
+print(numOfBurgers(16,7))
+"""
+#1324. Print Words Vertically
+"""
+import itertools
+def printVertically(s):
+    return a=[''.join(a).rstrip() for a in itertools.zip_longest(*s.split(),fillvalue=" ")]
+"""
+
+#1328. Break a Palindrome
+def breakPalindrome(palindrome):
+    if len(palindrome)==1:
+        return ""
+    elif len(set(palindrome))==1:
+        if palindrome[0]=="a":
+            return palindrome[:-1]+"b"
+        else:
+            return "a"+palindrome[1:]
+    else:
+        if len(palindrome)%2==0:
+            i=0
+            base=list(palindrome)
+            while i<len(palindrome):
+                if base[i]!="a":
+                    base[i]="a"
+                    return "".join(base)
+                i+=1
+        else:
+            i=0
+            base=list(palindrome)
+            while i<len(palindrome):
+                if base[i]!="a":
+                    print("istime")
+                    if i==len(palindrome)//2:
+                        return palindrome[:-1]+"b"
+                    else:
+                        base[i]="a"
+                        return "".join(base)
+                i+=1
+print(breakPalindrome(palindrome = "aabaa"))
