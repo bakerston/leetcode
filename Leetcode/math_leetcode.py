@@ -694,6 +694,7 @@ def minKnightMoves(o, p):
 
 
 #1090. Largest Values From Labels
+"""
 def largestValsFromLabels(values, labels, num_wanted, use_limit):
     ans=0
     import collections
@@ -720,7 +721,38 @@ print(largestValsFromLabels(
 [1,0,2,2,1],
 2,
 1))
-            
+"""
+#1134. Armstrong Number
+"""
+import functools
+def isArmstrong(N):
+    n=len(str(N))
+    l=list(str(N))
+    ans=[int(x)**n for x in l]
+    return sum(ans)==N
+print(isArmstrong(153))
+"""
+
+#159. Longest Substring with At Most Two Distinct Characters
+def lengthOfLongestSubstringTwoDistinct(s):
+    import collections
+    if len(s)<=2:
+        return len(s)
+    n=len(s)
+    ans=2
+    cut=-1
+    d=collections.defaultdict(list)
+    for x in range(n):
+        print(d)
+        if s[x] not in d.keys() and len(d.keys())==2:
+            cut=min(d.values())
+            ans=max(ans,x-cut)
+            del d[s[cut]]
+        ans=max(ans,x-cut)
+        d[s[x]]=x
+    return ans
+
+print(lengthOfLongestSubstringTwoDistinct("ccaabbb"))
 
 
 
