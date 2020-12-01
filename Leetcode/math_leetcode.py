@@ -630,6 +630,7 @@ def findClosestElements(arr, k, x):
 print(findClosestElements(arr = [1,2,3,4,5], k = 4, x = -1))
 """
 #424. Longest Repeating Character Replacement
+"""
 def characterReplacement(s, k):
     import collections
     if s=="":
@@ -652,11 +653,73 @@ def characterReplacement(s, k):
     else:
         return max(ans,j-i)
 print(characterReplacement(s="DFADD",k=4))
+"""
 
         
 
+#1344. Angle Between Hands of a Clock
+"""
+def angleClock(hour, minutes):
+    m=6*(minutes%60)
+    h=30*(hour%12)+0.5*(minutes%60)
+    return min( max(h,m)-min(m,h), min(m,h)+360-max(m,h)     )
+print(angleClock(4,50))
+"""
+
+#1366. Rank Teams by Votes
+"""
+def rankTeams(votes):
+    import collections
+    import itertools
+    p=list(votes[0])
+    base=[''.join(a) for a in zip(*votes)]
+
+    cnt=[collections.Counter(list(x)) for x in base]
+
+    p.sort(key=lambda x: [-a[x] for a in cnt]+[x])
+    print(cnt)
+
+    return "".join(p)
+
+print(rankTeams(votes = ["BCA","CAB","CBA","ABC","ACB","BAC"]))
+"""
+
+#1197. Minimum Knight Moves
+#unsolved
+"""
+def minKnightMoves(o, p):
+    x,y=max(abs(o),abs(p)),min(abs(o),abs(p))
+    base={()}
+"""
 
 
+#1090. Largest Values From Labels
+def largestValsFromLabels(values, labels, num_wanted, use_limit):
+    ans=0
+    import collections
+    d=collections.defaultdict(int)
+    base=[[x,y] for x,y in zip(values,labels)]
+    print(base)
+    base.sort(key=lambda x : [-x[0],x[1]])
+    print(base)
+    
+    n=len(base)
+    l=0
+    for x in range(n):
+        if d[base[x][1]]<use_limit:
+            ans+=base[x][0]
+            d[base[x][1]]+=1
+            l+=1
+            if l==num_wanted:
+                return ans
+        else:
+            continue
+    return ans
+print(largestValsFromLabels(
+[3,2,3,2,1],
+[1,0,2,2,1],
+2,
+1))
             
 
 
