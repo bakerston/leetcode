@@ -569,14 +569,72 @@ print(removeSubfolders(folder = ["/a/b/c","/a/b/c/ds","/a/b/ca","/a/b/d"]))
 """
 
 #1234. Replace the Substring for Balanced String
+"""
 def balancedString(s):
     import collections
     base=collections.Counter(s)
     more=set([x for x in base.keys() if base[x]>len(s)//4])
     k=sum([base[x] for x in more])-len(more)*len(s)//4
     i,j=0,0
-    ans=0
+    alen=0
+    ans=len(s)
+    while j<=len(s):
+        if alen<k:
+            alen+= s[j] in more
+            ans+=1
+        elif alen==k:
+
+
  
 
     return k
 print(balancedString("QQEWREWRQQQQ"))
+"""
+
+#249. Group Shifted Strings
+"""
+def groupStrings(strings):
+    import collections
+    d=collections.defaultdict(list)
+    ans=[]
+    ones=[]
+    for x in strings:
+        if len(x)==1:
+            ones.append(x)
+        else:
+            tmp=[(ord(x)-ord(y))%26 for x,y in zip(x[:-1],x[1:])]
+            ans.append([x,tuple(tmp)])
+    for x in ans:
+        d[x[1]].append(x[0])
+    return list(d.values())+[ones]
+print(groupStrings(["abc", "bcd", "acef", "xyz", "az", "ba", "a", "z"]))
+"""
+
+#161. One Edit Distance
+"""
+    if len(s)==len(t):
+        for i in range(len(t)):
+            if s[i]!=t[i]:
+                return s[i+1]==t[i+1]
+        return False
+    else:
+        if len(s)<len(t):
+            s,t=t,s
+        for i in range(len(t)):
+            if s[i]!=t[i]:
+                return t[i:]==s[i+1:]
+        return True
+print(isOneEditDistance(s = "", t = "A"))
+"""
+
+#370. Range Addition
+def getModifiedArray(length, updates):
+    ans=[0]*(length+1)
+    for i,j,n in updates:
+        ans[i]+=n
+        ans[j+1]-=n
+    for i in range(1,len(ans)):
+        ans[i]+=ans[i-1]
+    return ans[:-1]
+
+print(getModifiedArray(length = 5, updates = [[1,3,2],[2,4,3],[0,2,-2]]))
