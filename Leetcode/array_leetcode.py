@@ -1919,6 +1919,7 @@ def printVertically(s):
 """
 
 #1328. Break a Palindrome
+"""
 def breakPalindrome(palindrome):
     if len(palindrome)==1:
         return ""
@@ -1949,3 +1950,23 @@ def breakPalindrome(palindrome):
                         return "".join(base)
                 i+=1
 print(breakPalindrome(palindrome = "aabaa"))
+"""
+
+#245. Shortest Word Distance III
+def shortestWordDistance(words, word1, word2):
+    base=[[w,i] for i,w in enumerate(words)]
+    if word1==word2:
+        tmp=[w[1] for w in base if w[0]==word1]
+        return min(map(lambda x,y:x-y,tmp[1:],tmp[:-1]))
+    else:
+        tmp=[w for w in base if w[0]==word1 or w[0]==word2]
+        ans=len(words)
+        p=tmp[0]
+        for i in range(1,len(tmp)):
+            if tmp[i][0]!=p[0]:
+                print(tmp[i],p)
+                ans=min(ans,tmp[i][1]-p[1])
+            p=tmp[i]
+
+        return ans
+print(shortestWordDistance(["a","a","c","b"],"a","b"))
