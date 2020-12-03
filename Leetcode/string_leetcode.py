@@ -628,6 +628,7 @@ print(isOneEditDistance(s = "", t = "A"))
 """
 
 #370. Range Addition
+"""
 def getModifiedArray(length, updates):
     ans=[0]*(length+1)
     for i,j,n in updates:
@@ -638,3 +639,103 @@ def getModifiedArray(length, updates):
     return ans[:-1]
 
 print(getModifiedArray(length = 5, updates = [[1,3,2],[2,4,3],[0,2,-2]]))
+"""
+
+#6. ZigZag Conversion
+"""
+def convert(s, numRows):
+    if numRows==1 or numRows>=len(s):
+        return s
+    
+    L=['']*numRows
+    index,step=0,1
+
+    for x in s:
+        L[index]+=x
+        if index==0:
+            step=1
+        elif index==numRows-1:
+            step=-1
+        index+=step
+    return ''.join(L)
+"""
+
+#340. Longest Substring with At Most K Distinct Characters
+"""
+def lengthOfLongestSubstringKDistinct(s, k):
+    import collections
+    if len(s)==1 or len(collections.Counter(s).keys())<=k:
+        return len(s)
+    else:
+        i,j=0,0
+        ans=0
+        end=collections.defaultdict(int)
+        while j<len(s):
+            if len(end.keys())<=k:
+                ans=max(ans,j-i)
+                end[s[j]]=j
+                j+=1
+            else:
+                tmp=sorted(list(end.items()),key=lambda x:x[1])[0]
+                i=tmp[1]+1
+                del end[tmp[0]]
+        print(end)
+        if s[-1] in end.keys() and len(end.keys())<=k:
+            ans=max(ans,j-i)
+        return ans
+print(lengthOfLongestSubstringKDistinct(s = "ab", k = 1))
+"""
+
+#878. Nth Magical Number
+"""
+def nthMagicalNumber(N, A, B):
+    def lcm(x, y):
+        if x > y:
+            greater = x
+        else:
+            greater = y
+        while(True):
+            if((greater % x == 0) and (greater % y == 0)):
+                lcm = greater
+                break
+            greater += 1
+        return lcm
+    if A==B:
+        return (N-1)*A
+    else:
+        if A<B:
+            A,B=B,A
+        if A%B==0:
+            return N*A
+        else:
+            k=lcm(A,B)
+            base=[A*x for x in range(1,k//A)]+[B*y for y in range(1,k//B)]+[0]
+            base.sort()
+            cnt=k//A+k//B-2
+
+            sec=N//(cnt+1)
+            res=N%(cnt+1)
+            print(sec,k,cnt,res)
+            return k*sec+base[res]
+print(nthMagicalNumber(N = 4, A = 2, B = 3
+))
+"""
+#757. Set Intersection Size At Least Two
+def intersectionSizeTwo(a):   
+    if len(a)==1:
+        return 2
+    a.sort(key=lambda x:x[1])
+    ans=[a[0][-2],a[0][-1]]
+    for x in range(1,len(a)):
+        if a[x][0]<=ans[-2]:
+            continue
+        elif a[x][0]<=ans[-1]:
+            ans.append(a[x][-1])
+        else:
+            ans.extend([a[x][-2],a[x][-1]])
+    print(ans)
+    return len(ans)
+print(intersectionSizeTwo(a = [[1, 2], [2, 3], [2, 4], [4, 5]])) 
+    
+            
+
