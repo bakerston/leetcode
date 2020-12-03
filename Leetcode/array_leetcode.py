@@ -1953,6 +1953,7 @@ print(breakPalindrome(palindrome = "aabaa"))
 """
 
 #245. Shortest Word Distance III
+"""
 def shortestWordDistance(words, word1, word2):
     base=[[w,i] for i,w in enumerate(words)]
     if word1==word2:
@@ -1970,3 +1971,80 @@ def shortestWordDistance(words, word1, word2):
 
         return ans
 print(shortestWordDistance(["a","a","c","b"],"a","b"))
+"""
+
+#253. Meeting Rooms II
+"""
+def minMeetingRooms(intervals):
+    r=max([x[1] for x in intervals])
+    ans=[0]*(r+2)
+    for x in intervals:
+        ans[x[0]]+=1
+        ans[x[1]+1]-=1
+    for x in range(1,len(ans)):
+        ans[x]+=ans[x-1]
+    return max(ans)
+
+print(minMeetingRooms([[7,10],[2,4]]))
+"""
+
+#32. Longest Valid Parentheses
+"""
+def longestValidParentheses(s):
+    stack=[]
+    ans=0
+    tmp=0
+    for x in s:
+        if x==")":
+            if stack:
+                tmp=stack.pop()[1]+tmp+2
+                ans=max(ans,tmp)
+            else:
+                tmp=0
+        else:
+            stack.append([x,tmp])
+            if tmp:
+                tmp=0
+        print(stack)
+    return ans
+print(longestValidParentheses(s = "((())))()())"))
+"""
+
+#42. Trapping Rain Water
+"""
+def trap(height):
+    if len(height)<=2:
+        return 0
+    l,r=[],[]
+    lmax=height[0]
+    for x in height[1:]:        
+        l.append(lmax)
+        lmax=max(lmax,x)
+    rmax=height[-1]
+    for y in height[:-1][::-1]:
+        r.append(rmax)
+        rmax=max(rmax,y)
+    ans=0
+    print(l,r)
+    for x in range(1,len(height)-1):
+        ans+=max(0,min(r[::-1][x],l[x-1])-height[x])
+    return ans
+print(trap(height = [0,1,0,2,1,0,1,3,2,1,2,1]))
+
+"""
+#360. Sort Transformed Array
+"""
+def sortTransformedArray(nums, a, b, c):
+    import bisect
+    y=float(-a/(2*b))
+    k=bisect.bisect_left(nums,y)
+"""
+
+#692. Top K Frequent Words
+"""
+def topKFrequent(words, k):
+    import collections
+    d=collections.Counter(words)
+    return [x[0] for x in sorted(d.items(), key=lambda x:[-x[1],x[0]])[:k]]
+print(topKFrequent(["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], k = 4))
+"""
