@@ -721,6 +721,7 @@ print(nthMagicalNumber(N = 4, A = 2, B = 3
 ))
 """
 #757. Set Intersection Size At Least Two
+"""
 def intersectionSizeTwo(a):   
     if len(a)==1:
         return 2
@@ -733,9 +734,9 @@ def intersectionSizeTwo(a):
             ans.append(a[x][-1])
         else:
             ans.extend([a[x][-2],a[x][-1]])
-    print(ans)
     return len(ans)
 print(intersectionSizeTwo(a = [[1, 2], [2, 3], [2, 4], [4, 5]])) 
-    
+"""
+
             
 
