@@ -2048,3 +2048,16 @@ def topKFrequent(words, k):
     return [x[0] for x in sorted(d.items(), key=lambda x:[-x[1],x[0]])[:k]]
 print(topKFrequent(["the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is"], k = 4))
 """
+
+#493. Reverse Pairs
+#unsolved
+
+#1180. Count Substrings with Only One Distinct Letter
+"""
+def countLetters(S):
+    import itertools
+    base=[len(list(x)) for k,x in itertools.groupby(S)]
+    ans=[(x*(x+1))//2 for x in base]
+    return sum(ans)
+print(countLetters("aaaba"))
+"""
