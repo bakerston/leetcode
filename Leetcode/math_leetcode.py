@@ -734,6 +734,7 @@ print(isArmstrong(153))
 """
 
 #159. Longest Substring with At Most Two Distinct Characters
+"""
 def lengthOfLongestSubstringTwoDistinct(s):
     import collections
     if len(s)<=2:
@@ -753,15 +754,225 @@ def lengthOfLongestSubstringTwoDistinct(s):
     return ans
 
 print(lengthOfLongestSubstringTwoDistinct("ccaabbb"))
+"""
+
+#829. Consecutive Numbers Sum
+"""
+def consecutiveNumbersSum(N):
+    m=1
+    n=0
+    k=N/m
+    ans=0
+    while k>=1:
+        if k==int(k):
+            ans+=1
+        n+=m
+        m+=1
+        k=float((N-n)/m)
+    return ans
+print(consecutiveNumbersSum(15))
+"""
+
+#1499. Max Value of Equation
+"""
+def findMaxValueOfEquation(points, k):
+    import heapq as hp
+    q=[]
+    ans=float('-inf')
+    for x,y in points:
+        while q and q[-1][0]<x-k:
+            hp.heappop(q)
+        if q:
+            ans=max(ans,-q[0][0]+y+x)
+        hp.heappush(q,(x-y,x))
+    return ans
+"""
+
+#1262. Greatest Sum Divisible by Three
+"""
+def maxSumDivThree(nums):
+    o1, o2 = float('inf'), float('inf')
+    e1, e2 = float('inf'), float('inf')
+    for x in nums:
+        if x%3==1:
+            if x <= o1:
+                o1, o2 = x, o1
+            elif x < o2:
+                o2 = x
+        elif x%3==2:
+            if x <= e1:
+                e1, e2 = x, e1
+            elif x < e2:
+                e2 = x
+        else:
+            continue
+    ans=sum(nums)
+    if ans%3==0:
+        return ans
+    elif ans%3==1:
+        return ans-min(e1+e2,o1)
+    else:
+        return ans-min(o1+o2,e1) 
+
+print(maxSumDivThree( nums = [2,3,36,8,32,38,3,30,13,40]))
+"""
 
 
+#1023. Camelcase Matching
+"""
+return [re.match("^[a-z]*" + "[a-z]*".join(p) + "[a-z]*$", q) != None for q in qs]
+def camelMatch(queries, pattern):
+    ans=[]
+    for w in queries:
+        tmp=""
+        for c in w:
+            if ord(c)<=90:
+                tmp+=c
+        ans.append(tmp==pattern)
+    return ans
+print(camelMatch(queries = ["FooBar","FooBarTest","FootBall","FrameBuffer","ForceFeedBack"], pattern = "FB"))
+"""
 
 
+#356. Line Reflection
+"""
+def isReflected(points):
+    import collections
+    d=collections.defaultdict(list)
+    for x,y in points:
+        d[y].append(x)
+    ans=set()
+    def gety(a):
+        nonlocal ans
+        if len(a)==1:
+            ans.add(a[0])
+        else:
+            ans|=set(map(lambda x:(x[0]+x[1])/2,zip(a,a[::-1])))
+    for x in d.keys():
+        gety(d[x])
+    return len(ans)==1
+
+print(isReflected([[1,2],[2,2],[3,2],[4,2]]))
+"""
+
+#1230. Toss Strange Coins
+#unsolved
+
+#1272. Remove Interval
+"""
+def removeInterval(intervals, toBeRemoved):
+    ans=[]
+    for x in intervals:
+        if x[1]<=toBeRemoved[0] or x[0]>=toBeRemoved[1]:
+            ans.append(x)
+        elif x[0]<=toBeRemoved[0] and x[1]>=toBeRemoved[1]:
+            ans.append([x[0],toBeRemoved[0]])
+            ans.append([x[1],toBeRemoved[1]])
+        elif x[0]>=toBeRemoved[0] and x[1]<=toBeRemoved[1]:
+            continue
+        elif x[0]<=toBeRemoved[0] and x[1]>=toBeRemoved[0]:
+            ans.append([x[0],toBeRemoved[0]])
+        else:
+            ans.append([toBeRemoved[1],x[1]])
+    return ans
+print(removeInterval(intervals = [[-5,-4],[-3,-2],[1,2],[3,5],[8,9]], toBeRemoved = [-1,4]))
+"""
+
+#805. Split Array With Same Average
+#unsolved
 
 
+#84. Largest Rectangle in Histogram
+"""
+def largestRectangleArea(heights):
+    n=len(heights)
+    if n==1:
+        return sum(heights)   
+    l=[1]*n
+    r=[1]*n
+    for i in range(1,n):
+        j=i-1
+        while j and heights[j]<=heights[i]:
+            j-=l[j]
+        l[i]=i-j
+    for i in range(n-2,-1,-1):
+        j=i+1
+        while j<n and heights[i]<=heights[j]:
+            j+=r[j]
+        r[i]=j-i
 
+    return max(x[0]*(x[1]+x[2]-1) for x in zip(heights,l,r))
+print(largestRectangleArea([2,1,5,6,2,3]))
+"""
 
+#76. Minimum Window Substring
+"""
+def minWindow(s, t):
+    import collections
+    d=collections.Counter(t)
+    base=collections.Counter(s)
+    for x in d.keys():
+        if base[x]<d[x]:
+            return ""
+    k=d.keys()
+    i,j=0,0
+    n=len(s)
+    r=[0,0]
+    ans=n
+    key=[]
+    res=[n-1,0
+    ]
+    while j<n:
+        if s[j] in k:
+            d[s[j]]-=1
+            key.append([s[j],j])
+            print(key)
+            if max(d.values())<=0:
+                print("istime")
+                while d[key[0][0]]<0:
+                    tmp=key.pop(0)
+                    d[tmp[0]]+=1
+                    i=tmp[1]+1
+                if key[-1][1]-key[0][1]+1<ans:
+                    ans=key[-1][1]-key[0][1]+1
+                    res=[key[-1][1],key[0][1]]
+        j+=1
+        print(res)
+    return s[res[1]:res[0]+1]
+print(minWindow(s = "aa", t = "aa")) 
+"""
 
-
-        
-
+#1177. Can Make Palindrome from Substring
+"""
+def canMakePaliQueries(s, queries):
+    ans=[]
+    for x in queries:
+        tmp=s[x[0]:x[1]+1]
+        n=len(tmp)
+        dif=0
+        for i in range(n//2):
+            if tmp[i]!=tmp[::-1][i]:
+                dif+=1
+        if dif<=x[2]:
+            ans.append('true')
+        else:
+            ans.append('false')
+    return ans
+print(canMakePaliQueries(s = "abcda", queries = [[3,3,0],[1,2,0],[0,3,1],[0,3,2],[0,4,1]]))
+"""
+#1209. Remove All Adjacent Duplicates in String II
+def removeDuplicates(s, k):
+    st=[]
+    ans=""
+    for i in s:
+        if not st or st[-1][0]!=i:
+            st.append([i,1])
+        else:
+            if st[-1][1]==k-1:
+                st.pop()
+            else:
+                st[-1][1]+=1
+    for x in st:
+        ans+=x[0]*x[1]
+    return ans
+print(removeDuplicates(s = "deeedbbcccbdaa", k = 3))
