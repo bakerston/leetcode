@@ -2061,3 +2061,94 @@ def countLetters(S):
     return sum(ans)
 print(countLetters("aaaba"))
 """
+
+#18. 4Sum
+"""
+def fourSum(nums, target):
+    nums.sort()
+    N, result = len(nums), []
+    for i in range(N):
+        if i > 0 and nums[i] == nums[i-1]:
+            continue
+        for j in range(i+1, N):
+            if j > i+1 and nums[j] == nums[j-1]:
+                continue
+            x = target - nums[i] - nums[j]
+            s,e = j+1, N-1
+            while s < e:
+                if nums[s]+nums[e] == x:
+                    result.append([nums[i], nums[j], nums[s], nums[e]])
+                    s = s+1
+                    while s < e and nums[s] == nums[s-1]:
+                        s = s+1
+                elif nums[s]+nums[e] < x:
+                    s = s+1
+                else:
+                    e = e-1
+    return result
+"""
+#986. Interval List Intersections
+"""
+def intervalIntersection(A, B):
+    def getsec(a,b):
+        if a[1]<b[0] or a[0]>b[1]:
+            return None
+        return [max(a[0],b[0]),min(a[1],b[1])]
+    ans=[]
+    i=0
+    j=0
+    while i<len(A) and j<len(B):
+        if getsec(A[i],B[j]):
+            ans.append(getsec(A[i],B[j]))
+        if A[i][1]<B[j][1]:
+            i+=1
+        elif A[i][1]>B[j][1]:
+            j+=1
+        else:
+            i+=1
+            j+=1
+    return ans
+print(intervalIntersection(A = [[0,2],[5,10],[13,23],[24,25]], B = [[1,5],[8,12],[15,24],[25,26]]))
+"""
+
+#1055. Shortest Way to Form String
+
+#560. Subarray Sum Equals K
+
+#1054. Distant Barcodes
+"""
+def rearrangeBarcodes(barcodes):
+    import collections
+    n=len(barcodes)
+    d=collections.Counter(barcodes)
+    ans=list(d.items())
+    ans.sort(key=lambda x:x[1],reverse=True)
+    res=[]
+    for x in ans:
+        res.extend([x[0]]*x[1])
+    tmp=[]
+    if n%2==0:
+        for x in zip(res[:n//2],res[n//2:]):
+            tmp.extend(x)
+    else:
+        for x in zip(res[:n//2],res[n//2+1:]):
+            tmp.extend(x)
+        tmp.append(res[n//2])
+    return tmp
+print(rearrangeBarcodes([1,1,2,2,2,3,3]))
+"""
+
+#1151. Minimum Swaps to Group All 1's Together
+def minSwaps(data):
+    n=len(data)
+    k=sum(data)
+    j=k
+    cur=sum(data[:k])
+    ans=k-cur
+    print(n,k,j,cur,ans)
+    for j in range(k,n):
+        cur=cur+data[j]-data[j-k]
+        ans=min(ans,k-cur)
+    return ans
+print(minSwaps(data = [1,0,1,0,1,0,0,1,1,0,1]))
+        
