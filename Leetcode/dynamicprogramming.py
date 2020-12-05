@@ -166,6 +166,7 @@ print(minDistance(word1 = "horse", word2 = "ros"))
 """
 
 #871. Minimum Number of Refueling Stops
+"""
 def minRefuelStops(target, startFuel, stations):
     dp=[startFuel]+[0]*len(stations)
     for i in range(len(stations)):
@@ -178,3 +179,16 @@ def minRefuelStops(target, startFuel, stations):
     return -1
 
 print(minRefuelStops(target = 100, startFuel = 1, stations = [[10,100]]))
+"""
+
+#1048. Longest String Chain
+"""
+def longestStrChain(words):
+    words.sort(key=len)
+    d={}
+    for x in words:
+        tmp=[x[:i]+x[i+1:] for i in range(len(x))]
+        d[x]=max([d.get(w,0) for w in tmp])+1
+    return max(d.values())
+print(longestStrChain(words = ["a","b","ba","bca","bda","bdca"]))
+"""
