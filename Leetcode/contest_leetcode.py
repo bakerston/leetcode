@@ -137,3 +137,52 @@ print(minMoves([1,2,5,4,2,3,1,2],5))
 """
 def minimumDeviation(nums):
 """
+
+#5617. Goal Parser Interpretation
+"""
+def interpret(command):
+    ans=""
+    n=len(command)
+    x=0
+    while x<n:
+        if command[x]=="(":
+            if command[x+1]=="a":
+                ans+="al"
+                x+=4
+            else:
+                ans+="o"
+                x+=2
+        else:
+            ans+="G"
+            x+=1
+    return ans
+print(interpret(command = "G()()()()(al)"))
+"""
+
+#5618. Max Number of K-Sum Pairs
+"""
+def maxOperations(nums, k):
+    import collections
+    c=collections.Counter(nums)
+    s=set(c.keys())
+    l=sorted(list(c.keys()))
+    ans1=0
+    ans2=0
+    for x in l:
+        if k-x in s:
+            if k-x==x:
+                ans1+=c[x]//2
+            else:
+                ans2+=min(c[x],c[k-x])
+    return ans1+ans2//2
+print(maxOperations(nums = [3,1,3,4,3], k = 6))
+"""
+
+#5620. Concatenation of Consecutive Binary Numbers
+def concatenatedBinary(n):
+    ans=1
+    for x in range(2,n+1):
+        ans=ans*2**(len(bin(x)[2:]))+x
+        ans%=10**9+7
+    return ans
+print(concatenatedBinary(3121))
