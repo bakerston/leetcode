@@ -961,6 +961,7 @@ def canMakePaliQueries(s, queries):
 print(canMakePaliQueries(s = "abcda", queries = [[3,3,0],[1,2,0],[0,3,1],[0,3,2],[0,4,1]]))
 """
 #1209. Remove All Adjacent Duplicates in String II
+"""
 def removeDuplicates(s, k):
     st=[]
     ans=""
@@ -976,3 +977,135 @@ def removeDuplicates(s, k):
         ans+=x[0]*x[1]
     return ans
 print(removeDuplicates(s = "deeedbbcccbdaa", k = 3))
+"""
+
+#179. Largest Number
+"""
+def largestNumber(nums):
+    import functools
+    num = [str(x) for x in nums]
+    num.sort(key = functools.cmp_to_key(lambda b, a: ((a+b)>(b+a))-((a+b)<(b+a)) ))
+    print(num)
+
+    return ''.join(num).lstrip('0') or '0'
+print(largestNumber([3,30,34,5,9]))
+"""
+#1353. Maximum Number of Events That Can Be Attended
+
+#1057. Campus Bikes
+"""
+def assignBikes(W, B):
+    ans=[-1]*len(W)
+    used=set()
+    for d,w,b in sorted([abs(W[i][0]-B[j][0])+abs(W[i][1]-B[j][1]),i,j] for i in range(len(W)) for j in range(len(B))):
+        if ans[w]==-1 and b not in used:
+            ans[w]=b
+            used.add(b)
+    return ans
+print(assignBikes([[0,0],[2,1]], [[1,2],[3,3]]))
+"""
+
+#1552. Magnetic Force Between Two Balls
+"""
+def maxDistance(p, m):
+    p.sort()
+    def getb(d):
+        if len(p)==1:
+            return 1
+        cur=p[0]
+        ans=1
+        for x in p[1:]:
+            if x-cur>=d:
+                ans+=1
+                cur=x
+        return ans
+    i=1
+    j=p[-1]-p[0]
+    while i<j:
+        mid=j-(j-i)//2
+        print(i,j,mid)
+        if getb(mid)>=m:
+            i=mid
+        else:
+            j=mid-1
+    return i
+print(maxDistance(p = [1,2,3,4,5,10000], m = 2))
+"""       
+
+#1029. Two City Scheduling
+"""
+def twoCitySchedCost(costs):
+    ans=0
+    toa=[]
+    tob=[]
+    eq=0
+    a,b=0,0
+    n=len(costs)
+    for x in costs:
+        if x[0]==x[1]:
+            eq+=1
+            ans+=x[0]
+        elif x[0]>x[1]:
+            tob.append(x)
+            b+=1
+        else:
+            toa.append(x)
+            a+=1
+    if max(a,b)<=n//2:
+        ans=ans+sum(x[0] for x in toa)+sum(x[1] for x in tob)
+    else:
+        if a>b:
+            m=a-n//2
+            mlist=sorted(toa,key=lambda x: x[1]-x[0])[:m]
+            ans=ans+sum(x[1] for x in tob)+sum(x[1] for x in mlist)+sum(x[0] for x in sorted(toa,key=lambda x: x[1]-x[0])[m:])
+        else:
+            m=b-n//2
+            mlist=sorted(tob,key=lambda x: x[0]-x[1])[:m]
+            ans=ans+sum(x[0] for x in toa)+sum(x[0] for x in mlist)+sum(x[1] for x in sorted(tob,key=lambda x: x[0]-x[1])[m:])
+    return ans
+print(twoCitySchedCost(costs = [[259,770],[448,54],[926,667],[184,139],[840,118],[577,469]]))
+"""
+#866. Prime Palindrome
+"""
+def primePalindrome(N):
+    import math
+    x=N+1
+    nofind=True
+    while nofind:
+        if [i for i in range(2,int(math.sqrt(x))+1) if x%i==0]==[] and str(x)==str(x)[::-1]:
+            break
+        x+=1 
+    return x
+print(primePalindrome(6))
+"""
+#875. Koko Eating Bananas
+"""
+def minEatingSpeed(piles, H):
+    import math
+    def geth(p,s):
+        return sum(math.ceil(x/s) for x in p)    
+    i=1
+    j=max(piles)
+    while i<j:
+        mid=i+(j-i)//2
+        if geth(piles,mid)<=H:
+            j=mid
+        else:
+            i=mid+1
+    return i
+print(minEatingSpeed(piles = [30,11,23,4,20], H = 5))
+"""
+
+#1167. Minimum Cost to Connect Sticks
+def connectSticks(sticks):
+    import heapq
+    heapq.heapify(sticks)
+    ans=0
+    while len(sticks)>1:
+        x,y=heapq.heappop(sticks),heapq.heappop(sticks)
+        ans+=x+y
+        heapq.heappush(sticks,x+y)
+    return ans
+print(connectSticks(sticks = [1,8,3,5]))
+
+    
