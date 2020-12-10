@@ -179,6 +179,7 @@ print(maxOperations(nums = [3,1,3,4,3], k = 6))
 """
 
 #5620. Concatenation of Consecutive Binary Numbers
+"""
 def concatenatedBinary(n):
     ans=1
     for x in range(2,n+1):
@@ -186,3 +187,11 @@ def concatenatedBinary(n):
         ans%=10**9+7
     return ans
 print(concatenatedBinary(3121))
+"""
+
+#5619. Minimum Incompatibility
+"""
+def minimumIncompatibility(nums, k):
+    import itertools
+
+"""
