@@ -1283,6 +1283,94 @@ print(unhappyFriends(6,
 [[3,1],[2,0],[5,4]]))
 """
 #1124. Longest Well-Performing Interval
+
+
+"""
+def longestWPI(hours):
+    import collections
+    cur=0
+    n=len(hours)
+    s=collections.defaultdict(int)
+    ans=0
+    for i in range(n):
+        if hours[i]>8:
+            cur+=1
+        else:
+            cur-=1 
+        if cur>0:
+            ans=i+1
+        s[cur]=i
+        if cur-1 in s:
+            print(cur-1)
+            ans=max(ans,i-s[cur-1])
+    return ans
+print(longestWPI(hours = [9,9,6,0,6,6,9]))
+"""
+
+#1218. Longest Arithmetic Subsequence of Given Difference
+"""
+def longestSubsequence(arr, difference):
+    import collections
+    d=collections.defaultdict(int)
+    for x in arr:
+        if x-difference not in d:
+            d[x]=1
+        else:
+            d[x]=d.pop(x-difference)
+            d[x]+=1
+    return max(list(d.values()))
+print(longestSubsequence(arr = [1,5,7,8,5,3,4,2,1], difference = -2))
+"""
+
+#886. Possible Bipartition
+"""
+def possibleBipartition(N, dislikes):
+    s1=set()
+    s2=set()
+"""
+
+#624. Maximum Distance in Arrays
+"""
+def maxDistance(arrays):
+    import collections
+    s=[x[0] for x in arrays]
+    b=[x[-1] for x in arrays]
+    s1,s2=sorted(s)[0],sorted(s)[1]
+    b1,b2=sorted(b)[-1],sorted(b)[-2]
+    sc=collections.Counter(s)
+    bc=collections.Counter(b)
+    if sc[s1]==1 and bc[b1]==1 and (s1,b1) in zip(s,b):
+        return max(b2-s1,b1-s2)
+    else:
+        return b1-s1
+print(maxDistance(arrays = [[1],[1]]))
+"""
+
+#625. Minimum Factorization
+def smallestFactorization(a):
+    ans=""
+    while a>9:
+        for x in range(9,1,-1):
+            while a%x==0:
+                ans+=str(x)
+                a/=x
+    return int(ans[::-1])
+
+print(smallestFactorization(486))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 """
 def longestWPI(hours):
     if len(hours)==1:
@@ -2139,6 +2227,7 @@ print(rearrangeBarcodes([1,1,2,2,2,3,3]))
 """
 
 #1151. Minimum Swaps to Group All 1's Together
+"""
 def minSwaps(data):
     n=len(data)
     k=sum(data)
@@ -2151,4 +2240,362 @@ def minSwaps(data):
         ans=min(ans,k-cur)
     return ans
 print(minSwaps(data = [1,0,1,0,1,0,0,1,1,0,1]))
+"""
+
+#1198. Find Smallest Common Element in All Rows
+"""
+def smallestCommonElement(mat):
+    import collections
+    d=collections.defaultdict(int)
+    for x in mat:
+        for y in x:
+            d[y]+=1
+    ans=float('inf')
+    for x in d.keys():
+        if d[x]==len(mat):
+            ans=min(ans,x)
+    return ans
+print(smallestCommonElement(mat = [[1,2,3,4,5],[2,4,5,8,10],[3,5,7,9,11],[1,3,5,7,9]]))
+"""
+
+#1190. Reverse Substrings Between Each Pair of Parentheses
+"""
+def reverseParentheses(s):
+    st=['']
+    for x in s:
+        if x=="(":
+            st.append('')
+        elif x==")":
+            tmp=st.pop()[::-1]
+            st[-1]+=tmp
+        else:
+            st[-1]+=x
+    return ''.join(st)
+print(reverseParentheses(s = "(u(love)i)"))
+"""
+
+#880. Decoded String at Index
+"""
+def decodeAtIndex(S, K):
+    N=0
+    for x in range(len(S)):
+        if S[x].isdigit():
+            N*=int(S[x])
+        else:
+            N+=1
+        if N>=K:
+            break
+    for back in range(x,-1,-1):
+        if S[back].isdigit():
+            N/=int(S[back])
+            K%=N
+        else:
+            if K==N or K==0:
+                return S[back]
+            N-=1
         
+print(decodeAtIndex(S = "a2345678999999999999999", K = 1))
+"""
+
+#946. Validate Stack Sequences
+"""
+def validateStackSequences(pushed, popped):
+    st=[]
+    n=len(popped)
+    i,j=0,0
+    while i<n:
+        while not st or st[-1]!=popped[j] and i<n:
+            st.append(pushed[i])
+            i+=1
+        while st and st[-1]==popped[j]:
+            st.pop()
+            j+=1
+    return not st
+print(validateStackSequences([1,2,3,4,5,6,7],[1,2,5,3,6,7,4]))
+"""
+#907. Sum of Subarray Minimums
+"""
+def sumSubarrayMins(arr):
+    if len(arr)==1:
+        return sum(arr)
+    st=[]
+    n=len(arr)
+    ans=0
+    last=0
+    for x in range(n):
+        cur=1
+        while st and st[-1][0]>=arr[x]:
+            p=st.pop()
+            cur+=p[1]
+            last-=p[1]*p[0]
+        st.append([arr[x],cur])
+        if len(st)>=2:
+            print("last=",last)
+            last+=st[-1][0]*st[-1][1]
+            ans+=last
+        else:
+            last=st[-1][0]*st[-1][1]
+            ans+=last
+        print(ans)
+    return ans
+print(sumSubarrayMins([3,1,2,4]))
+"""
+
+#15. 3Sum
+"""
+def threeSum(nums):
+
+    res=[]
+    nums.sort()
+    if len(nums)<3:
+        return []
+    for i in range(len(nums)-2):
+        if i>0 and nums[i]==nums[i-1]:
+            continue
+        l,r=i+1,len(nums)-1
+        while l<r:
+            s=nums[i]+nums[l]+nums[r]
+            if s==0:
+                res.append([nums[i],nums[l],nums[r]])
+                l+=1
+                r-=1
+                while l<r and nums[l]==nums[l-1]:l+=1
+                while l<r and nums[r]==nums[r+1]:r-=1
+            elif s<0:
+                l+=1
+            else:
+                r-=1
+    return res
+print(threeSum(nums = [-1,0,1,2,-1,-4]))
+"""
+
+#1590. Make Sum Divisible by P
+"""
+def minSubarray(nums, p):
+    dp={0:-1}
+    need=sum(nums)%p
+    cur=0
+    res=n=len(nums)
+    for i,x in enumerate(nums):
+        cur=(cur+x)%p
+        dp[cur]=i
+        if (cur-need)%p in dp:
+            res=min(res,i-dp[(cur-need)%p])
+    return res if res!=n else -1
+print(minSubarray())
+"""
+#1386. Cinema Seat Allocation
+def maxNumberOfFamilies(n, reservedSeats):
+    """
+    import collections
+    d=collections.defaultdict(list)
+    for x in reservedSeats:
+        d[x[0]].append(x[1])
+    ans=0
+    occ=len(d.keys())
+    ans+=(n-occ)
+    print(ans,d)
+    for r in d.keys():
+        tmp=0
+        if set([2,3,4,5])&set(d[r])==set():
+            tmp+=1
+        if set([5,6,7,8])&set(d[r])==set():
+            tmp+=1
+        if set([2,3])&set(d[r])!=set() and set([8,9])&set(d[r])!=set():
+            if set([4,5,6,7])&set(d[r])==set():
+                tmp+=1
+        ans+=tmp
+    return ans
+print(maxNumberOfFamilies( n = 3, reservedSeats = [[1,2],[1,3],[1,8],[2,6],[3,1],[3,10]]))
+"""
+#1155. Number of Dice Rolls With Target Sum
+"""
+unsolved
+def numRollsToTarget(d, f, target):
+    if target>d*f or target<d:
+        return 0
+"""
+
+#1094. Car Pooling
+"""
+def carPooling(trips, capacity):
+    n=max(x[2] for x in trips)
+    p=[[0,0] for _ in range(n)]
+    for x in trips:
+        p[x[1]-1][0]+=x[0]
+        p[x[2]-1][1]+=x[0]
+    tmp=0
+    for x in p:
+        tmp+=x[0]
+        tmp-=x[1]
+        if tmp>capacity:
+            return False
+    return True 
+print(carPooling(trips = [[2,1,5],[3,3,7]], capacity = 5))
+"""
+
+#1155. Number of Dice Rolls With Target Sum
+"""
+def numRollsToTarget(d, f, target):
+    if target<d or target>d*f:
+        return 0
+    dp=[[0]*d*f for _ in range(d)]
+    for r in range(f):
+        dp[0][r]=1
+    for dice in range(1,d):
+        for face in range(dice,(dice+1)*f):
+            for b in range(1,f+1):
+                if face-b>=0:
+                    dp[dice][face]+=dp[dice-1][face-b]  
+                else:
+                    continue
+    return dp[d-1][target-1]%(10**9+7)
+print(numRollsToTarget(d = 30, f = 30, target = 500))
+"""
+#1291. Sequential Digits
+"""
+def sequentialDigits(low, high):
+    ans=[]
+    for x in range(2,10):
+        for s in range(1,10-x+1):
+            tmp=""
+            for e in range(x):
+                tmp+=str(s)
+                s+=1
+            ans.append(tmp)
+    res=[]
+    for x in ans:
+        if int(x)>=low and int(x)<=high:
+            res.append(int(x))
+    return res
+
+print(sequentialDigits(1000,13000))
+"""
+
+#1248. Count Number of Nice Subarrays
+"""
+def numberOfSubarrays(nums, k):
+    base=[x for x,a in enumerate(nums) if a%2==1]
+    if len(base)<k:
+        return 0
+    n=len(base)
+    base=[-1]+base+[len(nums)]
+    ans=0
+    print("base=",base)
+    for x in range(n-k+1):
+        ans+=(base[x+1]-base[x])*(base[x+k+1]-base[x+k])
+    return ans
+print(numberOfSubarrays(nums = [2,2,2,1,2,2,1,2,2,2], k = 2))
+"""
+
+#1010. Pairs of Songs With Total Durations Divisible by 60
+"""
+def numPairsDivisibleBy60(time):
+    import collections
+    d=collections.defaultdict(int)
+    for x in time:
+        d[x%60]+=1
+    ans=0
+    for s in d.keys():
+        if s<30 and s>0 and 60-s in d.keys():
+            ans+=d[s]*d[60-s]
+    ans+=d[30]*(d[30]-1)//2+d[0]*(d[0]-1)//2
+    return ans
+print(numPairsDivisibleBy60( time = [60,60,60]))
+"""
+
+#974. Subarray Sums Divisible by K
+"""
+def subarraysDivByK(A, K):
+    import collections
+    cur=0
+    ans=0
+    
+    d=collections.defaultdict(int)
+    for x in A:
+        cur+=x
+        if cur%K==0:
+            ans+=1
+        ans+=d[cur%K]
+        d[cur%K]+=1
+    return ans
+print(subarraysDivByK(A = [4,5,0,-2,-3,1], K = 5))
+"""
+
+#978. Longest Turbulent Subarray
+"""
+def maxTurbulenceSize(arr):
+    if len(arr)<3:
+        return len(arr)
+    ans=0
+    tmp=2
+    for x in range(2,len(arr)):
+        if (arr[x]-arr[x-1])*(arr[x-1]-arr[x-2])<0:
+            tmp+=1
+            ans=max(ans,tmp)
+        else:
+            tmp=2
+    return ans
+print(maxTurbulenceSize(arr = [8,1,3,3,3,1,2,1]))
+"""
+#984. String Without AAA or BBB
+"""
+def strWithout3a3b(A, B):
+    ans=""
+    if A==B:
+        for x in range(A):
+            ans+="ab"
+    elif A>B:
+        d=A-B
+        if d<=B:
+            for x in range(d):
+                ans+="aab"
+            for y in range(B-d):
+                ans+="ab"
+        else:
+            for x in range(B):
+                ans+="aab"
+            for y in range(d-B):
+                ans+="a"
+    else:
+        d=B-A
+        if d<=A:
+            for x in range(d):
+                ans+="bba"
+            for y in range(A-d):
+                ans+="ba"
+        else:
+            for x in range(A):
+                ans+="bba"
+            for y in range(d-A):
+                ans+="b"
+    return ans
+print(strWithout3a3b(4,1))
+"""
+#994. Rotting Oranges
+"""
+def orangesRotting(grid):
+    import collections
+    n=len(grid)
+    m=len(grid[0])
+    cnt=0
+    rot=collections.deque()
+    for i in range(n):
+        for j in range(m):
+            if grid[i][j]==1:
+                cnt+=1
+            elif grid[i][j]==2:
+                rot.append((i,j,0))
+    seen=set()
+    while rot:
+        y,x,d=rot.popleft()
+        dirs={(y-1,x),(y+1,x),(y,x-1),(y,x+1)}
+        for y1,x1 in dirs:
+            if 0<=y1<n and 0<=x<m and (y1,x1) not in seen and grid[y1][x1]==1:
+                seen.add((y1,x1))
+                cnt-=1
+                if cnt==0:
+                    return d+1
+                rot.append((y1,x1,d+1))
+    return 0 if cnt==0 else -1 
+    """
