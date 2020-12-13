@@ -1097,6 +1097,7 @@ print(minEatingSpeed(piles = [30,11,23,4,20], H = 5))
 """
 
 #1167. Minimum Cost to Connect Sticks
+"""
 def connectSticks(sticks):
     import heapq
     heapq.heapify(sticks)
@@ -1108,4 +1109,140 @@ def connectSticks(sticks):
     return ans
 print(connectSticks(sticks = [1,8,3,5]))
 
+"""
+
+#233. Number of Digit One
+"""
+def countDigitOne(n):
+    s="0"+str(n)
+    ans=0
+    for i in range(1,len(s)):
+        base=int(s[:i])*10**(len(s)-i-1)
+        print(s[:i],int(s[:i]),base)
+        if s[i]=="1":
+            if i<len(s)-1:
+                base+=int(s[i+1:])+1
+        if s[i]!="1" and s[i]!="0":
+            base+=10**(len(s)-i-1)
+        print(base)
+        ans+=base
+    return ans
+print(countDigitOne(100))
+"""
+
+#315. Count of Smaller Numbers After Self
+"""
+def countSmaller(nums):
+    import sortedcontainers
+    cnt=[]
+    sortnum=sortedcontainers.SortedList(nums)
+    for x in nums:
+        i=sortnum.index(x)
+        cnt.append(i)
+        sortnum.remove(x)
+    return cnt
+print(countSmaller(nums = [5,2,6,1]))
+"""
+
+#659. Split Array into Consecutive Subsequences
+
+
+#681. Next Closest Time
+"""
+def nextClosestTime(time):
+    def addsec(t):
+        res_s=(int(t[3:])+1)%60
+        to_h=(int(t[3:])+1)//60
+        res_h=int(t[:2])+to_h
+        if res_h==24:
+            return "00:00"
+        else:
+            return ("0"+str(res_h))[-2:]+":"+("0"+str(res_s))[-2:]
+    aset=set([int(time[0]),int(time[1]),int(time[3]),int(time[4])])
+
+    t=addsec(time)
+    m=0
+    while m<2400:
+        if not (set([int(t[0]),int(t[1]),int(t[3]),int(t[4])]).union(aset) <=aset):
+            t=addsec(t)
+        else:
+            break
+    return t
+print(nextClosestTime("22:22"))
+"""
+
+#667. Beautiful Arrangement II
+
+#247. Strobogrammatic Number II
+
+#412. Fizz Buzz
+"""
+def fizzBuzz(n):
+    ans=[]
+    for x in range(1,n+1):
+        if x%3==0 and x%5==0:
+            ans.append("FizzBuzz")
+        elif x%3==0:
+            ans.append("Fizz")
+        elif x%5==0:
+            ans.append("Buzz")
+        else:
+            ans.append(str(x))
+    return ans
+print(fizzBuzz(15))
+"""
+
+#436. Find Right Interval
+"""
+def findRightInterval(intervals):
+    import bisect
+    l = sorted((e[0], i) for i, e in enumerate(intervals))
+    res = []
+    for e in intervals:
+        r = bisect.bisect_left(l, (e[1],))
+        res.append(l[r][1] if r < len(l) else -1)
+    return res
+print(findRightInterval([[1,2],[3,2],[2,4],[5,6],[4,5]]))
+"""
+
+#487. Max Consecutive Ones II
+"""
+def findMaxConsecutiveOnes(nums):
+    import itertools
+    a=[(i,len(list(k))) for i,k in itertools.groupby(nums)]
+    ans=0
+    n=len(a)
+    print(a)
+    if n==1:
+        return n if a[0][0]==1 else 1
     
+
+    for x in range(n):
+        if a[x][0]==1:
+            ans=max(ans,a[x][1]+1)
+        if x<n-2 and a[x+1][1]==1:
+            ans=max(ans,a[x][1]+a[x+2][1]+1)
+    return ans
+print(findMaxConsecutiveOnes([1,0,1,1,0]))
+
+"""
+
+#484. Find Permutation
+
+
+#713. Subarray Product Less Than K
+def numSubarrayProductLessThanK(nums,k):
+    if not nums:
+        return 0
+    j=0
+    res=1
+    cnt=0
+    for i in range(len(nums)):
+        res*=nums[i]
+        if res>=k:
+            while j<=i and res>=k:
+                res/=nums[j]
+                j+=1
+        cnt+=i-j+1
+    return cnt
+print(numSubarrayProductLessThanK([10,2,8,6,3],13))
