@@ -195,3 +195,113 @@ def minimumIncompatibility(nums, k):
     import itertools
 
 """
+
+#5609. Count the Number of Consistent Strings
+"""
+def countConsistentStrings(allowed, words):
+    base=set(allowed)
+    return len([x for x in words if set(x)|base<=base])
+print(countConsistentStrings(allowed = "cad", words = ["cc","acd","b","ba","bac","bad","ac","d"]))
+"""
+
+#5610. Sum of Absolute Differences in a Sorted Array
+"""
+def getSumAbsoluteDifferences(nums):
+    if len(nums)==2:
+        return [abs(nums[0]-nums[1])]*2
+    else:
+        f=nums[0]
+        n=len(nums)
+        base=sum(abs(f-x) for x in nums[1:])
+        ans=[base]
+        for i in range(1,n):
+            base-=(n-2*i)*(nums[i]-nums[i-1])
+            ans.append(base)
+        return ans
+print(getSumAbsoluteDifferences([1,4,6,8,10]))
+"""
+
+#5612. Delivering Boxes from Storage to Ports
+"""
+def boxDelivering(boxes, portsCount, maxBoxes, maxWeight):
+    import itertools
+    n=len(boxes)
+    dp=[float('inf')]*(n+1)
+    dp[0]=0
+    for i in range(1,n+1):
+        max_w=maxWeight
+        max_b=maxBoxes
+        j=i-1
+        portset=[]
+        cur_port=0
+        while j>=0 and max_w>=boxes[j][1] and max_b>=1:
+            max_w-=boxes[j][1]
+            max_b-=1
+            if not portset or boxes[j][0]!=portset[-1]:
+                cur_port+=1
+            portset.append(boxes[j][0])
+            dp[i]=min(dp[i],dp[j]+cur_port+1)
+            j-=1
+    print(dp)
+    return dp[n]
+
+print(boxDelivering( boxes = [[2,4],[2,5],[3,1],[3,2],[3,7],[3,1],[4,4],[1,3],[5,2]], portsCount = 5, maxBoxes = 5, maxWeight = 7))
+"""
+
+#5625. Count of Matches in Tournament
+"""
+def numberOfMatches(n):
+    ans=0
+    while n!=1:
+        ans+=n//2
+        if n%2==0:
+            n/=2
+        else:
+            n=n//2+1
+        
+    return int(ans)
+print(numberOfMatches(14))
+"""
+
+#5626. Partitioning Into Minimum Number Of Deci-Binary Numbers
+"""
+def minPartitions(n):
+    return max(map(int,list(n)))
+print(minPartitions(n = "27346209830709182346"))
+"""
+
+#5627. Stone Game VII
+"""
+def stoneGameVII(stones):
+    presum=[0]+stones[:]
+    for i in range(1,len(presum)):
+        presum[i]+=presum[i-1]
+    def getsc(i,j):
+        return presum[j+1]-presum[i]
+    n=len(stones)
+    dp=[[0]*n for _ in range(n)]
+    
+    #for i in range(n-1,-1,-1):
+    #    for j in range(i+1,n):
+    #        dp[i][j]=max(getsc(i+1,j)-dp[i+1][j],getsc(i,j-1)-dp[i][j-1])
+    for x in range(1,n):
+        for y in range(x-1,-1,-1):
+            dp[y][x]=max(getsc(y+1,x)-dp[y+1][x], getsc(y,x-1)-dp[y][x-1])
+    
+    
+    return dp[0][n-1]
+            
+
+print(stoneGameVII([5,3,1,4,2]))
+"""
+
+#5245. Maximum Height by Stacking Cuboids
+"""
+def maxHeight(cuboids):
+    dic={}
+    cuboids.sort(key=lambda x:x[2])
+    for x in cuboids:
+        for key in dic.keys():
+            if max(x[:2])<=min(key):
+                dic(tuple(x[:2]))=dic[key]+x[2]
+"""     
