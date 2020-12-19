@@ -1347,6 +1347,7 @@ print(maxDistance(arrays = [[1],[1]]))
 """
 
 #625. Minimum Factorization
+"""
 def smallestFactorization(a):
     ans=""
     while a>9:
@@ -1358,7 +1359,7 @@ def smallestFactorization(a):
 
 print(smallestFactorization(486))
 
-
+"""
 
 
 
@@ -2599,3 +2600,57 @@ def orangesRotting(grid):
                 rot.append((y1,x1,d+1))
     return 0 if cnt==0 else -1 
     """
+
+#325. Maximum Size Subarray Sum Equals k
+"""
+def maxSubArrayLen(nums, k):
+    d={0:-1}
+    s=0
+    ans=0
+    for i in range(len(nums)):
+        s+=nums[i]
+        if s not in d:
+            d[s]=i
+        if s-k in d:
+            ans=max(i-d[s-k],ans)
+    print(d)
+    return ans
+print(maxSubArrayLen(nums = [1, -1, 5, -2, 3], k = 3))
+"""
+
+#334. Increasing Triplet Subsequence
+"""
+def increasingTriplet(nums):
+    i,j=float('-inf'),float('-inf')
+    for x in nums:
+        if i==float('-inf'):
+            i=x
+        else:
+            if j==float('-inf'):
+                if x>i:
+                    j=x
+                elif x<=i:
+                    i=x
+            else:
+                if x>j:
+                    return True
+                elif x<=j and x>i:
+                    j=x
+                else:
+                    i=x
+    return False
+print(increasingTriplet(nums = [2,1,5,0,4,6]))
+"""
+
+#435. Non-overlapping Intervals
+def eraseOverlapIntervals(intervals):
+    intervals.sort(key=lambda x:[x[0],x[1]])
+    ans=0
+    cur=[float('-inf'),float('-inf')]
+    for x in intervals:
+        if x [0]>=cur[1]:
+            cur=x
+        else:
+            ans+=1
+    return ans
+print(eraseOverlapIntervals( [[1,2],[2,3],[3,4],[1,3]]))
