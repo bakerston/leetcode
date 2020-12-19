@@ -1231,6 +1231,7 @@ print(findMaxConsecutiveOnes([1,0,1,1,0]))
 
 
 #713. Subarray Product Less Than K
+"""
 def numSubarrayProductLessThanK(nums,k):
     if not nums:
         return 0
@@ -1246,3 +1247,4 @@ def numSubarrayProductLessThanK(nums,k):
         cnt+=i-j+1
     return cnt
 print(numSubarrayProductLessThanK([10,2,8,6,3],13))
+"""
