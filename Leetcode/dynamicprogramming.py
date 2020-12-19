@@ -192,3 +192,52 @@ def longestStrChain(words):
     return max(d.values())
 print(longestStrChain(words = ["a","b","ba","bca","bda","bdca"]))
 """
+
+#956. Tallest Billboard
+"""
+def tallestBillboard(rods):
+    import collections
+    dp=dict()
+    dp[0]=0
+    for r in rods:
+        tmp=collections.defaultdict(int)
+        for d in dp:
+            tmp[d+r]=max(dp[d]+r,tmp[r+d])
+            tmp[d]=max(dp[d],tmp[d])
+            tmp[d-r]=max(dp[d],tmp[d-r])
+        dp=tmp
+    return dp[0]
+print(tallestBillboard([1,2,3,4,5,6]))
+"""
+
+#651. 4 Keys Keyboard
+"""
+def maxA(N):
+    best=[0,1]
+    for x in range(2,N+1):
+        cur=best[x-1]+1
+        for y in range(x-1):
+            cur=max(cur,best[y]*(x-y-1))
+        best.append(cur)
+    return best[N]
+print(maxA(12))
+"""
+
+#673. Number of Longest Increasing Subsequence
+def findNumberOfLIS(nums):
+    n=len(nums)
+    dp=[[1,1] for _ in range(n)]
+    ans=1
+    for i,num in enumerate(nums):
+        cur=1
+        cnt=0
+        for j in range(i):
+            if num>nums[j]:
+                cur=max(cur,dp[j][0]+1)
+        for j in range(i):
+            if dp[j][0]==cur-1 and nums[j]<num:
+                cnt+=dp[j][1]
+        dp[i]=[cur,max(cnt,dp[i][1])]
+        ans=max(ans,cur)
+    return sum(x[1] for x in dp if x[0]==ans)
+print(findNumberOfLIS( nums = [2,2,2,2,2]))
