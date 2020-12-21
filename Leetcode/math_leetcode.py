@@ -1248,3 +1248,74 @@ def numSubarrayProductLessThanK(nums,k):
     return cnt
 print(numSubarrayProductLessThanK([10,2,8,6,3],13))
 """
+
+#660. Remove 9
+"""
+def newInteger(n):
+    ans=""
+    while n:
+        ans+=str(n%9)
+        n//=9
+    return ans
+print(newInteger(100))
+"""
+
+
+#1012. Numbers With Repeated Digits
+"""
+def numDupDigitsAtMostN(N):
+    def A(m, n):
+        res = 1
+        for i in range(n):
+            res *= m
+            m -= 1
+        return res
+    l=list(map(int,str(N)))
+    ans=0
+    for x in range(1,len(l)):
+        ans+=9*A(9,x-1)
+    seen=set()
+    for x in range(len(l)):
+        for y in range(0 if x!=0 else 1, l[x]):
+            if y not in seen:
+                ans+=A(9-x,n-x-1)
+        if x in seen:
+            break
+        seen.add(x)
+    return N-ans
+print(numDupDigitsAtMostN(1000))
+"""
+
+
+#1118. Number of Days in a Month
+"""
+def numberOfDays(Y, M):
+    m=(1,3,5,7,8,10,12)
+    l=(4,6,9,11)
+    if M in m:
+        return 31
+    elif M in l:
+        return 30
+    else:
+        if Y%4!=0 or (Y%100==0 and Y%400!=0):
+            return 28
+        else:
+            return 29
+print(numberOfDays(Y = 1900, M = 2))
+"""
+
+#910. Smallest Range II
+"""
+def smallestRangeII(A, K):
+    A.sort()
+    d=A[-1]-A[0]
+    if d<=K:
+        return d
+    else:
+        n=len(A)
+        for j in range(n-1):
+            cur=[A[0]+2*K,A[j]+2*K,A[j+1],A[-1]]
+            d=min(d,max(cur)-min(cur))
+        return d
+print(smallestRangeII(A = [1,3,6], K = 3))
+"""
