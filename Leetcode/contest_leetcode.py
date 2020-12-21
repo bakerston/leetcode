@@ -305,3 +305,77 @@ def maxHeight(cuboids):
             if max(x[:2])<=min(key):
                 dic(tuple(x[:2]))=dic[key]+x[2]
 """     
+
+#1694. Reformat Phone Number
+"""
+def reformatNumber(number):
+    ans=""
+    for x in number:
+        if ord(x) in range(48,58):
+            ans+=x
+    res=""
+    if len(ans)%3==0:
+        for x in range(len(ans)):
+            if x%3==0 and x!=0:
+                res+="-"
+            res+=ans[x]
+    elif len(ans)%3==1:
+        for x in range(len(ans)):
+            if x%3==0 and x!=0 and x!=len(ans)-1:
+                res+="-"
+            if x==len(ans)-2:
+                res+="-"
+            res+=ans[x]
+    else:
+        for x in range(len(ans)):
+            if x%3==0 and x!=0:
+                res+="-"
+            res+=ans[x]
+
+    return res
+print(reformatNumber("12345612"))
+"""
+
+#1695. Maximum Erasure Value
+"""
+def maximumUniqueSubarray(nums):
+    if len(nums)==1:
+        return nums[0]
+    ans=0
+    cur=nums[0]
+    seen=set()
+    seen.add(cur)
+    i=0
+    j=1
+    n=len(nums)
+    while j<n:
+        if nums[j] not in seen:
+            cur+=nums[j]
+            ans=max(ans,cur)
+            seen.add(nums[j])
+            j+=1
+        else:
+            while nums[i]!=nums[j]:
+                cur-=nums[i]
+                seen.remove(nums[i])
+                i+=1
+            cur-=nums[i]
+            seen.remove(nums[i])
+            i+=1
+    return ans
+print(maximumUniqueSubarray(nums = [5,2,1,2,5,2,1,2,5]))
+"""
+
+#1696. Jump Game VI
+"""
+def maxResult(nums, k):
+    import heapq
+    hp=[]
+    for i in reversed(range(len(nums))):
+        while hp and hp[0][1]-i>k:
+            heapq.heappop(hp)
+        ans=nums[i]-hp[0][0] if hp else nums[i]
+        heapq.heappush(hp,(-ans,i))
+    return ans
+print(maxResult(nums = [1,-1,-2,4,-7,3], k = 2))
+"""
