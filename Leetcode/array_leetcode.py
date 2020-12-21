@@ -2643,14 +2643,111 @@ print(increasingTriplet(nums = [2,1,5,0,4,6]))
 """
 
 #435. Non-overlapping Intervals
+"""
 def eraseOverlapIntervals(intervals):
-    intervals.sort(key=lambda x:[x[0],x[1]])
-    ans=0
-    cur=[float('-inf'),float('-inf')]
-    for x in intervals:
-        if x [0]>=cur[1]:
-            cur=x
-        else:
-            ans+=1
-    return ans
+    end, cnt = float('-inf'), 0
+	for s, e in sorted(intervals, key=lambda x: x[1]):
+		if s >= end: 
+			end = e
+		else: 
+			cnt += 1
+	return cnt
 print(eraseOverlapIntervals( [[1,2],[2,3],[3,4],[1,3]]))
+"""
+
+#123. Best Time to Buy and Sell Stock III
+"""
+def maxProfit(prices):
+    n=len(prices)
+    lhs,rhs=[0],[0]
+
+    lo=prices[0]
+    lp=0
+    for x in range(1,n):
+        lo=min(lo,prices[x])
+        lp=max(lp,prices[x]-lo)
+        lhs.append(lp)
+
+    hi=prices[-1]
+    rp=0
+    for y in range(n-2,-1,-1):
+        hi=max(hi,prices[y])
+        rp=max(rp,hi-prices[y])
+        rhs.append(rp)
+    
+    return max(a[0]+a[1] for a in zip(rhs[::-1],lhs))
+print(maxProfit(prices = [3,3,5,0,0,3,1,4]))
+"""
+#407. Trapping Rain Water II
+"""
+def trapRainWater(heightMap):
+    if not heightMap or not heightMap[0]:
+        return 0
+    import heapq
+    m,n=len(heightMap),len(heightMap[0])
+    heap=[]
+    seen=set()
+    for i in range(m):
+        for j in range(n):
+            if i==0 or j==0 or i==m-1 or j==n-1:
+                heapq.heappush(heap,(heightMap[i][j],i,j))
+                seen.add((i,j))
+    ans=0
+    while heap:
+        height,i,j=heapq.heappop(heap)
+        for dx,dy in ((1,0),(-1,0),(0,1),(0,-1)):
+            xp,yp=i+dx,j+dy
+            if 0<xp<m-1 and 0<yp<n-1 and (xp,yp) not in seen:
+                ans+=max(0,height-heightMap[xp][yp])
+                heapq.heappush(heap,(max(height,heightMap[xp][yp]),xp,yp))
+                seen.add((xp,yp))
+    return ans
+print(trapRainWater([
+  [1,4,3,1,3,2],
+  [3,2,1,3,2,4],
+  [2,3,3,2,3,1]
+]
+))
+"""
+
+#406. Queue Reconstruction by Height
+"""
+def reconstructQueue(people):
+    import bisect
+    """
+
+#293. Flip Game
+"""
+def generatePossibleNextMoves(s):
+    n,ans=len(s),[]
+    if n<2:
+        return ans
+    else:
+        for x in range(n-1):
+            if s[x]==s[x+1] and s[x]=="+":
+                ans.append(s[:x]+"--"+s[x+2:])
+    return ans
+print(generatePossibleNextMoves( s = "++++"))
+"""
+
+#150. Evaluate Reverse Polish Notation
+def evalRPN(tokens):
+    st=[]
+    for x in tokens:
+        if x[-1].isdigit():
+            st.append(int(x))
+        else:
+            a=st.pop()
+            b=st.pop()
+            if x=="+":
+                cur=a+b
+            elif x=="-":
+                cur=b-a
+            elif x=="*":
+                cur=a*b
+            else:
+                cur=int(float(b)/a)
+            st.append(cur)
+            print(st)
+    return st
+print(evalRPN( ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]))
