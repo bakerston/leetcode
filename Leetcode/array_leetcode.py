@@ -2731,6 +2731,7 @@ print(generatePossibleNextMoves( s = "++++"))
 """
 
 #150. Evaluate Reverse Polish Notation
+"""
 def evalRPN(tokens):
     st=[]
     for x in tokens:
@@ -2748,6 +2749,73 @@ def evalRPN(tokens):
             else:
                 cur=int(float(b)/a)
             st.append(cur)
-            print(st)
-    return st
+    return st.pop()
 print(evalRPN( ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]))
+"""
+
+#335. Self Crossing
+"""
+def isSelfCrossing(x):
+    n=len(x)
+    for i in range(3,n):
+        if i>=3 and     x[i]>=x[i-2] and x[i-1]<=x[i-3]:
+            return True
+        if i>=4 and x[i]+x[i-4]>=x[i-2] and x[i-1]==x[i-3]:
+            return True
+        if i>=5 and x[i-5]>=x[i-3]-x[i-1] and x[i-2]>=x[i-4] and x[i-1]<=x[i-3] and x[i-4]>=x[i-2]-x[i]:
+            return True
+    return False
+print(isSelfCrossing([3,3,3,2,1,1]))
+"""
+
+#683. K Empty Slots
+"""
+def kEmptySlots(bulbs, k):
+    import bisect
+    l=[]
+    for d,b in enumerate(bulbs,1):
+        i=bisect.bisect(l,b)
+        for n in l[i-(i>0):i+1]:
+            if abs(b-n)==k+1:
+                return d+1
+        l.insert(i,b)
+    return -1
+
+print(kEmptySlots( bulbs = [1,2,3], k = 1))
+"""
+
+#1582. Special Positions in a Binary Matrix
+def numSpecial(mat):
+    isin=set()
+    imul=set()
+    jsin=set()
+    jmul=set()
+    
+    for i in range(len(mat)):
+        for j in range(len(mat[0])):
+            if mat[i][j]==1:
+                if i not in imul:
+                    if i not in isin:
+                        isin.add(i)
+                    else:
+                        isin.remove(i)
+                        imul.add(i)
+                if j not in jmul:
+                    if j not in jsin:
+                        jsin.add(j)
+                    else:
+                        jsin.remove(j)
+                        jmul.add(j)
+    ans=0
+    for x in isin:
+        for y in jsin:
+            if mat[x][y]==1:
+                ans+=1
+    
+    return ans 
+print(numSpecial(mat = [[0,0,0,0,0],
+              [1,0,0,0,0],
+              [0,1,0,0,0],
+              [0,0,1,0,0],
+              [0,0,0,1,1]]))
+                
