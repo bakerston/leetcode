@@ -740,3 +740,282 @@ print(intersectionSizeTwo(a = [[1, 2], [2, 3], [2, 4], [4, 5]]))
 
             
 
+#838. Push Dominoes
+"""
+def pushDominoes(dominoes):
+    import collections
+    d=collections.deque()
+    ans=""
+    for x in dominoes:
+        if x==".":
+            d.append(x)
+        elif x=="R":
+            if d:
+                if d[0]=="R":
+                    while d:
+                        ans+="R"
+                        d.popleft()
+                else:
+                    while d:
+                        ans+=d.popleft()
+            d.append(x)
+        else:
+            if d:
+                if d[0]=="R":
+                    k=0
+                    while d:
+                        d.popleft()
+                        k+=1
+                    if k%2==0:
+                        ans+="R"*(k//2)+"."+"L"*(k//2-1)
+                    else:
+                        ans+="R"*(k//2+1)+"L"*(k//2)
+                else:
+                    while d:
+                        d.popleft()
+                        ans+="L"
+            d.append(x)
+    if d:
+        if d[0]=="R":
+            while d:
+                ans+="R"
+                d.popleft()
+        elif d[0]==".":
+            while d:
+                ans+="."
+                d.popleft()
+        else:
+            while d:
+                ans+=d.popleft()    
+    return ans
+print(pushDominoes(".L.R...LR..L.."))
+"""
+
+#467. Unique Substrings in Wraparound String
+"""
+def findSubstringInWraproundString(p):
+    d={x:1 for x in p}
+    n=len(p)
+    cur=1
+    for x in range(n-1,-1,-1):
+        if x==n-1 or ord(p[x+1])-ord(p[x])!=1:
+            cur=1
+        else:
+            cur+=1
+            d[p[x]]=max(d[p[x]],cur)
+    return sum(d.values())
+print(findSubstringInWraproundString("abcdmcdef"))
+"""
+
+#516. Longest Palindromic Subsequence
+"""
+def longestPalindromeSubseq(s):
+    n=len(s)
+    dp=[[0]*n for _ in range(n)]
+    k=0
+    while k<n:
+        for i in range(n-k):
+            j=i+k
+            if i==j:
+                dp[i][j]=1
+            elif s[i]==s[j]:
+                dp[i][j]=dp[i+1][j-1]+2
+            else:
+                dp[i][j]=max(dp[i+1][j],dp[i][j-1])
+        k+=1
+    return dp[0][n-1]
+print(longestPalindromeSubseq("a"))
+"""
+
+#548. Split Array with Equal Sum
+"""
+def splitArray(nums):
+    n=len(nums)
+    s=[0]*(n+1)
+    for i in range(n):
+        s[i+1]=s[i]+nums[i]
+    def check(l,r):
+        return set(s[m]-s[l] for m in range(l+1,r+1) if s[m]-s[l]==s[r+1]-s[m+1])
+    return any(check(0,j-1)&check(j+1,n-1) for j in range(n))
+
+print(splitArray([1,2,1,2,1,2,1]))
+"""
+
+#415. Add Strings
+
+
+#738. Monotone Increasing Digits
+"""
+def monotoneIncreasingDigits(N):
+    s=list(str(N))
+    n=len(s)
+    ans=""
+    cur=0
+    for x in range(n):
+        if x==0 or s[x]==s[x-1]:
+            cur+=1
+        elif s[x]>s[x-1]:
+            ans+=cur*str(s[x-1])
+            cur=1
+        else:
+            ans+=str(int(s[x-1])-1)+"9"*cur+"".join(s[x+1:])
+            return ans
+    ans+=str(s[x])*cur
+    return  ans
+print(monotoneIncreasingDigits(1332))
+"""
+
+#522. Longest Uncommon Subsequence II
+"""
+def findLUSlength(strs):
+    def issub(s,l):
+        i=0
+        for c in l:
+            if i<len(s) and s[i]==c:
+                i+=1
+        return i==len(s)
+    
+    strs.sort(key=len, reverse=True)
+    for i,w1 in enumerate(strs):
+        if all (not issub(w1,w2) for j,w2 in enumerate(strs) if i!=j):
+            return len(w1)
+    return -1
+    """
+#439. Ternary Expression Parser
+"""
+def parseTernary(expression):
+    st=[]
+    n=len(expression)
+    for x in reversed(expression):
+        st.append(x)
+        if len(st)>=2 and st[-2]=="?":
+            st[-5:]=st[-3 if st[-1] == 'T' else -5]
+    return st
+print(parseTernary("F?1:T?4:5"))"""
+
+#1540. Can Convert String in K Moves
+"""
+def canConvertString(s, t, k):
+    import collections
+    d=collections.defaultdict(int)
+    for x,y in zip(s,t):
+        d[(ord(y)-ord(x))%26]+=1
+    ans=sorted(d.items(), key=lambda x: [-x[0],-x[1]])[0]
+    return ans[0]+26*(ans[1]-1)<=k
+print(canConvertString(s = "abc", t = "bcd", k = 10))
+"""
+
+#564. Find the Closest Palindrome
+"""
+def nearestPalindromic(n):
+    l=len(n)
+    import math
+    if n!=n[::-1]:
+        a=n[:math.ceil(l/2)]
+        print(a)
+        return a+a[::-1]
+    else:
+        if l%2==0:
+            if n[l//2-1]=="0":
+                return n[:l//2-1]+"11"+n[:l//2-1][::-1]
+            else:
+                return n[:l//2-1]+str(int(n[l//2-1])-1)*2+n[:l//2-1][::-1]
+        else:
+            if n[l//2]=="0":
+                return n[:l//2]+"1"+n[:l//2][::-1]
+            else:
+                return n[:l//2]+str(int(n[l//2])-1)+n[:l//2][::-1]
+print(nearestPalindromic("1230321"))
+"""
+#1592. Rearrange Spaces Between Words
+"""
+def reorderSpaces(text):
+    import re
+    l=re.split("\s+",text)
+    alen=sum(map(len,l))
+    sp=len(text)-alen
+    word=[x for x in l if x!=""]
+    wd=len(word)
+    ans=""
+    if wd==1:
+        ans+=word[0]
+        ans+=" "*sp
+        return ans
+    else:
+        sta=sp//(wd-1)
+        bac=sp*(wd-1)
+        for x in word:
+            ans+=x+" "*sta  
+        return ans[:len(text)]
+print(reorderSpaces( text = "  this   is  a sentence "))
+"""
+
+#1323. Maximum 69 Number
+"""
+def maximum69Number (num):
+    i=-1
+    for i,x in enumerate(num):
+        if x=="6":
+            if i==0:
+                return "9"+num[1:]
+            else:
+                return num[:i]+"9"+num[i+1:]
+    if len(num)==1:
+        return 6
+    else:
+        return num[:-1]+"6"
+print(maximum69Number("999"))
+"""
+#1427. Perform String Shifts
+"""
+def stringShift(s, shift):
+    r=sum(x[1] for x in shift if x[0]==1)
+    l=sum(x[1] for x in shift if x[0]==0)
+    n=len(s)
+    if abs(r-l)%n==0:
+        return s
+    elif r>l:
+        sh=(r-l)%n
+        return s[n-sh:]+s[0:n-sh]
+    else:
+        sh=(l-r)%n
+        return s[sh:]+s[:sh]
+print(stringShift(s = "abcdefg", shift = [[1,1],[1,1],[0,2],[1,3]]))
+"""
+
+#316. Remove Duplicate Letters
+def removeDuplicateLetters(s):
+    """
+    import collections
+    if not s:
+        return s
+    c=collections.Counter(s)
+    used=set()
+    stack=[]
+    for ch in s:
+        c[ch]-=1
+        if ch in used:
+            continue
+        while stack and stack[-1]>ch and c[stack[-1]]>0:
+            used.remove(stack.pop())
+        stack.append(ch)
+        used.add(ch)
+    return "".join(stack)
+
+print(removeDuplicateLetters(s = "cbacdcbc"))
+"""
+
+#336. Palindrome Pairs
+def palindromePairs(words):
+    d={x:i for i,x in enumerate(words)}
+    ans=[]
+    for i in range(len(words)):
+        for j in range(len(words[i])+1):
+            tmp1=words[i][:j]
+            tmp2=words[i][j:]
+            if tmp1[::-1] in d and d[tmp1[::-1]]!=i and tmp2==tmp2[::-1]:
+                ans.append([i,d[tmp1[::-1]]])
+            if j!=0 and tmp2[::-1] in d and d[tmp2[::-1]]!=i and tmp1==tmp1[::-1]:
+                ans.append([d[tmp2[::-1]],i])
+    return ans
+print(palindromePairs(words = ["abcd","dcba","lls","s","sssll"]))
