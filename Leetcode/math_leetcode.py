@@ -1319,3 +1319,19 @@ def smallestRangeII(A, K):
         return d
 print(smallestRangeII(A = [1,3,6], K = 3))
 """
+
+#276. Paint Fence
+"""
+def numWays(n, k):
+    import math
+    if n==1:
+        return k
+    if k==1:
+        return 1 if n==1 else 0
+    ans=0
+    for x in range(math.ceil(n/2),n):
+        ans+=k*(k-1)**(x-1)*math.comb(x,n-x)
+    ans+=k*(k-1)**(n-1)
+    return ans
+print(numWays(10,2))
+"""
