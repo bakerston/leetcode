@@ -379,3 +379,114 @@ def maxResult(nums, k):
     return ans
 print(maxResult(nums = [1,-1,-2,4,-7,3], k = 2))
 """
+
+#5621. Number of Students Unable to Eat Lunch
+
+#def cnts(students, sandwiches):
+#    import collections
+#    c=collections.Counter(students)
+#    ans=0
+#    for x in sandwiches:
+#        if c[x]>0:
+#            c[x]-=1
+#            ans+=1
+#        else:
+#            break
+#    return len(students)-ans
+#print(cnts(students = [1,1,1,0,0,1], sandwiches = [1,0,0,0,1,1]))
+
+
+#5622. Average Waiting Time
+"""
+def averageWaitingTime(customers):
+    n=len(customers)
+    if n==1:
+        return customers[0][1]
+    cur=customers[0][0]
+    ans=0
+    for s,t in customers:
+        if s>=cur:
+            ans+=t
+            cur=s+t
+        else:
+            ans+=cur-s+t
+            cur+=t
+    return ans/n
+print(averageWaitingTime(customers = [[5,2],[5,4],[10,3],[20,1]]))
+"""
+
+#5623. Maximum Binary String After Change
+"""
+def maximumBinaryString(binary):
+    import itertools
+    import collections
+    c=collections.Counter(binary)
+    if '0' in c.keys():
+        if c['0']==1:
+            return binary
+        else:
+            numz=c['0']
+            numo=c['1']
+            i=binary.index('0')
+            return '1'*(i+numz-1)+'0'+'1'*(len(binary)-i-numz)
+    else:
+        return binary
+print(maximumBinaryString("000110"))
+"""
+
+#5637. Determine if String Halves Are Alike]
+"""
+def halvesAreAlike(s):
+    d=set(['a','e','i','o','u','A','E','I','O','U'])
+    def getvo(s):
+        ans=0
+        for x in s:
+            if x in d:
+                ans+=1
+        return ans
+    n=len(s)
+    return getvo(s[:n//2])==getvo(s[n//2:])
+print(halvesAreAlike(s = "AbCdEfGh"))
+"""
+
+#5638. Maximum Number of Eaten Apples
+def eatenApples(apples, days):
+    import heapq
+    cur=0
+    base=[[apples[s],s+e-1] for s,e in enumerate(days) if apples[s]!=0]
+    q=[]
+
+
+    return base
+print(eatenApples( apples = [1,2,0,5,2], days = [3,2,0,4,2]))
+
+
+#5210. Where Will the Ball Fall
+"""
+def findBall(grid):
+    ans=[]
+    n=len(grid)
+    m=len(grid[0])
+
+    for x in range(m):
+        cur=x
+        y=0
+        while cur>=0 and y<n:
+            if grid[y][cur]==1:
+                if cur==m-1 or grid[y][cur+1]==-1:
+                    cur=-1
+                    break
+                else:
+                    cur+=1
+            if grid[y][cur]==-1:
+                if cur==0 or grid[y][cur-1]==1:
+                    cur=-1
+                    break
+                else:
+                    cur-=1
+            y+=1
+        ans.append(cur)
+        print(x,ans)
+    return ans
+print(findBall([[-1]]))
+""" 
