@@ -2785,6 +2785,7 @@ print(kEmptySlots( bulbs = [1,2,3], k = 1))
 """
 
 #1582. Special Positions in a Binary Matrix
+"""
 def numSpecial(mat):
     isin=set()
     imul=set()
@@ -2818,4 +2819,70 @@ print(numSpecial(mat = [[0,0,0,0,0],
               [0,1,0,0,0],
               [0,0,1,0,0],
               [0,0,0,1,1]]))
-                
+                """
+
+
+
+#723. Candy Crush
+"""
+def candyCrush(board):
+    crush=set()
+    while True:
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                if j>1 and board[i][j] and board[i][j]==board[i][j-1]==board[i][j-2]:
+                    crush |= {(i,j),(i,j-1),(i,j-2)}
+                if i>1 and board[i][j] and board[i][j]==board[i-1][j]==board[i-2][j]:
+                    crush |= {(i,j),(i-1,j),(i-2,j)}
+        if not crush:
+            break
+        for i,j in crush:
+            board[i][j]=0
+
+        #drop
+        for j in range(len(board[0])):
+            idx=len(board)-1
+            for i in reversed(range(len(board))):
+                if board[i][j]:
+                    board[idx][j]=board[i][j]
+                    idx-=1
+            for i in range(idx+1):
+                board[i][j]=0
+        return board
+print(candyCrush([[110,5,112,113,114],[210,211,5,213,214],[310,311,3,313,314],[410,411,412,5,414],[5,1,512,3,3],[610,4,1,613,614],[710,1,2,713,714],[810,1,2,1,1],[1,1,2,2,2],[4,1,4,4,1014]]
+))
+"""
+
+#1708. Largest Subarray Length K
+"""
+def largestSubarray(nums, k):
+    if k==len(nums):
+        return nums
+    idx=0
+    for i in range(1,len(nums)-k+1):
+        idx=i if nums[i]>nums[idx] else idx
+    return nums[idx:idx+k]
+print(largestSubarray( nums = [1,4,5,2,3], k = 3))
+"""
+
+#239. Sliding Window Maximum
+def maxSlidingWindow(nums, k):
+    import collections
+    dq=collections.deque()
+    ans=[]
+    if not nums:
+        return ans
+    if k==0:
+        return nums
+    for i in range(k):
+        while len(dq)!=0:
+            if nums[i]>nums[dq[-1]]:
+                dq.pop()
+            else:
+                break
+        dq.append(i)
+    return dq
+print(maxSlidingWindow( nums = [1,2,1,2,3,1,0,-1,-3,5,3,6,7], k = 7))
+
+
+
