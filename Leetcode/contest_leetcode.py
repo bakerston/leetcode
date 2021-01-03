@@ -450,15 +450,7 @@ print(halvesAreAlike(s = "AbCdEfGh"))
 """
 
 #5638. Maximum Number of Eaten Apples
-def eatenApples(apples, days):
-    import heapq
-    cur=0
-    base=[[apples[s],s+e-1] for s,e in enumerate(days) if apples[s]!=0]
-    q=[]
 
-
-    return base
-print(eatenApples( apples = [1,2,0,5,2], days = [3,2,0,4,2]))
 
 
 #5210. Where Will the Ball Fall
@@ -490,3 +482,95 @@ def findBall(grid):
     return ans
 print(findBall([[-1]]))
 """ 
+
+#5641. Maximum Units on a Truck
+"""
+def maximumUnits(boxTypes, truckSize):
+    boxTypes.sort(key=lambda x:x[1],reverse=True)
+    ans=0
+    n=truckSize
+    for b,v in boxTypes:
+        if  n>b:
+            ans+=b*v
+            n-=b
+        else:
+            ans+=n*v
+            return ans
+    return ans
+print(maximumUnits([[5,10],[2,5],[4,7],[3,9]],
+10))
+"""
+
+#5642. Count Good Meals
+"""
+def countPairs(deliciousness):
+    import collections
+    c=collections.Counter(deliciousness)
+    ans=0
+    for x in c.keys():
+        for index in range(22):
+            if 2**index-x in c and 2**index-x>=x:
+                if 2**index-x==x:
+                    ans+=(c[x]*(c[x]-1))//2
+                else:
+                    ans+=c[x]*c[2**index-x]
+    print(c)
+    return ans%(10**9+7)
+print(countPairs([149,107,1,63,0,1,6867,1325,5611,2581,39,89,46,18,12,20,22,234]))
+"""
+
+#5643. Ways to Split Array Into Three Subarrays
+"""
+def waysToSplit(nums):
+    import bisect
+    import math
+    l=[0]*(len(nums))
+    for i in range(1,len(nums)):
+        l[i]=l[i-1]+nums[i-1]
+    l=l[1:]
+    s=sum(nums)
+    print(l)
+    for i in range(len(l)-1,-1,-1):
+        if l[i]<=2*s/3 and i>0:
+            ans=0
+            print(i)
+            while i>0:
+                cur=l[i]
+                hf=cur//2
+                j=bisect.bisect_right(l,hf)
+                k=bisect.bisect_left(l,hf)
+                print(i,j,k)
+                if j>0:
+                    if k>0:
+                        ans+=j-k+1
+                    else:
+                        ans+=j-k
+                i-=1
+
+            return ans              
+    return -1
+print(waysToSplit([1,2,2,2,5,0]))
+
+"""
+#5644. Minimum Operations to Make a Subsequence
+
+def minOperations(target, arr):
+    import collections
+    import bisect
+    d={x:i for i,x in enumerate(target)}
+    res=[]
+    for x in arr:
+        if x in d:
+            res.append(d[x])
+       
+    s = []
+    for r in res:
+        pos = bisect.bisect_left(s, r)
+        if pos == len(s):
+            s.append(r)
+        else:
+            s[pos] = r
+    return len(target)-len(s)
+print(minOperations(target = [6,4,8,1,3,2], arr = [4,7,6,2,3,8,6,1]))
+
+                    
