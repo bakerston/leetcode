@@ -1006,6 +1006,7 @@ print(removeDuplicateLetters(s = "cbacdcbc"))
 """
 
 #336. Palindrome Pairs
+"""
 def palindromePairs(words):
     d={x:i for i,x in enumerate(words)}
     ans=[]
@@ -1019,3 +1020,210 @@ def palindromePairs(words):
                 ans.append([d[tmp2[::-1]],i])
     return ans
 print(palindromePairs(words = ["abcd","dcba","lls","s","sssll"]))
+"""
+
+#1698. Number of Distinct Substrings in a String
+"""
+def countDistinct(s):
+    n=len(s)
+    ans=0
+    for i in range(1,n+1):
+        cur=set()
+        for st in range(n):
+            if st+i<=n and s[st:st+i] not in cur:
+                cur.add(s[st:st+i])
+                ans+=1
+        print(cur)
+    return ans
+print(countDistinct("aabbaba"))
+"""
+    
+#953. Verifying an Alien Dictionary
+"""
+def isAlienSorted(words, order):
+    d={x:i for i,x in enumerate(order)}
+    def oldd(w):
+        ans=""
+        for x in w:
+            ans+=chr(97+d[x])
+        return ans
+    l=ans=[oldd(x) for x in words]
+    return sorted(l)==ans 
+print(isAlienSorted(words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"))
+"""
+
+#443. String Compression
+"""
+def compress(chars):
+    if len(chars)<2:
+        return len(chars)
+    i=0
+    while i<len(chars)-1:
+        cnt=1
+        while i<len(chars)-1 and chars[i]==chars[i+1]:
+            cnt+=1
+            del chars[i]
+            print(chars)
+        if cnt>1:
+            cnt=str(cnt)
+            n=len(cnt)
+            for j in range(n):
+                chars.insert(i+1+j,cnt[j]) 
+            i+=n+1
+        else:
+            i+=1
+    print(chars)
+    return len(chars)
+print(compress(chars = ["a","a","a","a","c","c","c"]))
+"""
+
+#811. Subdomain Visit Count
+"""
+def subdomainVisits(cpdomains):
+    import collections
+    d=collections.defaultdict(int)
+    for c in cpdomains:
+        num=c.split(" ")[0]
+        st=c.split(" ")[1].split(".")
+        for x in range(len(st)):
+            tmp=".".join(st[x:])
+            d[tmp]+=int(num)
+    return [ str(d[i])+" "+i for i in d]
+print(subdomainVisits(["900 google.mail.com", "50 yahoo.com", "1 intel.mail.com", "5 wiki.org"]))
+"""
+
+#592. Fraction Addition and Subtraction
+"""
+def fractionAddition(expression):
+    import re
+    nu=re.split(r'\+|\-',expression)
+    al=re.split(r'(\+|\-)',expression)
+    res=1
+    for x in nu:
+        if x:
+            res*=int(re.split(r'/',x)[1])
+    ans=0
+
+    if al[0]=="":
+        for x in range(2,len(al),2):
+            t,d=re.split(r'/',al[x])
+            if al[x-1]=="-":
+                ans-=int(t)*res//int(d)
+            else:
+                ans+=int(t)*res//int(d)
+    else:
+
+        for x in range(0,len(al),2):
+            print(x)
+            t,d=re.split(r'/',al[x])
+            print(t,d)
+            if x>0 and al[x-1]=="-":
+                ans-=int(t)*res//int(d)
+            else:
+                ans+=int(t)*res//int(d)
+    def computeGCD(x, y): 
+        while(y): 
+            x, y = y, x % y 
+        return x
+    if ans==0:
+        return ""
+    s=""
+    k=computeGCD(ans,res)
+    s+=str(ans//k)+"/"+str(res//k)
+    return s
+
+
+print(fractionAddition("2/2-5/3+1/3"))
+"""
+
+#1220. Count Vowels Permutation
+"""
+def countVowelPermutation(n):
+    if n==1:
+        return 5
+    a=e=i=o=u=1
+    for x in range(1,n):
+        a,e,i,o,u=u+i+e,i+a,e+o,i,i+o
+    return (a+e+i+o+u)%(10**9+7)
+print(countVowelPermutation(4545))
+"""
+
+#68. Text Justification
+"""
+def fullJustify(words, maxWidth):
+    cur,st,i,ans=len(words[0]),0,1,[]
+    while i<len(words):
+        while i<len(words) and  cur+len(words[i])+1<=maxWidth:
+            cur+=len(words[i])+1
+            i+=1
+        print(st,i)
+        if i==len(words):
+            tmp=""
+            for x in range(st,i):
+                tmp+=words[x]+" "
+            if len(tmp)>maxWidth:
+                ans.append(tmp[:maxWidth])
+            else:
+                ans.append(tmp+" "*(maxWidth-len(tmp)))
+            return ans
+        else:
+            if i-st==1:
+                ans.append(words[st]+""*(maxWidth-len(words[st])))
+            else:
+                gap=i-st-1
+                print(words[st:i])
+                sp=maxWidth-sum(map(len,words[st:i]))
+                nor=sp//gap
+                mor=sp%gap
+                tmp=""
+                for x in range(mor):
+                    tmp+=words[st+x]+" "*(nor+1)
+                for x in range(mor,gap):
+                    tmp+=words[st+x]+" "*nor
+                tmp+=words[st+gap]
+                ans.append(tmp)
+        st=i
+        cur=len(words[st])
+        i+=1
+    if i==len(words):
+        ans.append(words[i-1]+" "*(maxWidth-len(words[st])))
+        return ans
+
+print(fullJustify(["Science","is","what","we","understand","well","enough","to","explain","to","a","computer.","Art","is","everything","else","we","do"],
+20))
+"""
+
+#1163. Last Substring in Lexicographical Order
+"""
+def lastSubstring(s):
+    m="a"
+    for x in s:
+        if x>m:
+            m=x
+    ans=""
+    for x in range(len(s)):
+        if s[x]==m:
+            ans=max(ans,s[x:])
+    return ans
+print(lastSubstring("babzfdsaba"))
+"""
+
+#1239. Maximum Length of a Concatenated String with Unique Characters
+"""
+def maxLength(arr):
+    dp=[set()]
+    for a in arr:
+        if len(set(a))<len(a):
+            continue
+        a=set(a)
+        for c in dp[:]:
+            if a&c:
+                continue
+            dp.append(a|c)
+    return max(len(a) for a in dp)
+print(maxLength(arr = ["cha","r","act","ers"]))
+"""
+
+
+        
+
