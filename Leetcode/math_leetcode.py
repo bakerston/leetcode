@@ -1335,3 +1335,80 @@ def numWays(n, k):
     return ans
 print(numWays(10,2))
 """
+
+#1283. Find the Smallest Divisor Given a Threshold
+"""
+def smallestDivisor(nums, threshold):
+    import math
+    i=1
+    j=max(nums)
+    while i<j:
+        print(i,j)
+        m=i+(j-i)//2
+        res=sum(map(lambda x:math.ceil(x/m),nums))
+        if res>threshold:
+            i=m+1
+        else:
+            j=m
+    return i
+print(smallestDivisor(nums = [1,2,5,9], threshold = 6))
+"""
+
+#1326. Minimum Number of Taps to Open to Water a Garden
+"""
+def minTaps(n, ra):
+    st=[]
+    for p in range(len(ra)):
+        if not ra[p]:
+            continue
+        else:
+            l,r=p-ra[p],p+ra[p]
+            if not st:
+                pass
+            else:
+                if r<=st[-1][1]:
+                    continue
+                elif l>=st[-1][0] and st[-1][1]>=n:
+                    continue
+                else:
+                    if l<=0:
+                        st=[]
+                    else:
+                        while st and l<=st[-1][0]:
+                            st.pop()
+                        while len(st)>=2 and l<=st[-2][1]:
+                            st.pop()
+            st.append([l,r])
+    if not st:
+        return -1
+    if len(st)==1:
+        if st[0][0]>0 or st[0][1]<n:
+            return -1
+        else:
+            return 1
+    else:
+        if not any(x[0]<=0 for x in st) or not any(x[1]>=n for x in st):
+            return -1
+        else:
+            for z in range(1,len(st)):
+                if st[z][0]>st[z-1][1]:
+                    return -1
+            return len(st)
+
+print(minTaps(
+10,
+[0,2,0,0,0,0,0,2,0,0,1]))
+"""
+
+
+#869. Reordered Power of 2
+def reorderedPowerOf2(N):
+    import collections
+    c=collections.Counter(str(N))
+    n=1
+    while len(str(n))<=len(str(N)):
+        if collections.Counter(str(n))==c:
+            return True
+        n*=2
+    return False
+print(reorderedPowerOf2(1214124))
