@@ -1225,5 +1225,155 @@ print(maxLength(arr = ["cha","r","act","ers"]))
 """
 
 
-        
+#929. Unique Email Addresses
+"""
+def numUniqueEmails(emails):
+    seen=set()
+    for e in emails:
+        a,b=e.split("@")
+        dom=a.split("+")[0]
+        ans="".join(dom.split("."))
+        cur=tuple([ans,b])
+        if cur not in seen:
+            seen.add(cur)
+    return len(seen)
+print(numUniqueEmails(["test.email+alex@leetcode.com","test.e.mail+bob.cathy@leetcode.com","testemail+david@lee.tcode.com"]))
+"""
+"""
+def totalFruit(tree):
+    import collections
+    d=collections.defaultdict(int)
+    n=len(tree)
+    if n<3:
+        return n
+    i,j=0,1
+    d[tree[i]]+=1
+    ans=1
+    while j<n:
+        d[tree[j]]+=1
+        while len(d)>2:
+            d[tree[i]]-=1
+            if d[tree[i]]==0:
+                del d[tree[i]]
+            i+=1
+        ans=max(ans,sum(d.values()))
+        j+=1
+    while len(d)>2:
+        d[tree[i]]-=1
+        if d[tree[i]]==0:
+            del d[tree[i]]
+        i+=1
+    ans=max(ans,sum(d.values()))
+    return ans
+print(totalFruit([3,3,3,1,2,1,1,2,3,3,4]))
 
+"""
+
+#640. Solve the Equation
+"""
+import re
+def solveEquation(equation):
+    l,r=equation.split("=")
+    def getxn(str):
+        n=0
+        x=0
+        ds=re.split('(\+|\-)',str)
+        s=[x for x in ds if x!=""]
+        print("S=",len(s))
+        print(s)
+        if "+" not in s[0] and "-" not in s[0]:
+            print("istime1")
+            for idx in range(0,len(s),2):
+                if "x" in s[idx]:
+                    print("istime2")
+                    if idx==0 or s[idx-1]=="+":
+                        print("istime")
+                        if len(s[idx])==1:
+                            x+=1
+                        else:
+                            x+=int(s[idx][:-1])
+                    else:
+                        if len(s[idx])==1:
+                            x-=1
+                        else:
+                            x-=int(s[idx][:-1])
+                else:
+                    if idx==0:
+                        n+=int(s[idx])
+                    else:
+                        n+=int(s[idx-1]+s[idx])
+        else:
+            for idx in range(1,len(s),2):
+                if "x" in s[idx]:
+                    if s[idx-1]=="+":
+                        if len(s[idx])==1:
+                            x+=1
+                        else:
+                            x+=int(s[idx][:-1])
+                    else:
+                        if len(s[idx])==1:
+                            x-=1
+                        else:
+                            x-=int(s[idx][:-1])
+                else:
+                    n+=int(s[idx-1]+s[idx])
+        return n,x
+    ln,lx=getxn(l)
+    rn,rx=getxn(r)
+    print(ln,lx)
+    print(rn,rx)
+    tn=ln-rn
+    tx=lx-rx
+    print(tx,tn)
+    if tx==0:
+        return "Infinite solutions" if tn==0 else "No solution"
+    elif tn==0:
+        return "x=0" 
+    else:
+        return "x="+str(-tn//tx)
+
+
+print(solveEquation("-x=-1"))
+
+"""
+
+
+#93. Restore IP Addresses
+def restoreIpAddresses(s):
+    
+    ans=[]
+    def getip(pre,num,suf):
+        print(pre,num,suf)
+        if num==0:
+            if int(suf)<256 and not (len(suf)>1 and suf[0]=="0"):
+                pre.append(suf)
+                ans.append(pre)
+            else:
+                return
+        elif num>=len(suf):
+            return
+        else:
+            print("istime")
+            getip(pre+[suf[0]],num-1,suf[1:])
+            if len(suf)>2:
+                getip(pre+[suf[:2]],num-1,suf[2:])
+            if len(suf)>3 and int(suf)<256:
+                getip(pre+[suf[:3]],num-1,suf[3:])
+    getip([],3,s)
+    return ans
+    """
+    res=[]
+    def track(current,start):
+        if len(current)==4 and start==len(s):
+            res.append(".".join(current))
+            return
+        if len(current) > 4:
+            return
+        for i in range(start,min(start+3,len(s))):
+            if s[start]=='0' and i>start:
+                continue
+            if int(s[start:i+1])<=255:
+                track(current+[s[start:i+1]],i+1)
+    track([],0)
+    return res"""
+print(restoreIpAddresses(s = "25525511135"))
