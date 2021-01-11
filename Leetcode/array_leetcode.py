@@ -2866,6 +2866,7 @@ print(largestSubarray( nums = [1,4,5,2,3], k = 3))
 """
 
 #239. Sliding Window Maximum
+"""
 def maxSlidingWindow(nums, k):
     import collections
     dq=collections.deque()
@@ -2883,6 +2884,57 @@ def maxSlidingWindow(nums, k):
         dq.append(i)
     return dq
 print(maxSlidingWindow( nums = [1,2,1,2,3,1,0,-1,-3,5,3,6,7], k = 7))
+"""
 
+#981. Time Based Key-Value Store
+"""
+class TimeMap:
+
+    def __init__(self):
+
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        
+
+    def get(self, key: str, timestamp: int) -> str:
+        """
+#1260. Shift 2D Grid
+"""
+def shiftGrid(grid,k):
+    m=len(grid)
+    n=len(grid[0])
+    tmp=[[0]*n for _ in range(m)]
+    for i in range(k):
+        for y in range(m):
+            for x in range(n-1):
+                tmp[y][x+1]=grid[y][x]
+        for y in range(1,m):
+            tmp[y][0]=grid[y-1][n-1]
+        tmp[0][0]=grid[m-1][n-1]
+        grid,tmp=tmp,grid
+    return grid
+print(shiftGrid(grid = [[3,8,1,9],[19,7,2,5],[4,6,11,10],[12,0,21,13]], k = 4))
+"""
+
+
+#915. Partition Array into Disjoint Intervals
+def partitionDisjoint(A):
+    n=len(A)
+    if n==2:
+        return 1
+    res=[]
+    cur=A[0]
+    for idx in range(1,n-1):
+        cur=max(cur,A[idx-1])
+        res.append(cur)
+    rmin=A[-1]
+    ans=1
+    print("res=",res)
+    for x in reversed(range(len(res))):
+        rmin=min(rmin,A[x+1])
+        if rmin>=res[x]:
+            ans=max(ans,n-x-1)
+    return n-ans
+print(partitionDisjoint([1,1,1,0,6,12]))
 
 
