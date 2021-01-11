@@ -530,39 +530,35 @@ def waysToSplit(nums):
     l=l[1:]
     s=sum(nums)
     print(l)
-    for i in range(len(l)-1,-1,-1):
-        if l[i]<=2*s/3 and i>0:
-            ans=0
-            print(i)
-            while i>0:
-                cur=l[i]
-                hf=cur//2
-                j=bisect.bisect_right(l,hf)
-                k=bisect.bisect_left(l,hf)
-                print(i,j,k)
-                if j>0:
-                    if k>0:
-                        ans+=j-k+1
-                    else:
-                        ans+=j-k
-                i-=1
-
-            return ans              
-    return -1
+    ans=0
+    i=bisect.bisect_right(l,(s*2)//3)
+    while i>1:
+        cur=l[i-1]
+        min_l=max(0,cur-(s-cur))
+        max_l=cur//2
+        le=bisect.bisect_left(l,min_l)
+        ri=bisect.bisect_right(l,max_l)
+        print(l,i,le,ri)
+        if ri==0:
+            continue
+        else:
+            ans=ans+ri-le+1 if le!=0 else ans+ri-le          
+        i-=1
+    return ans
 print(waysToSplit([1,2,2,2,5,0]))
-
 """
-#5644. Minimum Operations to Make a Subsequence
 
+#5644. Minimum Operations to Make a Subsequence
+"""
 def minOperations(target, arr):
     import collections
     import bisect
+
     d={x:i for i,x in enumerate(target)}
     res=[]
     for x in arr:
         if x in d:
-            res.append(d[x])
-       
+            res.append(d[x])  
     s = []
     for r in res:
         pos = bisect.bisect_left(s, r)
@@ -572,5 +568,169 @@ def minOperations(target, arr):
             s[pos] = r
     return len(target)-len(s)
 print(minOperations(target = [6,4,8,1,3,2], arr = [4,7,6,2,3,8,6,1]))
+"""
 
-                    
+#5633. Calculate Money in Leetcode Bank
+"""
+def totalMoney(n):
+    w=n//7
+    d=n%7
+    ans=0
+    ans+=(28+28+7*(w-1))*w//2
+    ans+=(1+d)*d//2+d*w
+    return ans
+print(totalMoney(10))
+"""
+
+#5634. Maximum Score From Removing Substrings
+"""
+def maximumGain(s, x, y):
+    st, ans = [], 0
+    st2 = []
+    #ab>=ba
+    if x >= y:
+        for ch in s:
+            if ch =="b":
+                if not st or st[-1] != "a":
+                    st.append(ch)
+                else:
+                    st.pop()
+                    ans+=x
+            else:
+                st.append(ch)
+        while st:
+            ch = st.pop()
+            if ch =="b":
+                if st2 and st2[-1] == "a":
+                    st2.pop()
+                    ans+=y
+            else:
+                st2.append(ch)
+    else:
+        for ch in s:
+            if ch =="a":
+                if not st or st[-1] != "b":
+                    st.append(ch)
+                else:
+                    st.pop()
+                    ans+=x
+            else:
+                st.append(ch)
+        print(ans, st)
+        while st:
+            ch = st.pop()
+            if ch =="a":
+                if st2 and st2[-1] == "b":
+                    st2.pop()
+                    ans+=y
+            else:
+                st2.append(ch)
+
+    return ans
+print(maximumGain(s = "cdbcbbaaabab", x = 4, y = 5))
+"""
+
+#5635. Construct the Lexicographically Largest Valid Sequence
+#MM
+"""
+    if n == 1:
+        return [1]
+    if n == 2:
+        return [2,1,2]
+    ans=[]
+    if n%2==0:
+        for num in range(n,1,-2):
+            ans.append(num)
+        ans.append(n-1)
+        for num in range(2,n+1,2):
+            ans.append(num)
+        for num in range(n-3,1,-2):
+            ans.append(num)
+        ans.append(n-1)
+        ans.append(1)
+        for num in range(3,n-1,2):
+            ans.append(num)
+    else:
+        for num in range(n,1,-2):
+            ans.append(num)
+        ans.append(1)
+        ans.append(n-1)
+        for num in range(3,n+1,2):
+            ans.append(num)
+        for num in range(n-3,1,-2):
+            ans.append(num)
+        ans.append(n-1)
+        for num in range(2,n-2,2):
+            ans.append(num)
+    return ans
+"""
+
+
+#print(constructDistancedSequence(2))
+
+#5649. Decode XORed Array
+"""
+def decode(encoded, first):
+    def getxor(num,res):
+        n=bin(num)[2:]
+        r=bin(res)[2:]
+        if len(n)>=len(r):
+            r="0"*(len(n)-len(r))+r
+        else:
+            n="0"*(len(r)-len(n))+n
+        ans=""
+        for x in range(len(r)):
+            if r[x]=="0":
+                ans+=n[x]
+            else:
+                ans+="1" if n[x]=="0" else "0"
+        return int(ans,2) 
+    ans=[first]
+    for x in range(len(encoded)):
+        ans.append(getxor(ans[-1],encoded[x]))
+    return ans
+print(decode(encoded = [6,2,7,3], first = 4))
+"""
+
+#5650. Minimize Hamming Distance After Swap Operations
+"""
+def minimumHammingDistance(source, target, allowedSwaps):
+    import collections
+    class UF:
+        def __init__(self,n):
+            self.p=list(range(n))
+        def union(self,x,y):
+            self.p[self.find(x)]=self.find(y)
+        def find(self,x):
+            if x!= self.p[x]:
+                self.p[x]=self.find(self.p[x])
+            return self.p[x]
+    uf=UF(len(source))
+    res=[]
+    m=collections.defaultdict(list)
+    for x,y in allowedSwaps:
+        uf.union(x,y)
+    for i in range(len(source)):
+        m[uf.find(i)].append(i)
+    ans=0
+    print(res)
+    print(m)
+    for x in m.keys():
+        sset=collections.defaultdict(int)
+        tset=collections.defaultdict(int)
+        for idx in m[x]:
+            sset[source[idx]]+=1
+            tset[target[idx]]+=1
+        print(sset,tset)
+        for k in sset.keys():
+            ans+=min(sset[k],tset[k])
+        print(ans)
+    return len(source)-ans
+print(minimumHammingDistance([50,46,54,35,18,42,26,72,75,47,50,4,54,21,18,18,61,64,100,14],
+[83,34,43,73,61,94,10,68,74,31,54,46,28,60,18,18,4,44,79,92],
+[[1,8],[14,17],[3,1],[17,10],[18,2],[7,12],[11,3],[1,15],[13,17],[18,19],[0,10],[15,19],[0,15],[6,7],[7,15],[19,4],[7,16],[14,18],[8,10],[17,0],[2,13],[14,10],[12,17],[2,9],[6,15],[16,18],[2,16],[2,6],[4,5],[17,5],[10,13],[7,2],[9,16],[15,5],[0,5],[8,0],[11,12],[9,7],[1,0],[11,17],[4,6],[5,7],[19,12],[3,18],[19,1],[13,18],[19,6],[13,6],[6,1],[4,2]]))
+"""
+
+#5639. Find Minimum Time to Finish All Jobs
+
+    
