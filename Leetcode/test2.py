@@ -11,7 +11,25 @@ import functools
 import collections
 import re
 import itertools
+"""
+a=collections.defaultdict(int)
+a["A"]=2
+a["B"]=3
+a["F"]=2
+print(a)
+print(a["C"])
+alist=["A","C","F","B"]
+alist.sort(key=lambda x: -a[x])
 
-
-a="/a/d/c/cd"
-print(a.find("/a/b/c/cd/dad/"))
+base1=["A","A","F","F","C"]
+a=collections.Counter(base1)
+base2=["F"]
+b=collections.Counter(base2)
+alist=["A","C","F","B"]
+alist.sort(key=lambda x: [-a[x],-b[x]])
+print(alist)
+z=[base1,base2]
+print(list(map(collections.Counter(), z)))
+"""
+a=[1,2,3]
+print(any(x==3 for x in a))
