@@ -2918,6 +2918,7 @@ print(shiftGrid(grid = [[3,8,1,9],[19,7,2,5],[4,6,11,10],[12,0,21,13]], k = 4))
 
 
 #915. Partition Array into Disjoint Intervals
+"""
 def partitionDisjoint(A):
     n=len(A)
     if n==2:
@@ -2936,5 +2937,69 @@ def partitionDisjoint(A):
             ans=max(ans,n-x-1)
     return n-ans
 print(partitionDisjoint([1,1,1,0,6,12]))
+
+"""
+
+#881. Boats to Save People
+"""
+def numRescueBoats(people, limit):
+    people.sort()
+    ans = 0 
+    i, j = 0, len(people) - 1
+    while i < j:
+        if limit - people[j] >= people[i]:
+            i += 1
+        j -= 1
+        ans += 1
+    if i == j:
+        ans += 1
+    return ans
+print(numRescueBoats(people = [3,2,2,1], limit = 3))
+"""
+
+#1052. Grumpy Bookstore Owner
+"""
+def maxSatisfied(customers, grumpy, X):
+    res = []
+    for c, g in zip(customers, grumpy):
+        if g == 0:
+            res.append(c)
+        else:
+            res.append(-c) 
+    tmp = sum(x for x in res if x > 0)
+    for i in range(X):
+        if res[i] < 0:
+            tmp += abs(res[i])
+    ans = tmp
+    for idx in range(len(res) - X):
+        if res[idx] < 0:
+            tmp -= abs(res[idx])
+        if res[idx + X] < 0:
+            tmp += abs(res[idx + X])
+        ans = max(ans, tmp)
+    return ans
+print(maxSatisfied())
+"""
+#926. Flip String to Monotone Increasing
+def minFlipsMonoIncr(S):
+    import collections
+    c = collections.Counter(S)
+    if max(c.values()) == len(S):
+        return 0
+    res = [0]
+    curs=0
+    for s in S[:-1]:
+        if s == "0":
+            curs += 1
+        res.append(curs)
+    ans = len(S)
+    for idx in range(len(S)):
+        ans = min(ans, idx - res[idx] + c["0"] - res[idx])
+    ans = min(ans, min(c.values()))
+    return ans
+print(minFlipsMonoIncr("00011000"))
+
+
+
 
 
