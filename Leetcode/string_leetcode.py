@@ -1339,29 +1339,9 @@ print(solveEquation("-x=-1"))
 
 
 #93. Restore IP Addresses
+"""
 def restoreIpAddresses(s):
     
-    ans=[]
-    def getip(pre,num,suf):
-        print(pre,num,suf)
-        if num==0:
-            if int(suf)<256 and not (len(suf)>1 and suf[0]=="0"):
-                pre.append(suf)
-                ans.append(pre)
-            else:
-                return
-        elif num>=len(suf):
-            return
-        else:
-            print("istime")
-            getip(pre+[suf[0]],num-1,suf[1:])
-            if len(suf)>2:
-                getip(pre+[suf[:2]],num-1,suf[2:])
-            if len(suf)>3 and int(suf)<256:
-                getip(pre+[suf[:3]],num-1,suf[3:])
-    getip([],3,s)
-    return ans
-    """
     res=[]
     def track(current,start):
         if len(current)==4 and start==len(s):
@@ -1375,5 +1355,58 @@ def restoreIpAddresses(s):
             if int(s[start:i+1])<=255:
                 track(current+[s[start:i+1]],i+1)
     track([],0)
-    return res"""
-print(restoreIpAddresses(s = "25525511135"))
+    return res
+print(restoreIpAddresses(s = "25525511135"))"""
+
+
+#1405. Longest Happy String
+
+#1271. Hexspeak
+"""
+def toHexspeak(num):
+    s=hex(num)[2:].upper()
+    fb=set([2,3,4,5,6,7,8,9])
+    ans=""
+    for x in range(len(s)):
+        if s[x] in fb:
+            return "ERROR"
+        elif s[x] == "1":
+            ans+="I"
+        elif s[x] =="0":
+            ans+="O"
+        else:
+            ans+=s[x]
+    return ans
+print(toHexspeak(2588))
+"""
+
+#1297. Maximum Number of Occurrences of a Substring
+"""
+def maxFreq(s, maxLetters, minSize, maxSize):
+    import collections
+    d=collections.defaultdict(int)
+    for i in range(len(s)-minSize+1):
+        cur=s[i:i+minSize]
+        if len(collections.Counter(cur).keys())<=maxLetters:
+            d[cur]+=1
+    return max(d.values())
+print(maxFreq(s = "aabcabcab", maxLetters = 2, minSize = 2, maxSize = 3))
+"""
+
+#1247. Minimum Swaps to Make Strings Equal
+def minimumSwap(s1, s2):
+    import collections
+    if len(s1)!=len(s2) or any(x%2==1 for x in collections.Counter(s1+s2).values()):
+        return -1
+    else:
+        i,j=0,0
+        for idx in zip(s1,s2):
+            if idx[0]=="x" and idx[1]=="y":
+                i+=1
+            elif idx[1]=="x" and idx[0]=="y":
+                j+=1
+            else:
+                continue
+        print(i,j)
+        return i//2+j//2+i%2+j%2
+print(minimumSwap(s1 = "xxyyxyxyxx", s2 = "xyyxyxxxyx"))
