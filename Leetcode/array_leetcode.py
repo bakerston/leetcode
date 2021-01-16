@@ -2981,6 +2981,7 @@ def maxSatisfied(customers, grumpy, X):
 print(maxSatisfied())
 """
 #926. Flip String to Monotone Increasing
+"""
 def minFlipsMonoIncr(S):
     import collections
     c = collections.Counter(S)
@@ -2998,7 +2999,104 @@ def minFlipsMonoIncr(S):
     ans = min(ans, min(c.values()))
     return ans
 print(minFlipsMonoIncr("00011000"))
+"""
 
+#792. Number of Matching Subsequences
+"""
+def numMatchingSubseq(S, words):
+    
+"""
+
+#1007. Minimum Domino Rotations For Equal Row
+"""
+def minDominoRotations(A, B):
+    s=set(A + B)
+    for x in zip(A, B):
+        s &= set(x)
+    if not s:
+        return -1
+    res = s.pop()
+    ans = 0
+    for x in A:
+        ans += x == res
+    return min(ans, len(A) - ans)
+print(minDominoRotations(A = [3,5,1,2,3], B = [3,6,3,3,4]))
+"""
+
+#1296. Divide Array in Sets of K Consecutive Numbers
+"""
+def isPossibleDivide(nums, k):
+    import collections
+    c = collections.Counter(nums)
+    for i in sorted(c):
+        if c[i] > 0:
+            for j in range(k)[::-1]:
+                c[i + j] -= c[i]
+                if c[i + j] < 0:
+                    return False
+    return True
+    """
+
+#1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+"""
+def longestSubarray(nums, limit):
+    import heapq
+    res = []
+    heapq.heapify(res)
+    ans, cur = 0, 0
+    for n in nums:
+        if not res or n-res[0] <= limit:
+            heapq.heappush(res, n)
+            cur += 1
+            ans = max(cur, ans)
+        else:
+            while res and n-res[0] > limit:
+                heapq.heappop(res)
+                cur -= 1
+            heapq.heappush(res, n)
+            cur += 1
+            ans = max(cur, ans)
+    return ans
+print(longestSubarray(nums = [10,1,2,4,7,2], limit = 5))
+"""
+#1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+"""
+def longestSubarray(nums, limit):
+    import collections
+    d = collections.defaultdict(int)
+    i = 0
+    j = 1
+    n = len(nums)
+    d[nums[i]] = 1
+    ans = 1
+    for j in range(1, n):
+        print(j)
+        print("d=", d)
+        d[nums[j]] += 1
+        while nums[j] > min(d.keys()) + limit or nums[j] < max(d.keys()) - limit:
+            d[nums[i]] -= 1
+            if d[nums[i]] == 0:
+                del d[nums[i]]
+            i += 1
+        ans = max(ans, j - i + 1)
+    return ans
+print(longestSubarray(nums = [4,2,2,2,4,4,2,2], limit = 0))
+"""
+
+#775. Global and Local Inversions
+"""
+def isIdealPermutation(A):
+    n = len(A)
+    if n <= 2:
+        return True
+    cur = 0
+    for idx in range(2, n):
+        cur = max(cur, A[idx-2])
+        if cur > A[idx]:
+            return False
+    return True
+print(isIdealPermutation([1,0,2]))
+"""
 
 
 
