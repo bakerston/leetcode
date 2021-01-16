@@ -224,6 +224,7 @@ print(maxA(12))
 """
 
 #673. Number of Longest Increasing Subsequence
+"""
 def findNumberOfLIS(nums):
     n=len(nums)
     dp=[[1,1] for _ in range(n)]
@@ -241,3 +242,89 @@ def findNumberOfLIS(nums):
         ans=max(ans,cur)
     return sum(x[1] for x in dp if x[0]==ans)
 print(findNumberOfLIS( nums = [2,2,2,2,2]))
+"""
+
+#1692. Count Ways to Distribute Candies
+"""
+def waysToDistribute(n,k):
+    
+    dp=[[1]*n for _ in range(n)]
+    for c in range(2,n):
+        for b in range(1,min(c,k)):
+            dp[c][b]=dp[c-1][b-1]+dp[c-1][b]*(b+1)
+    return dp[n-1][k-1]
+print(waysToDistribute(7,4))
+"""
+
+#91. Decode Ways
+"""
+def numDecodings(s):
+    dp=[0]*(len(s)+1)
+    dp[-1]=1
+    dp[-2]=0 if s[-1]=='0' else 1
+    for x in range(len(s)-2,-1,-1):
+        if 0<int(s[x]):
+            dp[x]=dp[x+1]
+        if 10<=int(s[x]+s[x+1])<=26:
+            dp[x]+=dp[x+2]
+    print(dp)
+    return dp[0]
+print(numDecodings("1"))
+"""
+
+#1345. Jump Game IV
+"""
+def minJumps(arr):
+    import collections
+    if len(arr)==1:
+        return 0
+    q=collections.deque()
+    seen=set()
+    m=collections.defaultdict(list)
+    d=len(arr)-1
+    mj=0
+
+    for i,x in enumerate(arr):
+        m[x].append(i)
+    
+    q.append(0)
+    seen.add(0)
+
+    while q:
+        size=len(q)
+        for i in range(size):
+            pos=q.popleft()
+            if pos==d:
+                return mj
+"""
+"""
+def countArrangement(N):
+    d={}
+    def helper(i,x):
+        if i==1:
+            return 1
+        key=(i,x)
+        if key in d:
+            return d[key]
+        ans=0
+        for j in range(len(x)):
+            if x[j]%i==0 or i%x[j]==0:
+                ans+=helper(i-1,x[:j]+x[j+1:])
+        d[key]=ans
+        return ans
+    return helper(N,tuple(range(1,N+1)))
+print(countArrangement(11))
+"""
+
+#256. Paint House
+def minCost(costs):
+    n = len(costs)
+    dp1 = [0] * (n + 1)
+    dp2 = [0] * (n + 1)
+    dp3 = [0] * (n + 1)
+    for idx in range(1, n + 1):
+        dp1[idx] = min(dp2[idx - 1], dp3[idx - 1]) + costs[idx - 1][0]
+        dp2[idx] = min(dp1[idx - 1], dp3[idx - 1]) + costs[idx - 1][1]
+        dp3[idx] = min(dp2[idx - 1], dp1[idx - 1]) + costs[idx - 1][2]
+    return min(dp1[-1], dp2[-1], dp3[-1])
+print(minCost(costs = [[17,2,17],[16,16,5],[14,3,19]]))
