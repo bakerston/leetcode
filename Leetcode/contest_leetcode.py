@@ -733,4 +733,80 @@ print(minimumHammingDistance([50,46,54,35,18,42,26,72,75,47,50,4,54,21,18,18,61,
 
 #5639. Find Minimum Time to Finish All Jobs
 
-    
+#5653. Number Of Rectangles That Can Form The Largest Square
+"""
+def countGoodRectangles(rectangles):
+    import collections
+    d = collections.defaultdict(int)
+    for r in rectangles:
+        d[min(r[0],r[1])] += 1
+    return d[max(d.keys())]
+print(countGoodRectangles( rectangles = [[5,8],[3,9],[5,12],[16,5]]))
+"""
+
+#5243. Tuple with Same Product
+"""
+def tupleSameProduct(nums):
+    import collections
+    d = collections.defaultdict(int)
+    n = len(nums)
+    if n < 4:
+        return 0
+    for i in range(n-1):
+        for j in range(i + 1, n):
+            d[nums[i] * nums[j]] += 1
+    ans = 0
+    for x in d.values():
+        if x > 1:
+            ans += ((x - 1) * x //2) * 8 
+    return ans
+print(tupleSameProduct(nums = [1,2,4,5,10]))
+"""
+
+#5655. Largest Submatrix With Rearrangements
+"""
+def largestSubmatrix(matrix):
+    n = len(matrix)
+    m = len(matrix[0])
+    if n == 1:
+        return sum(matrix[0])
+    for i in range(1, n):
+        for j in range(m):
+            matrix[i][j] = matrix[i-1][j] + 1 if matrix[i][j] == 1 else 0
+    ans = 0
+    for i in range(n):
+        tmp = matrix[i][:]
+        tmp.sort(reverse = True)
+        for j in range(m):
+            ans = max(ans , tmp[j]*(j + 1))
+
+    return ans
+
+
+
+    S = set(((0,0,0),))
+    def getset(l):
+        ans = []
+        idx = 0
+        while idx < len(l):
+            if l[idx] == 1:
+                s=idx
+                while idx < len(l) and l[idx] == 1:
+                    idx += 1
+                ans.append(tuple((s, idx - 1, 1)))
+            idx += 1
+        return ans
+    def getu(s1, s2):
+        if s1[0] > s2[1] or s1[1] < s2[0]:
+            return tuple((0,0,0))
+        else:
+            return tuple((max(s1[0] , s2[0]),  min(s1[1], s2[1]), s1[2]+s2[2]))
+    for idx in range(len(matrix[0])):
+        tmp = [matrix[i][idx] for i in range(len(matrix))]
+ 
+        if getset(tmp) != []:
+            for s in getset(tmp):
+                S |= set( getu(i , s) for i in S)
+            S |= set(getset(tmp))
+    return max((s[1]-s[0]+1)*s[2] for s in S)"""
+print(largestSubmatrix(matrix = [[0,0,1],[1,1,1],[1,0,1]]))
