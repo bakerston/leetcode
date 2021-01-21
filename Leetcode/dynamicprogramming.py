@@ -317,6 +317,7 @@ print(countArrangement(11))
 """
 
 #256. Paint House
+"""
 def minCost(costs):
     n = len(costs)
     dp1 = [0] * (n + 1)
@@ -328,3 +329,109 @@ def minCost(costs):
         dp3[idx] = min(dp2[idx - 1], dp1[idx - 1]) + costs[idx - 1][2]
     return min(dp1[-1], dp2[-1], dp3[-1])
 print(minCost(costs = [[17,2,17],[16,16,5],[14,3,19]]))
+"""
+#1049. Last Stone Weight II
+"""
+def lastStoneWeightII(stones):
+    dp = {0}
+        sumA = sum(stones)
+        for a in stones:
+            dp |= {a + i for i in dp}
+        return min(abs(sumA - 2 * i) for i in dp)
+
+print(lastStoneWeightII([1,1,2,4,7,8]))
+"""
+#1024. Video Stitching
+"""
+def videoStitching(clips, T):
+    ans = 0
+    clips.sort()
+    start, end = 0, 0
+    idx = 0
+    while start <= end:
+        ans += 1
+        newstart, newend = end + 1, end
+        while idx < len(clips) and start <= clips[idx][0] <= end:
+            newend = max(clips[idx][1], newend)
+            if newend >= T:
+                return ans
+            idx += 1
+        start, end = newstart, newend
+    return -1
+
+print(videoStitching(clips = [[0,2],[4,6],[8,10],[1,9],[1,5],[5,9]], T = 10))"""
+
+
+#221. Maximal Square
+"""
+def maximalSquare(matrix):
+    if len(matrix) == 0 or len(matrix[0]) == 0:
+        return -1
+    m, n = len(matrix), len(matrix[0])
+    dp = [[0 if matrix[i][j] == '0' else 1 for j in range(n)] for i in range(m)]
+    print(dp)
+    for i in range(1, m):
+        for j in range(1, n):
+            if matrix[i][j] == '1':
+                dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+            else:
+                dp[i][j] = 0
+    res = max(max(r) for r in dp)
+    print(dp)
+    return res ** 2
+print(maximalSquare( matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]))
+"""
+
+
+#1277. Count Square Submatrices with All Ones
+"""
+def countSquares(matrix):
+        m, n = len(matrix), len(matrix[0])
+        if m == 1:
+            return sum(matrix[0])
+        if n == 1:
+            return sum(map(lambda x:x[0], matrix))
+        ans = sum(matrix[0]) + sum(map(lambda x:x[0], matrix)) - matrix[0][0]
+        dp = [[0 if matrix[i][j] == 0 else 1 for j in range(n)] for i in range(m)]
+        for i in range(1, m):
+            for j in range(1, n):
+                if matrix[i][j] == 1:
+                    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+                    ans += dp[i][j]
+                else:
+                    dp[i][j] = 0
+        return ans
+print(countSquares(matrix =
+[
+  [0,1,1,1],
+  [1,1,1,1],
+  [0,1,1,1]
+]))
+"""
+
+#750. Number Of Corner Rectangles
+"""
+def countCornerRectangles(grid):
+    if len(grid) == 1 or len(grid[0]) == 1:
+        return 0
+    ans = 0
+    ls = []
+    for idx in range(len(grid)):
+        curset = set()
+        for i, x in enumerate(grid[idx]):
+            if x == 1:
+                curset.add(i)
+        if idx != 0:
+            for s in ls:
+                num = len(s & curset)
+                if num >= 2:
+                    ans += num * (num -1) // 2
+        ls.append(curset)
+    return ans
+print(countCornerRectangles(grid = 
+[[1, 1, 1],
+ [1, 1, 1],
+ [1, 1, 1]]))
+"""
+
+
