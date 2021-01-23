@@ -1402,6 +1402,7 @@ print(minTaps(
 
 
 #869. Reordered Power of 2
+"""
 def reorderedPowerOf2(N):
     import collections
     c=collections.Counter(str(N))
@@ -1412,3 +1413,123 @@ def reorderedPowerOf2(N):
         n*=2
     return False
 print(reorderedPowerOf2(1214124))
+"""
+
+#1256. Encode Number
+"""
+def encode(num):
+    bit = 1
+    while num > 2 ** bit:
+        num -= 2 ** bit
+        bit += 1
+    res = bin(num)[2:]
+    return "0" * (bit - len(res)) + res
+print(encode(14))
+"""
+#247. Strobogrammatic Number II
+"""
+def findStrobogrammatic(n):
+    import itertools
+    if n == 1:
+        return ["1", "8", "0"]
+    if n % 2 == 0:
+        ans = []
+        k = n // 2
+        l = ["0", "1", "8", "6", "9"] * k
+        for x in itertools.permutations(l, k):
+            pre = list(x)
+            suf = []
+            for i in pre:
+                if i == "6":
+                    suf.append("9")
+                elif i == "9":
+                    suf.append("6")
+                else:
+                    suf.append(i)
+            ans.append("".join(pre + suf[::-1]))
+    else:
+        ans = []
+        k = n // 2
+        l = ["0", "1", "8", "6", "9"] * k
+        for x in itertools.permutations(l, k):
+            pre = list(x)
+            suf = []
+            for i in pre:
+                if i == "6":
+                    suf.append("9")
+                elif i == "9":
+                    suf.append("6")
+                else:
+                    suf.append(i)
+            ans.append("".join(pre + ["8"] + suf[::-1]))
+            ans.append("".join(pre + ["1"] + suf[::-1]))
+            ans.append("".join(pre + ["0"] + suf[::-1]))
+    return list(set([x for x in ans if x[0] != "0"]))
+print(findStrobogrammatic(4))
+"""
+#1362. Closest Divisors
+"""
+def closestDivisors(num):
+    import math
+    num1 = num + 1
+    num2 = num + 2
+    ans1 = [[i, num1//i, abs(num1//i-i)] for i in range(2,int(math.sqrt(num1))+1) if num1%i==0]
+    ans2 = [[i, num2//i, abs(num2//i-i)] for i in range(2,int(math.sqrt(num2))+1) if num2%i==0]
+    return sorted(ans1 + ans2, key = lambda x:x[2])[0][:2]
+print(closestDivisors(999))
+"""
+
+#780. Reaching Points
+"""
+def reachingPoints(sx, sy, tx, ty):
+    import math
+    while  not (tx == sx and ty == sy):
+        if ty > tx :
+            if tx == sx:
+                return ty >= sy and (ty - sy) % tx == 0
+            else:
+                if math.floor((ty -sy) / tx ) == 0:
+                    return False
+                else:
+                    ty -= math.floor((ty -sy) / tx ) * tx
+        else:
+            if ty == sy:
+                return tx >= sx and (tx - sx) % ty == 0
+            else:
+                if math.floor((tx -sx) / ty ) == 0:
+                    return False
+                else:
+                    tx -= math.floor((tx -sx) / ty ) * ty
+    if tx == sx and ty == sy :
+        return True
+    else:
+        return False
+print(reachingPoints(sx = 9, sy = 10, tx = 9, ty = 29))
+"""
+#1041. Robot Bounded In Circle
+"""
+def isRobotBounded(instructions):
+    import itertools
+    d = [(0, 1), (0, 1), (0, -1), (-1, 0)]
+    idx = 0
+    pos = [0, 0]
+    ins = [(k, len(list(g))) for k, g in itertools.groupby(instructions)]
+    for i in ins:
+        if i[0] == "L":
+            idx -= i[1]
+        elif i[0] == "R":
+            idx += i[1]
+        else:
+            dx, dy = d[idx % 4]
+            pos[0] += dx * i[1]
+            pos[1] += dy * i[1]
+    if idx % 4 == 0:
+        return pos[0] ==0 and pos[1] <= 0
+    else:
+        return True
+print(isRobotBounded(instructions = "GG"))
+"""
+
+
+
+
