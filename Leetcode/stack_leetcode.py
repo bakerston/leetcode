@@ -67,6 +67,7 @@ print(maximalRectangle( matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["
 """
 
 #1063. Number of Valid Subarrays
+"""
 def validSubarrays(a):
     st = []
     n = len(a)
@@ -84,3 +85,4 @@ def validSubarrays(a):
         r[curi] = n - curi - 1
     return sum(r) + len(r)
 print(validSubarrays( [1,4,2,5,3]))
+"""
