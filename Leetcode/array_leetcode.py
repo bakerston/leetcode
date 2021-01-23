@@ -3099,5 +3099,113 @@ print(isIdealPermutation([1,0,2]))
 """
 
 
+#164. Maximum Gap
+"""
+def maximumGap(nums):
+    import heapq
+    if len(nums) < 2:
+        return 0
+    heapq.heapify(nums)
+    ans = 0
+    base = heapq.heappop(nums)
+    while nums:
+        cur = heapq.heappop(nums)
+        ans = max(ans, cur - base)
+        base = cur
+    return ans
+print(maximumGap([3,6,9,1]))
+""" 
 
+#493. Reverse Pairs
+"""
+def reversePairs(nums):
+    import bisect
+    ans, arr = 0, []     
+    for x in nums:
+        i = bisect.bisect_right(arr, 2 * x)
+        ans += len(arr) - i
+
+        i = bisect.bisect_right(arr, x)
+        print("i=", i)
+        print("before arr=", arr)
+        arr[i:i] = [x]  
+        print("after arr=", arr)
+        
+    return ans
+print(reversePairs([1,3,2,3,1]))
+"""
+
+#1074. Number of Submatrices That Sum to Target
+"""
+def numSubmatrixSumTarget(matrix, target):
+    n, m = len(matrix), len(matrix[0])
+    res = [[0] * (m + 1) for _ in range(n + 1)]
+
+    for i in range(m):
+        res[1][i + 1] = matrix[0][i]
+    for i in range(n):
+        res[i + 1][1] = matrix[i][0]
+    for i in range(1, n):
+        for j in range(m):
+            res[i + 1][j + 1] = res[i][j + 1] + matrix[i][j]
+    for j in range(1, m):
+        for i in range(n):
+            res[i + 1][j + 1] += res[i + 1][j]
+    ans = 0
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            for p in range(i):
+                for q in range(j):
+                    if res[i][j] + res[p][q] - res[i][q] - res[p][j] == target:
+                        ans += 1
+    return ans
+
+print(numSubmatrixSumTarget(matrix = [[1,-1],[-1,1]], target = 0))
+"""
+
+#296. Best Meeting Point
+def minTotalDistance(grid):
+    import collections
+    dv = collections.defaultdict(int)
+    dh = collections.defaultdict(int)
+    m, n = len(grid), len(grid[0])
+    for g in grid:
+        for i in range(n):
+            dv[i] += g[i]
+    s = sum(dv.values())
+    for i in range(m):
+        for j in range(n):
+            dh[i] += grid[i][j]
+
+    tmp = [0] * n
+    for i in dv.keys():
+        tmp[i] = dv[i]
+    v = sum(i * x for i, x in enumerate(tmp))
+    ans = v
+    left = tmp[0]
+    for idx in range(1, n):
+        v += left
+        v -= (s - left)
+        ans = min(ans , v)
+        left += tmp[idx]
+
+    tmp2 = [0] * m
+    for i in dh.keys():
+        tmp2[i] = dh[i]
+    h = sum(i * x for i, x in enumerate(tmp2))
+    ans2 = h
+    left = tmp2[0]
+    for idx in range(1, m):
+        h += left
+        h -= (s - left)
+        ans2 = min(ans2, h)
+        left += tmp2[idx] 
+
+
+    return ans + ans2
+print(minTotalDistance([[1,0,0,0,1],[0,0,0,0,0],[0,0,1,0,0]]))
+
+
+    
+    
 
