@@ -809,4 +809,142 @@ def largestSubmatrix(matrix):
                 S |= set( getu(i , s) for i in S)
             S |= set(getset(tmp))
     return max((s[1]-s[0]+1)*s[2] for s in S)"""
-print(largestSubmatrix(matrix = [[0,0,1],[1,1,1],[1,0,1]]))
+
+#biweek
+#5645. Find the Highest Altitude
+"""
+def largestAltitude(gain):
+    ans = 0
+    cur = 0
+    for g in gain:
+        cur += g
+        ans = max(ans ,cur)
+    return ans
+print(largestAltitude(gain = [-4,-3,-2,-1,4,3,2]))"""
+
+#5646. Minimum Number of People to Teach
+
+
+
+
+
+
+
+#5648. Count Ways to Make Array With Product
+"""
+def waysToFillArray(queries):
+    import collections
+    import math
+    def primeFactors(n): 
+        ans = collections.defaultdict(int)
+        while n % 2 == 0: 
+            ans[2] += 1 
+            n = n // 2
+        for i in range(3,int(math.sqrt(n))+1,2): 
+            while n % i== 0: 
+                ans[i] += 1
+                n = n // i 
+        if n > 2: 
+            ans[n] += 1
+        return ans
+    for n, k in queries:
+        d = primeFactors(k)
+        if sum(d.values())
+    return
+print(waysToFillArray(queries = [[2,6],[5,1],[73,660]]))
+"""
+#1738. Find Kth Largest XOR Coordinate Value
+"""
+def kthLargestValue(matrix, k):
+    m, n = len(matrix), len(matrix[0])
+    if m == 1 and n == 1:
+        return matrix[0][0]
+    elif m == 1:
+        ans = []
+        ans.append(matrix[0][0])
+        cur = matrix[0][0]
+        for i in range(1, n):
+            cur ^= matrix[0][i]
+            ans.append(cur)
+        ans.sort(reverse = True)
+        return ans[k - 1]
+    elif n == 1:
+        ans = []
+        ans.append(matrix[0][0])
+        cur = matrix[0][0]
+        for i in range(1, m):
+            cur ^= matrix[i][0]
+            ans.append(cur)
+        ans.sort(reverse = True)
+        return ans[k - 1]
+    else:
+        res = [[0]*n for _ in range(m)]
+        res[0][0] = matrix[0][0]
+        cur = res[0][0]
+        for i in range(1, n):
+            cur ^= matrix[0][i]
+            res[0][i] = cur
+        cur = res[0][0]
+        for i in range(1, m):
+            cur ^= matrix[i][0]
+            res[i][0] = cur
+        for i in range(1, m):
+            for j in range(1, n):
+                res[i][j] = res[i - 1][j] ^ res[i][j - 1] ^ res[i - 1][j - 1] ^ matrix[i][j]
+        ans = []
+        for i in range(m):
+            for j in range(n):
+                ans.append(res[i][j])
+        ans.sort(reverse = True)
+        print(res)
+        print(ans)
+        return ans[k - 1]
+print(kthLargestValue([[10,9,5],[2,0,4],[1,0,9],[3,4,8]]
+,10))
+"""
+
+#1737. Change Minimum Characters to Satisfy One of Three Conditions
+"""
+def minCharacters(a, b):
+    import collections
+    la, lb = len(a), len(b)
+    ca = collections.Counter(a)
+    cb = collections.Counter(b)
+    ans = la + lb
+    #a strictly less than b
+    if 'a' not in cb.keys():
+        kb = min(cb.keys())
+        cur = la
+        for ka in ca.keys():
+            if ka < kb:
+                cur = min(cur, la - ca[ka])
+        ans = min(cur, ans)
+    if 'z' not in ca.keys():
+        ka = max(ca.keys())
+        cur = la
+        for kb in cb.keys():
+            if kb > ka:
+                cur = min(cur, lb - cb[kb])
+        ans = min(cur, ans)
+    #b strictly less than a
+    if 'a' not in ca.keys():
+        ka = min(ca.keys())
+        cur = lb
+        for kb in cb.keys():
+            if kb < ka:
+                cur = min(cur, lb - cb[kb])
+        ans = min(cur, ans)
+    if 'z' not in cb.keys():
+        kb = max(cb.keys())
+        cur = la
+        for ka in ca.keys():
+            if ka > kb:
+                cur = min(cur, la - ca[ka])
+        ans = min(cur, ans)
+    #only one character
+    d = ca + cb
+    for k in d.keys():
+        ans = min(ans, la + lb - d[k])
+    return ans
+print(minCharacters(a = "dabadd", b = "cda"))
+"""
