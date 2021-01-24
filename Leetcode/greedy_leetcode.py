@@ -347,6 +347,7 @@ print(longestDiverseString(11,13,7))
 """
 
 #1354. Construct Target Array With Multiple Sums
+"""
 def isPossible(target):
     import heapq
     tmp = [-x for x in target]   
@@ -364,6 +365,7 @@ def isPossible(target):
         p = heapq.heappop(tmp)
     return True
 print(isPossible([1,1,1,12]))
+"""
         
 
 
