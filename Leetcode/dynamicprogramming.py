@@ -435,3 +435,134 @@ print(countCornerRectangles(grid =
 """
 
 
+#790. Domino and Tromino Tiling
+"""
+def numTilings(N):
+    if N == 1:
+        return 1
+    elif N == 2:
+        return 2
+    elif N == 3:
+        return 3
+    dp = [0] * (N + 1)
+    dt = [0] * (N + 1)
+    dd = [0] * (N + 1)
+    dp[0] = 1
+    dp[1] = 1
+    dt[2] = 1
+    dd[2] = 1
+    for i in range(2, N + 1):
+        dp[i] = dp[i - 1] + dp[i - 2] + dt[i - 1] + dd[i - 1]
+        dt[i] = dp[i - 2] + dd[i - 1]
+        dd[i] = dp[i - 2] + dt[i - 1]
+    return dp[-1]
+print(numTilings(5))
+"""
+
+#983. Minimum Cost For Tickets
+"""
+def mincostTickets(days, costs):
+    ans = float('inf')
+    dp = [0] * days[-1]
+"""
+
+#1504. Count Submatrices With All Ones
+"""
+def numSubmat(mat):
+    if len(mat) == 1 and len(mat[0]) == 1:
+        return mat[0][0]
+    elif len(mat) == 1:
+        cur = mat[0][0]
+        ans = mat[0][0]
+        for i in range(1, len(mat[0])):
+            if mat[0][i] == 0:
+                cur = 0
+            else:
+                cur += 1
+                ans += cur
+        return ans
+    elif len(mat[0]) == 1:
+        cur = mat[0][0]
+        ans = mat[0][0]
+        for i in range(1, len(mat)):
+            if mat[i][0] == 0:
+                cur = 0
+            else:
+                cur += 1
+                ans += cur
+        return ans
+    else:
+        m, n = len(mat), len(mat[0])
+        tmp = [[[0, 0] for _ in range(n)] for _ in range(m)]
+        tmp[0][0][0] = tmp[0][0][1] = mat[0][0]
+        ans = 0
+        for i in range(1, m):
+            if mat[i][0] == 0:
+                tmp[i][0] = [0, 0]
+            else:
+                tmp[i][0] = [tmp[i - 1][0][0] + 1, 0]
+                ans += tmp[i][0][0]
+        for i in range(1, n):
+            if mat[0][i] == 0:
+                tmp[0][i] = [0, 0]
+            else:
+                tmp[0][i] = [0, tmp[0][i - 1][1] + 1]
+                ans += tmp[0][i][1]
+        ans += mat[0][0]
+        for i in range(1, m):
+            for j in range(1, n):
+
+
+        return tmp
+print(numSubmat(mat = [[0,1,1,0],
+              [0,1,1,1],
+              [1,1,1,0]]))
+              """
+
+#1186. Maximum Subarray Sum with One Deletion
+"""
+def maximumSum(arr):
+    n = len(arr)
+    d0 = [arr[0]] * n
+    d1 = [arr[0]] * n
+    for i in range(1, n):
+        d0[i] = max(d0[i - 1] + arr[i], arr[i])
+        d1[i] = max(d1[i - 1] + arr[i], arr[i])
+        if i >= 2:
+            d1[i] = max(d1[i], d0[i - 2] + arr[i])
+    return max(d1)
+print(maximumSum(arr = [1,-2,0,3]))
+"""
+
+#1504. Count Submatrices With All Ones
+"""
+def numSubmat(mat):
+    m, n = len(mat), len(mat[0])
+    tmp = [[0] * n for _ in range(m)]
+    for i in range(m):
+        for j in range(n - 1, -1, -1):
+            if mat[i][j] == 1:
+                tmp[i][j] += 1 + (tmp[i][j + 1] if j < n - 1 else 0)
+    ans = 0
+    for i in range(m):
+        for j in range(n):
+            cur = float('inf')
+            for k in range(i, m):
+                cur = min(cur, tmp[k][j])
+                ans += cur
+    return ans
+print(numSubmat(mat = [[1,0,1],
+              [1,1,0],
+              [1,1,0]]))
+              """
+
+#1411. Number of Ways to Paint N × 3 Grid
+def numOfWays(n):
+    dp = [[1] * n for _ in range(2)]
+    # 0.ABC 1.ACB 2.BAC 3.BCA 4.CAB  5.CBA 
+    # 6.ABA 7.BAB 8.ACA 9.CAC 10.BCB 11.CBC
+    for i in range(1, n):
+        dp[0][i] = 2 * dp[0][i - 1] + 2 * dp[1][i - 1]
+        dp[1][i] = 2 * dp[0][i - 1] + 3 * dp[1][i - 1]
+    return (dp[0][-1] + dp[1][-1]) * 6
+print(numOfWays(2))
