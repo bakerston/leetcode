@@ -1530,6 +1530,30 @@ def isRobotBounded(instructions):
 print(isRobotBounded(instructions = "GG"))
 """
 
+#1363. Largest Multiple of Three
+def largestMultipleOfThree(digits):
+    import collections
+    d1 = sorted([i for i in digits if i%3 == 1])
+    d2 = sorted([i for i in digits if i%3 == 2])
+    d3 = [i for i in digits if i%3 == 0]
+    if sum(digits) % 3 == 1:
+        if len(d1):
+            res = d1[1:] + d2 + d3
+        else:
+            res = d2[2:] + d3
+    elif sum(digits) % 3 == 2:
+        if len(d2):
+            res = d1 + d2[1:] + d3
+        else:
+            res = d2[2:] + d3
+    else:
+        res = digits
+    res.sort(reverse = True)
+    if not res:
+        return ''
+    return str(int(''.join([str(i) for i in res])))
+print(largestMultipleOfThree(digits = [8,6,7,1,0]))
+
 
 
 
