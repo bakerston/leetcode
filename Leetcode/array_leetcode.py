@@ -3164,6 +3164,7 @@ print(numSubmatrixSumTarget(matrix = [[1,-1],[-1,1]], target = 0))
 """
 
 #296. Best Meeting Point
+"""
 def minTotalDistance(grid):
     import collections
     dv = collections.defaultdict(int)
@@ -3204,8 +3205,88 @@ def minTotalDistance(grid):
 
     return ans + ans2
 print(minTotalDistance([[1,0,0,0,1],[0,0,0,0,0],[0,0,1,0,0]]))
+"""
+
+#1011. Capacity To Ship Packages Within D Days
+"""
+def shipWithinDays(weights, D):
+    def getdays(ws, w):
+        ans = 0
+        cur = w
+        for i in ws:
+            if i > cur:
+                cur = w
+                ans += 1
+            cur -= i
+        return ans + 1
+    l = 1
+    r = sum(weights)
+    while l < r:
+        m = l + (r - l) // 2
+        print("l=",l,"r=",r,"m=",m)
+        if getdays(weights, m) <= D:
+            r = m
+        else:
+            l = m + 1
+    return l
+print(shipWithinDays(weights = [1,2,3,4,5,6,7,8,9,10], D = 5))
+"""
+#792. Number of Matching Subsequences
+"""
+def numMatchingSubseq(S, words):
+    import collections
+    import bisect
+    ans = 0
+    d = collections.defaultdict(list)
+    for idx in range(len(S)):
+        d[S[idx]].append(idx)
+    
+    for word in words:
+        cur = -1
+        for w in word:
+            pos = bisect.bisect_right(d[w], cur)
+            if pos >= len(d[w]):
+                ans -= 1
+                break
+            else:
+                cur = d[w][pos]
+        ans += 1
+    return ans
+print(numMatchingSubseq(S = "abcde",
+words = ["a", "bb", "acd", "ace"]))
+"""
+
+#1310. XOR Queries of a Subarray
+"""
+def xorQueries(arr, queries):
+    tmp = []
+    cur = 0
+    for a in arr:
+        cur ^= a
+        tmp.append(cur)
+    ans = []
+    for l, r in queries:
+        if l == r:
+            ans.append(arr[l])
+        elif l == 0:
+            ans.append(tmp[r])
+        else:
+            ans.append(tmp[r] ^ tmp[l - 1])
+    return ans
+print(xorQueries(arr = [1,3,4,8], queries = [[0,1],[1,2],[0,3],[3,3]]))
+"""
+
+#983. Minimum Cost For Tickets
+"""
+def mincostTickets(days, costs):
+    dp = [0] * (1 + days[-1])
+    for i in range(1, days[-1] + 1):
+        if i not in days:
+            dp[i] = dp[i - 1]
+        else:
+            dp[i] = min(dp[i - 1] + costs[0], dp[max(0, i - 7)] + costs[1], dp[max(0, i - 30)] + costs[2])
+    return dp[-1]
+print(mincostTickets(days = [1,4,6,7,8,20], costs = [2,7,15]))"""
 
 
-    
-    
 
