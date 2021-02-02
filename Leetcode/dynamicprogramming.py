@@ -557,6 +557,7 @@ print(numSubmat(mat = [[1,0,1],
               """
 
 #1411. Number of Ways to Paint N × 3 Grid
+"""
 def numOfWays(n):
     dp = [[1] * n for _ in range(2)]
     # 0.ABC 1.ACB 2.BAC 3.BCA 4.CAB  5.CBA 
@@ -565,4 +566,89 @@ def numOfWays(n):
         dp[0][i] = 2 * dp[0][i - 1] + 2 * dp[1][i - 1]
         dp[1][i] = 2 * dp[0][i - 1] + 3 * dp[1][i - 1]
     return (dp[0][-1] + dp[1][-1]) * 6
-print(numOfWays(2))
+print(numOfWays(2))"""
+
+
+#403. Frog Jump
+"""
+def canCross(stones):
+    import collections
+    s = set(stones)
+    tmp = collections.deque()
+    tmp.appendleft([0, 0])
+    end = stones[-1]
+    while tmp:
+        pos, speed = tmp.popleft()
+        if speed > 0:
+            if pos + speed == end:
+                return True
+            elif pos + speed < end and pos + speed in s:
+                tmp.append([pos + speed, speed])
+            else:
+                pass
+        if speed > 1:
+            if pos + speed - 1 == end:
+                return True
+            elif pos + speed - 1 < end and pos + speed - 1 in s:
+                tmp.append([pos + speed - 1, speed - 1])
+            else:
+                pass
+        if pos + speed + 1 == end:       
+            return True
+        elif pos + speed + 1 < end and pos + speed + 1 in s:
+            tmp.append([pos + speed + 1, speed + 1])
+        else:
+            pass
+    return False
+print(canCross(stones = [0,1,2,3,4,8,9,11]))
+"""
+
+
+#931. Minimum Falling Path Sum
+"""
+def minFallingPathSum(matrix):
+    m, n = len(matrix), len(matrix[0])
+    tmp = [[0] * n for _ in range(m)]
+    for idx in range(n):
+        tmp[0][idx] = matrix[0][idx]
+    for i in range(1, m):
+        for j in range(n):
+            if j > 0 and j < n - 1:
+                tmp[i][j] = matrix[i][j] + min(tmp[i - 1][j + 1], tmp[i - 1][j], tmp[i - 1][j - 1])
+            elif j > 0:
+                tmp[i][j] = matrix[i][j] + min(tmp[i - 1][j], tmp[i - 1][j - 1])
+            elif j < n - 1:
+                tmp[i][j] = matrix[i][j] + min(tmp[i - 1][j], tmp[i - 1][j + 1])
+            else:
+                tmp[i][j] = matrix[i][j] + tmp[i - 1][j]
+    print(tmp)
+    return min(tmp[-1])
+
+print(minFallingPathSum(matrix = [[2,1,3],[6,5,4],[7,8,9]]))
+"""
+
+
+#363. Max Sum of Rectangle No Larger Than K
+"""
+def maxSumSubmatrix(matrix, k):
+    def maxsumarry(arr):
+        n = len(arr)
+        ans = float('-inf')
+        for i in range(n):
+            tmp = 0
+            for j in range(i, n):
+                tmp += arr[j]
+                if tmp <= k:
+                    ans = max(ans, tmp)
+        return ans
+    m, n = len(matrix), len(matrix[0])
+    ans = float('-inf')
+    for l in range(n):
+        tmp = [0] * m
+        for r in range(l, n):
+            for i in range(m):
+                tmp[i] += matrix[i][r]
+            ans = max(ans, maxsumarry(tmp))
+    return ans
+print(maxSumSubmatrix( matrix = [[1,0,1],[0,-2,3]], k = 2))
+"""
