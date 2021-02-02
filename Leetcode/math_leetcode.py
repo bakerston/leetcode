@@ -1531,6 +1531,7 @@ print(isRobotBounded(instructions = "GG"))
 """
 
 #1363. Largest Multiple of Three
+"""
 def largestMultipleOfThree(digits):
     import collections
     d1 = sorted([i for i in digits if i%3 == 1])
@@ -1553,7 +1554,75 @@ def largestMultipleOfThree(digits):
         return ''
     return str(int(''.join([str(i) for i in res])))
 print(largestMultipleOfThree(digits = [8,6,7,1,0]))
+"""
+
+
+#1224. Maximum Equal Frequency
+"""
+def maxEqualFreq(nums):
+    import collections
+    d = collections.defaultdict(int)
+    fre = collections.defaultdict(int)
+
+    ans = 0
+    n = len(nums)
+    maxf = 0 
+    for i in range(n):
+        d[nums[i]] += 1
+        if d[nums[i]] == 1:
+            fre[1] += 1
+        else:
+            fre[d[nums[i]] - 1] -= 1
+            fre[d[nums[i]]] += 1
+        maxf = max(maxf, d[nums[i]])
+        print('i = ', i)
+        print("d = ", d)
+        print("fre = ", fre)
+        print("maxfre =", maxf)
+        
+        if maxf == 1:
+            ans = max(ans, i + 1)
+        elif maxf == 2:
+            if fre[2] == 1 or fre[1] == 1 or i == 1:
+                ans = max(ans, i + 1)
+        else:
+            if i == maxf - 1 or fre[maxf] * maxf == i or (fre[maxf] == 1 and maxf +(maxf - 1) * fre[maxf - 1] == i + 1):
+                ans = max(ans, i + 1)
+        print("ans =", ans)
+        print(" ---- ")
+    return ans
+print(maxEqualFreq(nums = [1,1,1,2,2,2]))
+    """    
 
 
 
 
+"""
+def cnt(s):
+    import collections
+    import itertools
+
+    c = collections.Counter(s)
+    
+    ans = 0
+    g = [i for i, k in itertools.groupby(s)]
+    n = len(g)
+    print(g)
+    for color in sorted(c.keys()):
+        out = True
+        for i in range(n):
+            if g[i] == color:
+                if out:
+                    ans += 1
+                    out = False
+            if g[i] < color:
+                if not out:
+                    out = True
+        print("color =", color)
+        print("ans =", ans)
+    return ans
+print(cnt("abbcbabaaaca"))
+"""
+
+
+         
